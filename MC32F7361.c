@@ -64,9 +64,6 @@ void IO_Init(void)
 ;  ***********************************************/
 void adc_config(void)
 {
-    P15OE = 0; // 输入模式 -- 变成高阻态
-    // P15DC = 1; // 模拟模式
-
     ADCR0 = 0xAB; // 12位精度，使能adc,adc通道选择  1/4 VDD
     ADCR1 = 0x80; // adc转换时钟选择 FHIRC/32，使用內部2.0V参考电压
     ADCR2 = 0x0F; // 采样时间，只能固定是15 个 ADCLK
@@ -141,7 +138,7 @@ void Sys_Init(void)
     LED_BLUE_OFF();
 
     // 按键检测引脚
-    P00PU = 1; // 上拉
+    P00PU = 1; // 上拉--看看能不能去掉这里
     P00OE = 0; // 输入模式
 
 // 充电检测引脚:
@@ -304,8 +301,18 @@ void key_event_handle(void)
 void main(void)
 {
     Sys_Init();
+
+#if 0 // 测试时使用
+    LED_BLUE_OFF();
+    LED_RED_OFF();
+    LED_GREEN_OFF();
+    P15D = 0;
+#endif
+
     while (1)
     {
+
+
 #if 1
         // 检测是否在充电
         if (0 == flag_is_in_charging)
@@ -316,6 +323,7 @@ void main(void)
                 if (CHARGE_SCAN_PIN)
                 {
                     flag_is_in_charging = 1;
+                    P15D = 1; // 使能主机电池的充电
                 }
             }
         }
@@ -340,10 +348,12 @@ void main(void)
             if (adc_val >= 2145)
             {
                 flag_is_full_charged = 1;
+                P15D = 0;
             }
             else
             {
                 flag_is_full_charged = 0;
+                P15D = 1;
             }
         }
 
@@ -380,6 +390,7 @@ void main(void)
             LED_BLUE_OFF();
             LED_GREEN_OFF();
             LED_RED_OFF();
+            P15D = 0; // 断开给主机电池的充电
 
             GIE = 0; // 禁用所有中断
             // LED引脚配置为输入:
