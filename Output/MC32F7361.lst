@@ -1,5 +1,5 @@
 gplink-2.2.37 (Jan 22 2024)
-Listing File Generated: 2025-1-14  08:42:55
+Listing File Generated: 2025-1-15  17:26:30
  
  
 Address  Value    Disassembly              Source
@@ -721,13 +721,13 @@ Address  Value    Disassembly              Source
 000086   562a     movra   0x2a             	MOVRA	(_adc_val + 1)
 000087   5806     movar   0x6              	MOVAR	STK00
 000088   5629     movra   0x29             	MOVRA	_adc_val
-                                           ;;unsigned compare: left < lit(0x861=2145), size=2
-                                           ;	.line	348; "MC32F7361.c"	if (adc_val >= 2145)
+                                           ;;unsigned compare: left < lit(0x838=2104), size=2
+                                           ;	.line	348; "MC32F7361.c"	if (adc_val >= 2145 - AD_OFFSET)
 000089   3c08     movai   0x8              	MOVAI	0x08
 00008a   482a     rsubar  0x2a             	RSUBAR	(_adc_val + 1)
 00008b   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
 00008c   a08f     goto    0x8f             	GOTO	_00454_DS_
-00008d   3c61     movai   0x61             	MOVAI	0x61
+00008d   3c38     movai   0x38             	MOVAI	0x38
 00008e   4829     rsubar  0x29             	RSUBAR	_adc_val
                                            _00454_DS_
 00008f   e187     jbset   0x187, 0         	JBSET	PFLAG,0
@@ -754,13 +754,13 @@ Address  Value    Disassembly              Source
 00009b   562a     movra   0x2a             	MOVRA	(_adc_val + 1)
 00009c   5806     movar   0x6              	MOVAR	STK00
 00009d   5629     movra   0x29             	MOVRA	_adc_val
-                                           ;;unsigned compare: left < lit(0x666=1638), size=2
-                                           ;	.line	363; "MC32F7361.c"	if (adc_val < 1638) // 电池电压小于3.2V
+                                           ;;unsigned compare: left < lit(0x63D=1597), size=2
+                                           ;	.line	363; "MC32F7361.c"	if (adc_val < 1638 - AD_OFFSET) // 电池电压小于3.2V
 00009e   3c06     movai   0x6              	MOVAI	0x06
 00009f   482a     rsubar  0x2a             	RSUBAR	(_adc_val + 1)
 0000a0   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
 0000a1   a0a4     goto    0xa4             	GOTO	_00455_DS_
-0000a2   3c66     movai   0x66             	MOVAI	0x66
+0000a2   3c3d     movai   0x3d             	MOVAI	0x3d
 0000a3   4829     rsubar  0x29             	RSUBAR	_adc_val
                                            _00455_DS_
 0000a4   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
@@ -768,14 +768,14 @@ Address  Value    Disassembly              Source
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	365; "MC32F7361.c"	flag_is_power_low = 1;
 0000a6   c630     bset    0x30, 0x3        	BSET	_flag1,3
-                                           ;;unsigned compare: left < lit(0x5CD=1485), size=2
+                                           ;;unsigned compare: left < lit(0x5A4=1444), size=2
                                            _00355_DS_
-                                           ;	.line	368; "MC32F7361.c"	if (adc_val < 1485) // 电池电压小于2.9V
+                                           ;	.line	368; "MC32F7361.c"	if (adc_val < 1485 - AD_OFFSET) // 电池电压小于2.9V
 0000a7   3c05     movai   0x5              	MOVAI	0x05
 0000a8   482a     rsubar  0x2a             	RSUBAR	(_adc_val + 1)
 0000a9   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
 0000aa   a0ad     goto    0xad             	GOTO	_00456_DS_
-0000ab   3ccd     movai   0xcd             	MOVAI	0xcd
+0000ab   3ca4     movai   0xa4             	MOVAI	0xa4
 0000ac   4829     rsubar  0x29             	RSUBAR	_adc_val
                                            _00456_DS_
 0000ad   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
@@ -1463,7 +1463,7 @@ Address  Value    Disassembly              Source
                                            ;;111	MOVAR	r0x1017
 000228   5807     movar   0x7              	MOVAR	r0x1013
 000229   560c     movra   0xc              	MOVRA	r0x1017
-                                           ;	.line	102; "MC32F7361.c"	}
+                                           ;	.line	102; "MC32F7361.c"	} 
 00022a   000c     return                   	RETURN	
                                            ; exit point of _adc_get_val
                                            
@@ -1589,17 +1589,17 @@ Address  Value    Disassembly              Source
                                            ;; Starting pCode block
                                            _delay_ms	;Function start
                                            ; 2 exit points
-                                           ;	.line	154; "user.h"	void delay_ms(u16 xms)
+                                           ;	.line	155; "user.h"	void delay_ms(u16 xms)
 000254   5608     movra   0x8              	MOVRA	r0x1012
 000255   5806     movar   0x6              	MOVAR	STK00
 000256   5607     movra   0x7              	MOVRA	r0x1013
                                            _00108_DS_
-                                           ;	.line	156; "user.h"	while (xms)
+                                           ;	.line	157; "user.h"	while (xms)
 000257   5807     movar   0x7              	MOVAR	r0x1013
 000258   5c08     orar    0x8              	ORAR	r0x1012
 000259   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
 00025a   a273     goto    0x273            	GOTO	_00111_DS_
-                                           ;	.line	159; "user.h"	while (i--)
+                                           ;	.line	160; "user.h"	while (i--)
 00025b   3c3c     movai   0x3c             	MOVAI	0x3c
 00025c   5609     movra   0x9              	MOVRA	r0x1014
 00025d   3c02     movai   0x2              	MOVAI	0x02
@@ -1617,22 +1617,22 @@ Address  Value    Disassembly              Source
 000268   5c0c     orar    0xc              	ORAR	r0x1017
 000269   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
 00026a   a26d     goto    0x26d            	GOTO	_00107_DS_
-                                           ;	.line	161; "user.h"	Nop();
+                                           ;	.line	162; "user.h"	Nop();
 00026b   0000     nop                      	nop	
 00026c   a25f     goto    0x25f            	GOTO	_00105_DS_
                                            _00107_DS_
-                                           ;	.line	163; "user.h"	xms--; // 把 --操作放在while()判断条件外面，更节省空间
+                                           ;	.line	164; "user.h"	xms--; // 把 --操作放在while()判断条件外面，更节省空间
 00026d   3cff     movai   0xff             	MOVAI	0xff
 00026e   7e07     addra   0x7              	ADDRA	r0x1013
 00026f   e187     jbset   0x187, 0         	JBSET	PFLAG,0
 000270   6e08     decr    0x8              	DECR	r0x1012
-                                           ;	.line	167; "user.h"	__endasm;
+                                           ;	.line	168; "user.h"	__endasm;
                                            	;
 000271   000e     clrwdt                   	clrwdt;
                                            	
 000272   a257     goto    0x257            	GOTO	_00108_DS_
                                            _00111_DS_
-                                           ;	.line	169; "user.h"	}
+                                           ;	.line	170; "user.h"	}
 000273   000c     return                   	RETURN	
                                            ; exit point of _delay_ms
                                            
@@ -1644,7 +1644,7 @@ Address  Value    Disassembly              Source
                                            ;--------------------------------------------------------
                                            ; File Created by SN-SDCC : SinoMCU ANSI-C Compiler
                                            ; Version 2.0.0 (Dec 11 2019) (MINGW32)
-                                           ; This file was generated Tue Jan 14 08:42:55 2025
+                                           ; This file was generated Wed Jan 15 17:26:30 2025
                                            ;--------------------------------------------------------
                                            ; MC32 port for the RISC core
                                            ;--------------------------------------------------------
@@ -2369,13 +2369,13 @@ Address  Value    Disassembly              Source
                                            	MOVRA	(_adc_val + 1)
                                            	MOVAR	STK00
                                            	MOVRA	_adc_val
-                                           ;;unsigned compare: left < lit(0x861=2145), size=2
-                                           ;	.line	348; "MC32F7361.c"	if (adc_val >= 2145)
+                                           ;;unsigned compare: left < lit(0x838=2104), size=2
+                                           ;	.line	348; "MC32F7361.c"	if (adc_val >= 2145 - AD_OFFSET)
                                            	MOVAI	0x08
                                            	RSUBAR	(_adc_val + 1)
                                            	JBSET	PFLAG,2
                                            	GOTO	_00454_DS_
-                                           	MOVAI	0x61
+                                           	MOVAI	0x38
                                            	RSUBAR	_adc_val
                                            _00454_DS_
                                            	JBSET	PFLAG,0
@@ -2402,13 +2402,13 @@ Address  Value    Disassembly              Source
                                            	MOVRA	(_adc_val + 1)
                                            	MOVAR	STK00
                                            	MOVRA	_adc_val
-                                           ;;unsigned compare: left < lit(0x666=1638), size=2
-                                           ;	.line	363; "MC32F7361.c"	if (adc_val < 1638) // 电池电压小于3.2V
+                                           ;;unsigned compare: left < lit(0x63D=1597), size=2
+                                           ;	.line	363; "MC32F7361.c"	if (adc_val < 1638 - AD_OFFSET) // 电池电压小于3.2V
                                            	MOVAI	0x06
                                            	RSUBAR	(_adc_val + 1)
                                            	JBSET	PFLAG,2
                                            	GOTO	_00455_DS_
-                                           	MOVAI	0x66
+                                           	MOVAI	0x3d
                                            	RSUBAR	_adc_val
                                            _00455_DS_
                                            	JBCLR	PFLAG,0
@@ -2416,14 +2416,14 @@ Address  Value    Disassembly              Source
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	365; "MC32F7361.c"	flag_is_power_low = 1;
                                            	BSET	_flag1,3
-                                           ;;unsigned compare: left < lit(0x5CD=1485), size=2
+                                           ;;unsigned compare: left < lit(0x5A4=1444), size=2
                                            _00355_DS_
-                                           ;	.line	368; "MC32F7361.c"	if (adc_val < 1485) // 电池电压小于2.9V
+                                           ;	.line	368; "MC32F7361.c"	if (adc_val < 1485 - AD_OFFSET) // 电池电压小于2.9V
                                            	MOVAI	0x05
                                            	RSUBAR	(_adc_val + 1)
                                            	JBSET	PFLAG,2
                                            	GOTO	_00456_DS_
-                                           	MOVAI	0xcd
+                                           	MOVAI	0xa4
                                            	RSUBAR	_adc_val
                                            _00456_DS_
                                            	JBCLR	PFLAG,0
@@ -3111,7 +3111,7 @@ Address  Value    Disassembly              Source
                                            ;;111	MOVAR	r0x1017
                                            	MOVAR	r0x1013
                                            	MOVRA	r0x1017
-                                           ;	.line	102; "MC32F7361.c"	}
+                                           ;	.line	102; "MC32F7361.c"	} 
                                            	RETURN	
                                            ; exit point of _adc_get_val
                                            
@@ -3237,17 +3237,17 @@ Address  Value    Disassembly              Source
                                            ;; Starting pCode block
                                            _delay_ms	;Function start
                                            ; 2 exit points
-                                           ;	.line	154; "user.h"	void delay_ms(u16 xms)
+                                           ;	.line	155; "user.h"	void delay_ms(u16 xms)
                                            	MOVRA	r0x1012
                                            	MOVAR	STK00
                                            	MOVRA	r0x1013
                                            _00108_DS_
-                                           ;	.line	156; "user.h"	while (xms)
+                                           ;	.line	157; "user.h"	while (xms)
                                            	MOVAR	r0x1013
                                            	ORAR	r0x1012
                                            	JBCLR	PFLAG,2
                                            	GOTO	_00111_DS_
-                                           ;	.line	159; "user.h"	while (i--)
+                                           ;	.line	160; "user.h"	while (i--)
                                            	MOVAI	0x3c
                                            	MOVRA	r0x1014
                                            	MOVAI	0x02
@@ -3265,22 +3265,22 @@ Address  Value    Disassembly              Source
                                            	ORAR	r0x1017
                                            	JBCLR	PFLAG,2
                                            	GOTO	_00107_DS_
-                                           ;	.line	161; "user.h"	Nop();
+                                           ;	.line	162; "user.h"	Nop();
                                            	nop	
                                            	GOTO	_00105_DS_
                                            _00107_DS_
-                                           ;	.line	163; "user.h"	xms--; // 把 --操作放在while()判断条件外面，更节省空间
+                                           ;	.line	164; "user.h"	xms--; // 把 --操作放在while()判断条件外面，更节省空间
                                            	MOVAI	0xff
                                            	ADDRA	r0x1013
                                            	JBSET	PFLAG,0
                                            	DECR	r0x1012
-                                           ;	.line	167; "user.h"	__endasm;
+                                           ;	.line	168; "user.h"	__endasm;
                                            	;
                                            	clrwdt;
                                            	
                                            	GOTO	_00108_DS_
                                            _00111_DS_
-                                           ;	.line	169; "user.h"	}
+                                           ;	.line	170; "user.h"	}
                                            	RETURN	
                                            ; exit point of _delay_ms
                                            

@@ -99,7 +99,7 @@ u16 adc_get_val(void)
     g_temp_value = (g_tmpbuff >> 4); // 除以16，取平均值
 
     return g_temp_value;
-}
+} 
 
 // 获取adc单次转换后的值
 u16 adc_get_val_once(void)
@@ -345,7 +345,7 @@ void main(void)
         if (flag_is_in_charging)
         {
             adc_val = adc_get_val();
-            if (adc_val >= 2145)
+            if (adc_val >= 2145 - AD_OFFSET)
             {
                 flag_is_full_charged = 1;
                 P15D = 0;
@@ -360,12 +360,12 @@ void main(void)
         if (flag_is_dev_open && 0 == flag_is_in_charging)
         {
             adc_val = adc_get_val();
-            if (adc_val < 1638) // 电池电压小于3.2V
+            if (adc_val < 1638 - AD_OFFSET) // 电池电压小于3.2V
             {
                 flag_is_power_low = 1;
             }
 
-            if (adc_val < 1485) // 电池电压小于2.9V
+            if (adc_val < 1485 - AD_OFFSET) // 电池电压小于2.9V
             {
                 flag_is_dev_open = 0; // 关机
             }
