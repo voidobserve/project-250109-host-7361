@@ -99,7 +99,7 @@ u16 adc_get_val(void)
     g_temp_value = (g_tmpbuff >> 4); // 除以16，取平均值
 
     return g_temp_value;
-} 
+}
 
 // 获取adc单次转换后的值
 u16 adc_get_val_once(void)
@@ -138,7 +138,7 @@ void Sys_Init(void)
     LED_BLUE_OFF();
 
     // 按键检测引脚
-    P00PU = 1; // 上拉--看看能不能去掉这里
+    // P00PU = 1; // 上拉--看看能不能去掉这里
     P00OE = 0; // 输入模式
 
 // 充电检测引脚:
@@ -312,7 +312,6 @@ void main(void)
     while (1)
     {
 
-
 #if 1
         // 检测是否在充电
         if (0 == flag_is_in_charging)
@@ -345,7 +344,7 @@ void main(void)
         if (flag_is_in_charging)
         {
             adc_val = adc_get_val();
-            if (adc_val >= 2145 - AD_OFFSET)
+            if (adc_val >= 2124 - AD_OFFSET) // 如果电池电压大于4.15V
             {
                 flag_is_full_charged = 1;
                 P15D = 0;
@@ -377,31 +376,40 @@ void main(void)
 
         if (flag_is_in_charging && flag_is_full_charged)
         {
+            // 如果充满电 绿灯常亮
             LED_GREEN_ON();
         }
 
         key_event_handle();
 
-        if (0 == flag_is_dev_open &&    //
+        if (0 == flag_is_dev_open &&    // 设备工作时，不进入低功耗
             0 == flag_is_in_charging && // 充电时，不进入低功耗
             KEY_SCAN_PIN)               // 有按键按下，不进入低功耗
         {
             // 进入低功耗
+            GIE = 0; // 禁用所有中断
+            DRVCR = 0x80; // IO改回普通驱动
             LED_BLUE_OFF();
             LED_GREEN_OFF();
             LED_RED_OFF();
-            P15D = 0; // 断开给主机电池的充电
-
-            GIE = 0; // 禁用所有中断
+            P15D = 0; // 断开给主机电池的充电     
+            // P15OE = 0;        
             // LED引脚配置为输入:
             P17OE = 0;
             P13OE = 0;
             P16OE = 0;
-
+            
             T3EN = 0;
             T3IE = 0;
 
-            // 按键配置为键盘中断触发 
+            // adc通道选择一个不是 1/4 VDD的
+            ADCHS3 = 0;
+            ADCHS2 = 0;
+            ADCHS1 = 0;
+            ADCHS0 = 0;
+            ADEN = 0; // 关闭adc
+
+            // 按键配置为键盘中断触发
             P00KE = 1;
 // 充电检测引脚配置为键盘中断触发
 #if USE_MY_DEBUG
@@ -411,19 +419,19 @@ void main(void)
 #endif
             KBIF = 0;
             KBIE = 1;
+            // LVDEN = 0; // 关闭LVD
 
             HFEN = 0; // 关闭高速时钟
-            LFEN = 1;
-
+            LFEN = 0; // 关闭低速时钟
             // 休眠前关闭外设
             Nop();
             Nop();
             Stop();
             Nop();
             Nop();
-
             HFEN = 1; // 开启高速时钟
-            P00KE = 0; 
+            // LVDEN = 1;
+            P00KE = 0;
 #if USE_MY_DEBUG
             P05KE = 0;
 #else
@@ -432,12 +440,6 @@ void main(void)
             KBIE = 0;
             KBIF = 0;
 
-            // T3EN = 1;
-            // T3IE = 1;
-            // // LED驱动引脚配置回输出模式:
-            // P17OE = 1;
-            // P13OE = 1;
-            // P16OE = 1;
             Sys_Init(); // 按键检测内部的标志位和静态变量没有清除，这里直接清除所有变量的值，全为0,并且重新初始化
             delay_ms(1);
             GIE = 1;
