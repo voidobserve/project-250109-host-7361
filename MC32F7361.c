@@ -138,7 +138,7 @@ void Sys_Init(void)
     LED_BLUE_OFF();
 
     // 按键检测引脚
-    // P00PU = 1; // 上拉--看看能不能去掉这里
+    P00PU = 1; // 上拉--看看能不能去掉这里(可以去掉，但是要加外部上拉)
     P00OE = 0; // 输入模式
 
 // 充电检测引脚:
@@ -310,8 +310,7 @@ void main(void)
 #endif
 
     while (1)
-    {
-
+    { 
 #if 1
         // 检测是否在充电
         if (0 == flag_is_in_charging)
@@ -347,12 +346,12 @@ void main(void)
             if (adc_val >= 2124 - AD_OFFSET) // 如果电池电压大于4.15V
             {
                 flag_is_full_charged = 1;
-                P15D = 0;
+                P15D = 0;// 断开对主机电池的充电
             }
             else
             {
                 flag_is_full_charged = 0;
-                P15D = 1;
+                P15D = 1;// 使能主机电池的充电
             }
         }
 
@@ -395,9 +394,9 @@ void main(void)
             P15D = 0; // 断开给主机电池的充电     
             // P15OE = 0;        
             // LED引脚配置为输入:
-            P17OE = 0;
-            P13OE = 0;
-            P16OE = 0;
+            // P17OE = 0;
+            // P13OE = 0;
+            // P16OE = 0;
             
             T3EN = 0;
             T3IE = 0;
@@ -418,9 +417,7 @@ void main(void)
             P04KE = 1;
 #endif
             KBIF = 0;
-            KBIE = 1;
-            // LVDEN = 0; // 关闭LVD
-
+            KBIE = 1;  
             HFEN = 0; // 关闭高速时钟
             LFEN = 0; // 关闭低速时钟
             // 休眠前关闭外设
@@ -429,8 +426,7 @@ void main(void)
             Stop();
             Nop();
             Nop();
-            HFEN = 1; // 开启高速时钟
-            // LVDEN = 1;
+            HFEN = 1; // 开启高速时钟 
             P00KE = 0;
 #if USE_MY_DEBUG
             P05KE = 0;
@@ -496,7 +492,7 @@ void int_isr(void) __interrupt
                 else
                 {
                     blink_cnt = 0;
-                    LED_GREEN_OFF();
+                    // LED_GREEN_OFF();
                 }
             }
             else

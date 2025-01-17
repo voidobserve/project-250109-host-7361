@@ -1,8 +1,0 @@
-2025-01-16 10:52:56 INFO: FrmMain.cs, Risc/CRisc/Pic ReadCPU_3394(), find pcValue file, open it
-2025-01-16 10:52:56 INFO: Sdcc项目，对PC=0x0000, 搜行号 ... ## 0 .
-2025-01-16 10:52:56 INFO: C项目，在.lst文件中，没找到PC=0x0000所对应的行号, 再走一个步进试试.
-2025-01-16 10:52:56 INFO: Sdcc项目，对PC=0x006B, 搜行号 ... ## 0 .
-2025-01-16 10:52:57 INFO: Sdcc项目，对PC=0x006B, 找到了
-2025-01-16 10:52:57 INFO: update frmSys.propertyGrid_sys
-2025-01-16 10:52:57 INFO: readAX
-2025-01-16 10:52:57 INFO: readRAM

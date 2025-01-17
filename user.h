@@ -103,6 +103,15 @@
 
 enum
 {
+	CUR_STATUS_NONE = 0,	// 无操作
+	CUR_STATUS_WORKING,		// 正在工作
+	CUR_STATUS_BE_CHARGING, // 正在被充电
+							// CUR_STATUS_
+};
+volatile u8 cur_dev_status; // 状态机，表示当前设备的状态
+
+enum
+{
 	KEY_ID_NONE,
 	KEY_ID_BUTTOM,
 };
