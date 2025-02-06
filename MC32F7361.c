@@ -53,7 +53,9 @@ void IO_Init(void)
     PDP2 = 0x00; // io口下拉电阻   1:enable  0:disablea
 
     PMOD = 0x00;  // P00、P01、P13 io端口值从寄存器读，推挽输出
-    DRVCR = 0xB0; // P16、P17输出驱动电流100mA
+    // DRVCR = 0xB0; // P16、P17输出驱动电流100mA
+    // DRVCR = 0x90; // P16、P17输出驱动电流50mA
+    DRVCR = 0x80; // P16、P17输出驱动电流25mA，其他普通IO正常驱动电流输出
 }
 
 /************************************************
@@ -241,6 +243,13 @@ void key_scan(void)
 // 对扫描到的按键事件进行处理
 void key_event_handle(void)
 {
+    if (flag_is_in_charging)
+    {
+        // 如果正在充电，直接清除按键事件并退出
+        key_event = KEY_EVENT_NONE;
+        return;
+    }
+
     if (KEY_EVENT_PRESS == key_event)
     {
         if (flag_is_dev_open)
@@ -306,18 +315,24 @@ void main(void)
     LED_BLUE_OFF();
     LED_RED_OFF();
     LED_GREEN_OFF();
-    P15D = 0;
+    // P15D = 0;
+    T3EN = 0;
+    P15D = 1; // 使能对主机电池的充电
 #endif
 
+    
+
     while (1)
-    { 
+    {
+
 #if 1
         // 检测是否在充电
         if (0 == flag_is_in_charging)
         {
             if (CHARGE_SCAN_PIN)
             {
-                delay_ms(20);
+                // delay_ms(20);
+                delay_ms(100);
                 if (CHARGE_SCAN_PIN)
                 {
                     flag_is_in_charging = 1;
@@ -330,7 +345,8 @@ void main(void)
             // 充电时，检测是否断开了充电
             if (0 == CHARGE_SCAN_PIN)
             {
-                delay_ms(20);
+                // delay_ms(20);
+                delay_ms(100);
                 if (0 == CHARGE_SCAN_PIN)
                 {
                     flag_is_in_charging = 0;
@@ -339,31 +355,51 @@ void main(void)
             }
         }
 
-        // 检测是否充满电
+        // 检测是否充满电,以及充电时自动关机
         if (flag_is_in_charging)
         {
             adc_val = adc_get_val();
-            if (adc_val >= 2124 - AD_OFFSET) // 如果电池电压大于4.15V
+            // if (adc_val >= 2124 - AD_OFFSET) // 如果电池电压大于4.15V
+            // if (adc_val >= 2124) // 如果电池电压大于4.15V
+            if (adc_val >= 2150) // 如果电池电压大于4.2V
             {
                 flag_is_full_charged = 1;
-                P15D = 0;// 断开对主机电池的充电
+                P15D = 0; // 断开对主机电池的充电
             }
-            else
+            else if (adc_val < 2124 - AD_OFFSET) // 如果电池电压小于4.15V-死区值
             {
                 flag_is_full_charged = 0;
-                P15D = 1;// 使能主机电池的充电
+                P15D = 1; // 使能主机电池的充电
             }
+
+            // 充电时自动关机
+            LED_RED_OFF();
+            LED_BLUE_OFF();
+            flag_is_dev_open = 0;
+            led_mode = 2; // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
         }
 
         if (flag_is_dev_open && 0 == flag_is_in_charging)
         {
+            // 如果主机开启，且未在充电: 
             adc_val = adc_get_val();
-            if (adc_val < 1638 - AD_OFFSET) // 电池电压小于3.2V
+            // if (adc_val < 1638 - AD_OFFSET) // 电池电压小于3.2V(实际测试是3.14V)
+            if (adc_val < 1638) // 电池电压小于3.2V(实际测试是3.22-3.23V)
             {
                 flag_is_power_low = 1;
             }
+            // else if  (adc_val > 1638 + AD_OFFSET) // 如果电池电压大于3.2V+ad值死区，认为电池电量未到关机的阈值
+            // {
+            //     flag_is_power_low = 0;
+            // }
 
-            if (adc_val < 1485 - AD_OFFSET) // 电池电压小于2.9V
+            // if (adc_val < 1485 - AD_OFFSET) // 电池电压小于2.9V
+            // {
+            //     flag_is_dev_open = 0; // 关机
+            // }
+
+            // if (adc_val < 1587 - AD_OFFSET) // 电池电压小于3.1V(实际测试是3.04V)
+            if (adc_val < 1587)  // 如果电池电压小于3.099V,实际测试是3.12-3.13V
             {
                 flag_is_dev_open = 0; // 关机
             }
@@ -376,7 +412,10 @@ void main(void)
         if (flag_is_in_charging && flag_is_full_charged)
         {
             // 如果充满电 绿灯常亮
-            LED_GREEN_ON();
+            // LED_GREEN_ON();
+
+            // 如果充满电，关闭绿灯
+            LED_GREEN_OFF();
         }
 
         key_event_handle();
@@ -386,18 +425,18 @@ void main(void)
             KEY_SCAN_PIN)               // 有按键按下，不进入低功耗
         {
             // 进入低功耗
-            GIE = 0; // 禁用所有中断
+            GIE = 0;      // 禁用所有中断
             DRVCR = 0x80; // IO改回普通驱动
             LED_BLUE_OFF();
             LED_GREEN_OFF();
             LED_RED_OFF();
-            P15D = 0; // 断开给主机电池的充电     
-            // P15OE = 0;        
+            P15D = 0; // 断开给主机电池的充电
+            // P15OE = 0;
             // LED引脚配置为输入:
             // P17OE = 0;
             // P13OE = 0;
             // P16OE = 0;
-            
+
             T3EN = 0;
             T3IE = 0;
 
@@ -417,7 +456,8 @@ void main(void)
             P04KE = 1;
 #endif
             KBIF = 0;
-            KBIE = 1;  
+            KBIE = 1;
+            LVDEN = 0;
             HFEN = 0; // 关闭高速时钟
             LFEN = 0; // 关闭低速时钟
             // 休眠前关闭外设
@@ -426,7 +466,8 @@ void main(void)
             Stop();
             Nop();
             Nop();
-            HFEN = 1; // 开启高速时钟 
+            HFEN = 1; // 开启高速时钟
+            LVDEN = 1;
             P00KE = 0;
 #if USE_MY_DEBUG
             P05KE = 0;
@@ -477,24 +518,39 @@ void int_isr(void) __interrupt
 
         { // 充电、低电量时，负责灯光闪烁
             static u16 blink_cnt = 0;
-            if (flag_is_power_low ||
-                (flag_is_in_charging && 0 == flag_is_full_charged))
+            if (flag_is_power_low)
             {
                 blink_cnt++;
-                if (blink_cnt <= 500)
+                if (blink_cnt <= 350)
                 {
                     LED_GREEN_ON();
                 }
-                else if (blink_cnt <= 1000)
+                else if (blink_cnt <= 700)
                 {
                     LED_GREEN_OFF();
                 }
                 else
                 {
                     blink_cnt = 0;
-                    // LED_GREEN_OFF();
                 }
             }
+            // else if (flag_is_in_charging && 0 == flag_is_full_charged)
+            // {
+
+            //     blink_cnt++;
+            //     if (blink_cnt <= 500)
+            //     {
+            //         LED_GREEN_ON();
+            //     }
+            //     else if (blink_cnt <= 1000)
+            //     {
+            //         LED_GREEN_OFF();
+            //     }
+            //     else
+            //     {
+            //         blink_cnt = 0;
+            //     }
+            // }
             else
             {
                 blink_cnt = 0;

@@ -154,7 +154,7 @@ typedef union
 	} bits;
 } bit_flag;
 volatile bit_flag flag1;
-#define flag_is_dev_open flag1.bits.bit0
+#define flag_is_dev_open flag1.bits.bit0 
 #define flag_is_in_charging flag1.bits.bit1
 #define flag_is_full_charged flag1.bits.bit2
 #define flag_is_power_low flag1.bits.bit3
