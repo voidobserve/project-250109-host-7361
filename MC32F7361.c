@@ -332,7 +332,7 @@ void main(void)
             if (CHARGE_SCAN_PIN)
             {
                 // delay_ms(20);
-                delay_ms(100);
+                delay_ms(100); 
                 if (CHARGE_SCAN_PIN)
                 {
                     flag_is_in_charging = 1;
@@ -409,14 +409,14 @@ void main(void)
             flag_is_power_low = 0;
         }
 
-        if (flag_is_in_charging && flag_is_full_charged)
-        {
-            // 如果充满电 绿灯常亮
-            // LED_GREEN_ON();
+        // if (flag_is_in_charging && flag_is_full_charged)
+        // {
+        //     // 如果充满电 绿灯常亮
+        //     // LED_GREEN_ON();
 
-            // 如果充满电，关闭绿灯
-            LED_GREEN_OFF();
-        }
+        //     // 如果充满电，关闭绿灯
+        //     LED_GREEN_OFF();
+        // }
 
         key_event_handle();
 
