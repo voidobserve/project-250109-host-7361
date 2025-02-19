@@ -58,19 +58,38 @@
 #define CHARGE_SCAN_PIN P04D
 #endif
 
-#define LED_BLUE_ON()         \
-	{                         \
-		do                    \
-		{                     \
-			LED_BLUE_PIN = 0; \
-		} while (0);          \
+extern void led_red_on(void);
+extern void led_red_off(void);
+extern void led_blue_on(void);
+extern void led_blue_off(void);
+
+// #define LED_BLUE_ON()         \
+// 	{                         \
+// 		do                    \
+// 		{                     \
+// 			LED_BLUE_PIN = 0; \
+// 		} while (0);          \
+// 	}
+// #define LED_BLUE_OFF()        \
+// 	{                         \
+// 		do                    \
+// 		{                     \
+// 			LED_BLUE_PIN = 1; \
+// 		} while (0);          \
+// 	}
+#define LED_BLUE_ON()      \
+	{                      \
+		do                 \
+		{                  \
+			led_blue_on(); \
+		} while (0);       \
 	}
-#define LED_BLUE_OFF()        \
-	{                         \
-		do                    \
-		{                     \
-			LED_BLUE_PIN = 1; \
-		} while (0);          \
+#define LED_BLUE_OFF()      \
+	{                       \
+		do                  \
+		{                   \
+			led_blue_off(); \
+		} while (0);        \
 	}
 #define LED_GREEN_ON()         \
 	{                          \
@@ -86,19 +105,33 @@
 			LED_GREEN_PIN = 0; \
 		} while (0);           \
 	}
-#define LED_RED_ON()         \
-	{                        \
-		do                   \
-		{                    \
-			LED_RED_PIN = 0; \
-		} while (0);         \
+// #define LED_RED_ON()         \
+// 	{                        \
+// 		do                   \
+// 		{                    \
+// 			LED_RED_PIN = 0; \
+// 		} while (0);         \
+// 	}
+// #define LED_RED_OFF()        \
+// 	{                        \
+// 		do                   \
+// 		{                    \
+// 			LED_RED_PIN = 1; \
+// 		} while (0);         \
+// 	}
+#define LED_RED_ON()      \
+	{                     \
+		do                \
+		{                 \
+			led_red_on(); \
+		} while (0);      \
 	}
-#define LED_RED_OFF()        \
-	{                        \
-		do                   \
-		{                    \
-			LED_RED_PIN = 1; \
-		} while (0);         \
+#define LED_RED_OFF()      \
+	{                      \
+		do                 \
+		{                  \
+			led_red_off(); \
+		} while (0);       \
 	}
 
 enum
@@ -154,7 +187,7 @@ typedef union
 	} bits;
 } bit_flag;
 volatile bit_flag flag1;
-#define flag_is_dev_open flag1.bits.bit0 
+#define flag_is_dev_open flag1.bits.bit0
 #define flag_is_in_charging flag1.bits.bit1
 #define flag_is_full_charged flag1.bits.bit2
 #define flag_is_power_low flag1.bits.bit3

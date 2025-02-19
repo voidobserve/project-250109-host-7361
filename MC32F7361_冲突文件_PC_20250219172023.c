@@ -156,13 +156,13 @@ void led_red_on(void)
 void led_red_off(void)
 {
     PWM0EC = 0;
-    T0EN = 0; 
+    T0EN = 0;
     P16OE = 1;
     LED_RED_PIN = 0; // 高电平表示熄灭
 }
 
 void led_blue_on(void)
-{ 
+{
     PWM1EC = 1;
     T1EN = 1;
 }
@@ -171,7 +171,6 @@ void led_blue_off(void)
 {
     PWM1EC = 0;
     T1EN = 0;
-    P17OE = 1;
     LED_BLUE_PIN = 1; // 高电平表示熄灭
 }
 
@@ -189,11 +188,13 @@ void Sys_Init(void)
 
     // 驱动红灯的PWM和引脚：
     led_red_pwm_config();
+
     // 驱动蓝灯的pwm和引脚
     led_blue_pwm_config();
-    LED_RED_OFF();
-    LED_GREEN_OFF();
-    LED_BLUE_OFF();
+
+    // LED_RED_OFF();
+    // LED_GREEN_OFF();
+    // LED_BLUE_OFF();
 
     // 按键检测引脚
     P00PU = 1; // 上拉--看看能不能去掉这里(可以去掉，但是要加外部上拉)
@@ -377,8 +378,13 @@ void main(void)
 #endif
 
     while (1)
-    { 
-#if 1
+    {
+        led_red_on();
+        delay_ms(2000);
+        led_red_off();
+        delay_ms(2000);
+
+#if 0
         // 检测是否在充电
         if (0 == flag_is_in_charging)
         {
