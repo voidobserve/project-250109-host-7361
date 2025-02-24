@@ -1,5 +1,5 @@
 gplink-2.2.37 (Jan 22 2024)
-Listing File Generated: 2025-2-24  09:56:35
+Listing File Generated: 2025-2-24  17:51:09
  
  
 Address  Value    Disassembly              Source
@@ -482,10 +482,12 @@ Address  Value    Disassembly              Source
                                            ;@Allocation info for local variables in function 'int_isr'
                                            ;@int_isr key_scan_cnt              Allocated to registers ;size:1
                                            ;@int_isr blink_cnt                 Allocated to registers ;size:2
+                                           ;@int_isr cnt                       Allocated to registers ;size:2
                                            ;@end Allocation info for local variables in function 'int_isr';
                                            ;@Allocation info for local variables in function 'int_isr'
                                            ;@int_isr key_scan_cnt              Allocated to registers ;size:1
                                            ;@int_isr blink_cnt                 Allocated to registers ;size:2
+                                           ;@int_isr cnt                       Allocated to registers ;size:2
                                            ;@end Allocation info for local variables in function 'int_isr';
                                            
                                            ;--------------------------------------------------------
@@ -516,13 +518,13 @@ Address  Value    Disassembly              Source
                                            ;; Starting pCode block
                                            _int_isr	;Function start
                                            ; 0 exit points
-                                           ;	.line	558; "MC32F7361.c"	__endasm;
+                                           ;	.line	568; "MC32F7361.c"	__endasm;
                                            	;
 000008   562d     movra   0x2d             	movra	_abuf;
 000009   4587     swapar  0x187            	swapar	_PFLAG;
 00000a   562e     movra   0x2e             	movra	_statusbuf;
                                            	
-                                           ;	.line	560; "MC32F7361.c"	if (T3IF & T3IE)
+                                           ;	.line	570; "MC32F7361.c"	if (T3IF & T3IE)
 00000b   761a     clrr    0x1a             	CLRR	r0x1027
 00000c   ff8b     jbclr   0x18b, 0x7       	JBCLR	_INTFbits,7
 00000d   661a     incr    0x1a             	INCR	r0x1027
@@ -534,77 +536,77 @@ Address  Value    Disassembly              Source
 000013   3c00     movai   0                	MOVAI	0x00
 000014   5c1a     orar    0x1a             	ORAR	r0x1027
 000015   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
-000016   a061     goto    0x61             	GOTO	_00513_DS_
-                                           ;	.line	565; "MC32F7361.c"	key_scan_cnt++;
+000016   a061     goto    0x61             	GOTO	_00524_DS_
+                                           ;	.line	575; "MC32F7361.c"	key_scan_cnt++;
 000017   6622     incr    0x22             	INCR	_int_isr_key_scan_cnt_196608_121
                                            ;;unsigned compare: left < lit(0xA=10), size=1
-                                           ;	.line	566; "MC32F7361.c"	if (key_scan_cnt >= 10)
+                                           ;	.line	576; "MC32F7361.c"	if (key_scan_cnt >= 10)
 000018   3c0a     movai   0xa              	MOVAI	0x0a
 000019   4822     rsubar  0x22             	RSUBAR	_int_isr_key_scan_cnt_196608_121
 00001a   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-00001b   a01e     goto    0x1e             	GOTO	_00488_DS_
+00001b   a01e     goto    0x1e             	GOTO	_00493_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	568; "MC32F7361.c"	key_scan_cnt = 0;
+                                           ;	.line	578; "MC32F7361.c"	key_scan_cnt = 0;
 00001c   7622     clrr    0x22             	CLRR	_int_isr_key_scan_cnt_196608_121
-                                           ;	.line	569; "MC32F7361.c"	key_scan();
-00001d   8122     call    0x122            	CALL	_key_scan
-                                           _00488_DS_
-                                           ;	.line	575; "MC32F7361.c"	if (flag_is_power_low)
+                                           ;	.line	579; "MC32F7361.c"	key_scan();
+00001d   8125     call    0x125            	CALL	_key_scan
+                                           _00493_DS_
+                                           ;	.line	585; "MC32F7361.c"	if (flag_is_power_low)
 00001e   e631     jbset   0x31, 0x3        	JBSET	_flag1,3
-00001f   a03a     goto    0x3a             	GOTO	_00505_DS_
-                                           ;	.line	577; "MC32F7361.c"	blink_cnt++;
+00001f   a03a     goto    0x3a             	GOTO	_00510_DS_
+                                           ;	.line	587; "MC32F7361.c"	blink_cnt++;
 000020   6623     incr    0x23             	INCR	_int_isr_blink_cnt_196608_123
 000021   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
 000022   6624     incr    0x24             	INCR	(_int_isr_blink_cnt_196608_123 + 1)
                                            ;;swapping arguments (AOP_TYPEs 1/3)
                                            ;;unsigned compare: left >= lit(0x15F=351), size=2
-                                           ;	.line	578; "MC32F7361.c"	if (blink_cnt <= 350)
+                                           ;	.line	588; "MC32F7361.c"	if (blink_cnt <= 350)
 000023   3c01     movai   0x1              	MOVAI	0x01
 000024   4824     rsubar  0x24             	RSUBAR	(_int_isr_blink_cnt_196608_123 + 1)
 000025   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000026   a029     goto    0x29             	GOTO	_00545_DS_
+000026   a029     goto    0x29             	GOTO	_00560_DS_
 000027   3c5f     movai   0x5f             	MOVAI	0x5f
 000028   4823     rsubar  0x23             	RSUBAR	_int_isr_blink_cnt_196608_123
-                                           _00545_DS_
+                                           _00560_DS_
 000029   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-00002a   a02d     goto    0x2d             	GOTO	_00499_DS_
+00002a   a02d     goto    0x2d             	GOTO	_00504_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	580; "MC32F7361.c"	LED_GREEN_ON();
+                                           ;	.line	590; "MC32F7361.c"	LED_GREEN_ON();
 00002b   c794     bset    0x194, 0x3       	BSET	_IOP1bits,3
-00002c   a03d     goto    0x3d             	GOTO	_00506_DS_
+00002c   a03d     goto    0x3d             	GOTO	_00511_DS_
                                            ;;swapping arguments (AOP_TYPEs 1/3)
                                            ;;unsigned compare: left >= lit(0x2BD=701), size=2
-                                           _00499_DS_
-                                           ;	.line	582; "MC32F7361.c"	else if (blink_cnt <= 700)
+                                           _00504_DS_
+                                           ;	.line	592; "MC32F7361.c"	else if (blink_cnt <= 700)
 00002d   3c02     movai   0x2              	MOVAI	0x02
 00002e   4824     rsubar  0x24             	RSUBAR	(_int_isr_blink_cnt_196608_123 + 1)
 00002f   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000030   a033     goto    0x33             	GOTO	_00546_DS_
+000030   a033     goto    0x33             	GOTO	_00561_DS_
 000031   3cbd     movai   0xbd             	MOVAI	0xbd
 000032   4823     rsubar  0x23             	RSUBAR	_int_isr_blink_cnt_196608_123
-                                           _00546_DS_
+                                           _00561_DS_
 000033   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-000034   a037     goto    0x37             	GOTO	_00496_DS_
+000034   a037     goto    0x37             	GOTO	_00501_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	584; "MC32F7361.c"	LED_GREEN_OFF();
+                                           ;	.line	594; "MC32F7361.c"	LED_GREEN_OFF();
 000035   d794     bclr    0x194, 0x3       	BCLR	_IOP1bits,3
-000036   a03d     goto    0x3d             	GOTO	_00506_DS_
-                                           _00496_DS_
-                                           ;	.line	588; "MC32F7361.c"	blink_cnt = 0;
+000036   a03d     goto    0x3d             	GOTO	_00511_DS_
+                                           _00501_DS_
+                                           ;	.line	598; "MC32F7361.c"	blink_cnt = 0;
 000037   7623     clrr    0x23             	CLRR	_int_isr_blink_cnt_196608_123
 000038   7624     clrr    0x24             	CLRR	(_int_isr_blink_cnt_196608_123 + 1)
-000039   a03d     goto    0x3d             	GOTO	_00506_DS_
-                                           _00505_DS_
-                                           ;	.line	610; "MC32F7361.c"	blink_cnt = 0;
+000039   a03d     goto    0x3d             	GOTO	_00511_DS_
+                                           _00510_DS_
+                                           ;	.line	619; "MC32F7361.c"	blink_cnt = 0;
 00003a   7623     clrr    0x23             	CLRR	_int_isr_blink_cnt_196608_123
 00003b   7624     clrr    0x24             	CLRR	(_int_isr_blink_cnt_196608_123 + 1)
-                                           ;	.line	611; "MC32F7361.c"	LED_GREEN_OFF();
+                                           ;	.line	620; "MC32F7361.c"	LED_GREEN_OFF();
 00003c   d794     bclr    0x194, 0x3       	BCLR	_IOP1bits,3
-                                           _00506_DS_
-                                           ;	.line	616; "MC32F7361.c"	if (flag_is_dev_open)
+                                           _00511_DS_
+                                           ;	.line	625; "MC32F7361.c"	if (flag_is_dev_open)
 00003d   e031     jbset   0x31, 0          	JBSET	_flag1,0
-00003e   a05c     goto    0x5c             	GOTO	_00510_DS_
-                                           ;	.line	618; "MC32F7361.c"	power_off_cnt++;
+00003e   a05c     goto    0x5c             	GOTO	_00515_DS_
+                                           ;	.line	627; "MC32F7361.c"	power_off_cnt++;
 00003f   6625     incr    0x25             	INCR	_power_off_cnt
 000040   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
 000041   6626     incr    0x26             	INCR	(_power_off_cnt + 1)
@@ -613,44 +615,44 @@ Address  Value    Disassembly              Source
 000044   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
 000045   6628     incr    0x28             	INCR	(_power_off_cnt + 3)
                                            ;;unsigned compare: left < lit(0x57E40=360000), size=4
-                                           ;	.line	619; "MC32F7361.c"	if (power_off_cnt >= 360000) // 6min
+                                           ;	.line	628; "MC32F7361.c"	if (power_off_cnt >= 360000) // 6min
 000046   3c00     movai   0                	MOVAI	0x00
 000047   4828     rsubar  0x28             	RSUBAR	(_power_off_cnt + 3)
 000048   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000049   a054     goto    0x54             	GOTO	_00547_DS_
+000049   a054     goto    0x54             	GOTO	_00562_DS_
 00004a   3c05     movai   0x5              	MOVAI	0x05
 00004b   4827     rsubar  0x27             	RSUBAR	(_power_off_cnt + 2)
 00004c   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-00004d   a054     goto    0x54             	GOTO	_00547_DS_
+00004d   a054     goto    0x54             	GOTO	_00562_DS_
 00004e   3c7e     movai   0x7e             	MOVAI	0x7e
 00004f   4826     rsubar  0x26             	RSUBAR	(_power_off_cnt + 1)
 000050   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000051   a054     goto    0x54             	GOTO	_00547_DS_
+000051   a054     goto    0x54             	GOTO	_00562_DS_
 000052   3c40     movai   0x40             	MOVAI	0x40
 000053   4825     rsubar  0x25             	RSUBAR	_power_off_cnt
-                                           _00547_DS_
+                                           _00562_DS_
 000054   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-000055   a060     goto    0x60             	GOTO	_00511_DS_
+000055   a060     goto    0x60             	GOTO	_00516_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	621; "MC32F7361.c"	power_off_cnt = 0;
+                                           ;	.line	630; "MC32F7361.c"	power_off_cnt = 0;
 000056   7625     clrr    0x25             	CLRR	_power_off_cnt
 000057   7626     clrr    0x26             	CLRR	(_power_off_cnt + 1)
 000058   7627     clrr    0x27             	CLRR	(_power_off_cnt + 2)
 000059   7628     clrr    0x28             	CLRR	(_power_off_cnt + 3)
-                                           ;	.line	622; "MC32F7361.c"	flag_is_dev_open = 0;
+                                           ;	.line	631; "MC32F7361.c"	flag_is_dev_open = 0;
 00005a   d031     bclr    0x31, 0          	BCLR	_flag1,0
-00005b   a060     goto    0x60             	GOTO	_00511_DS_
-                                           _00510_DS_
-                                           ;	.line	627; "MC32F7361.c"	power_off_cnt = 0;
+00005b   a060     goto    0x60             	GOTO	_00516_DS_
+                                           _00515_DS_
+                                           ;	.line	636; "MC32F7361.c"	power_off_cnt = 0;
 00005c   7625     clrr    0x25             	CLRR	_power_off_cnt
 00005d   7626     clrr    0x26             	CLRR	(_power_off_cnt + 1)
 00005e   7627     clrr    0x27             	CLRR	(_power_off_cnt + 2)
 00005f   7628     clrr    0x28             	CLRR	(_power_off_cnt + 3)
-                                           _00511_DS_
-                                           ;	.line	631; "MC32F7361.c"	T3IF = 0;
+                                           _00516_DS_
+                                           ;	.line	658; "MC32F7361.c"	T3IF = 0;
 000060   df8b     bclr    0x18b, 0x7       	BCLR	_INTFbits,7
-                                           _00513_DS_
-                                           ;	.line	639; "MC32F7361.c"	__endasm;
+                                           _00524_DS_
+                                           ;	.line	666; "MC32F7361.c"	__endasm;
                                            	;
 000061   442e     swapar  0x2e             	swapar	_statusbuf;
 000062   5787     movra   0x187            	movra	_PFLAG;
@@ -658,7 +660,7 @@ Address  Value    Disassembly              Source
 000064   442d     swapar  0x2d             	swapar	_abuf;
                                            	
                                            END_OF_INTERRUPT
-                                           ;	.line	640; "MC32F7361.c"	}
+                                           ;	.line	667; "MC32F7361.c"	}
 000065   000d     retie                    	RETIE	
                                            
                                            ;--------------------------------------------------------
@@ -701,233 +703,236 @@ Address  Value    Disassembly              Source
                                            ;; Starting pCode block
                                            _main	;Function start
                                            ; 2 exit points
-                                           ;	.line	369; "MC32F7361.c"	Sys_Init();
-000066   816c     call    0x16c            	CALL	_Sys_Init
-                                           _00411_DS_
-                                           ;	.line	384; "MC32F7361.c"	if (0 == flag_is_in_charging)
+                                           ;	.line	378; "MC32F7361.c"	Sys_Init();
+000066   816f     call    0x16f            	CALL	_Sys_Init
+                                           _00412_DS_
+                                           ;	.line	393; "MC32F7361.c"	if (0 == flag_is_in_charging)
 000067   f231     jbclr   0x31, 0x1        	JBCLR	_flag1,1
 000068   a074     goto    0x74             	GOTO	_00374_DS_
-                                           ;	.line	386; "MC32F7361.c"	if (CHARGE_SCAN_PIN)
+                                           ;	.line	395; "MC32F7361.c"	if (CHARGE_SCAN_PIN)
 000069   e990     jbset   0x190, 0x4       	JBSET	_IOP0bits,4
 00006a   a07e     goto    0x7e             	GOTO	_00375_DS_
-                                           ;	.line	389; "MC32F7361.c"	delay_ms(100);
+                                           ;	.line	398; "MC32F7361.c"	delay_ms(100);
 00006b   3c64     movai   0x64             	MOVAI	0x64
 00006c   5606     movra   0x6              	MOVRA	STK00
 00006d   3c00     movai   0                	MOVAI	0x00
-00006e   8283     call    0x283            	CALL	_delay_ms
-                                           ;	.line	390; "MC32F7361.c"	if (CHARGE_SCAN_PIN)
+00006e   8286     call    0x286            	CALL	_delay_ms
+                                           ;	.line	399; "MC32F7361.c"	if (CHARGE_SCAN_PIN)
 00006f   e990     jbset   0x190, 0x4       	JBSET	_IOP0bits,4
 000070   a07e     goto    0x7e             	GOTO	_00375_DS_
-                                           ;	.line	392; "MC32F7361.c"	flag_is_in_charging = 1;
+                                           ;	.line	401; "MC32F7361.c"	flag_is_in_charging = 1;
 000071   c231     bset    0x31, 0x1        	BSET	_flag1,1
-                                           ;	.line	393; "MC32F7361.c"	P15D = 1; // 使能主机电池的充电
+                                           ;	.line	402; "MC32F7361.c"	P15D = 1; // 使能主机电池的充电
 000072   cb94     bset    0x194, 0x5       	BSET	_IOP1bits,5
 000073   a07e     goto    0x7e             	GOTO	_00375_DS_
                                            _00374_DS_
-                                           ;	.line	400; "MC32F7361.c"	if (0 == CHARGE_SCAN_PIN)
+                                           ;	.line	409; "MC32F7361.c"	if (0 == CHARGE_SCAN_PIN)
 000074   f990     jbclr   0x190, 0x4       	JBCLR	_IOP0bits,4
 000075   a07e     goto    0x7e             	GOTO	_00375_DS_
-                                           ;	.line	403; "MC32F7361.c"	delay_ms(100);
+                                           ;	.line	412; "MC32F7361.c"	delay_ms(100);
 000076   3c64     movai   0x64             	MOVAI	0x64
 000077   5606     movra   0x6              	MOVRA	STK00
 000078   3c00     movai   0                	MOVAI	0x00
-000079   8283     call    0x283            	CALL	_delay_ms
-                                           ;	.line	404; "MC32F7361.c"	if (0 == CHARGE_SCAN_PIN)
+000079   8286     call    0x286            	CALL	_delay_ms
+                                           ;	.line	413; "MC32F7361.c"	if (0 == CHARGE_SCAN_PIN)
 00007a   f990     jbclr   0x190, 0x4       	JBCLR	_IOP0bits,4
 00007b   a07e     goto    0x7e             	GOTO	_00375_DS_
-                                           ;	.line	406; "MC32F7361.c"	flag_is_in_charging = 0;
+                                           ;	.line	415; "MC32F7361.c"	flag_is_in_charging = 0;
 00007c   d231     bclr    0x31, 0x1        	BCLR	_flag1,1
-                                           ;	.line	407; "MC32F7361.c"	flag_is_full_charged = 0;
+                                           ;	.line	416; "MC32F7361.c"	flag_is_full_charged = 0;
 00007d   d431     bclr    0x31, 0x2        	BCLR	_flag1,2
                                            _00375_DS_
-                                           ;	.line	413; "MC32F7361.c"	if (flag_is_in_charging)
+                                           ;	.line	422; "MC32F7361.c"	if (flag_is_in_charging)
 00007e   e231     jbset   0x31, 0x1        	JBSET	_flag1,1
 00007f   a09e     goto    0x9e             	GOTO	_00388_DS_
-                                           ;	.line	415; "MC32F7361.c"	adc_val = adc_get_val();
-000080   81bd     call    0x1bd            	CALL	_adc_get_val
+                                           ;	.line	424; "MC32F7361.c"	adc_val = adc_get_val();
+000080   81c0     call    0x1c0            	CALL	_adc_get_val
 000081   562a     movra   0x2a             	MOVRA	(_adc_val + 1)
 000082   5806     movar   0x6              	MOVAR	STK00
 000083   5629     movra   0x29             	MOVRA	_adc_val
                                            ;;unsigned compare: left < lit(0x866=2150), size=2
-                                           ;	.line	418; "MC32F7361.c"	if (adc_val >= 2150) // 如果电池电压大于4.2V
+                                           ;	.line	427; "MC32F7361.c"	if (adc_val >= 2150) // 如果电池电压大于4.2V
 000084   3c08     movai   0x8              	MOVAI	0x08
 000085   482a     rsubar  0x2a             	RSUBAR	(_adc_val + 1)
 000086   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000087   a08a     goto    0x8a             	GOTO	_00479_DS_
+000087   a08a     goto    0x8a             	GOTO	_00484_DS_
 000088   3c66     movai   0x66             	MOVAI	0x66
 000089   4829     rsubar  0x29             	RSUBAR	_adc_val
-                                           _00479_DS_
+                                           _00484_DS_
 00008a   e187     jbset   0x187, 0         	JBSET	PFLAG,0
 00008b   a08f     goto    0x8f             	GOTO	_00379_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	420; "MC32F7361.c"	flag_is_full_charged = 1;
+                                           ;	.line	429; "MC32F7361.c"	flag_is_full_charged = 1;
 00008c   c431     bset    0x31, 0x2        	BSET	_flag1,2
-                                           ;	.line	421; "MC32F7361.c"	P15D = 0; // 断开对主机电池的充电
+                                           ;	.line	430; "MC32F7361.c"	P15D = 0; // 断开对主机电池的充电
 00008d   db94     bclr    0x194, 0x5       	BCLR	_IOP1bits,5
 00008e   a099     goto    0x99             	GOTO	_00381_DS_
                                            ;;unsigned compare: left < lit(0x823=2083), size=2
                                            _00379_DS_
-                                           ;	.line	423; "MC32F7361.c"	else if (adc_val < 2124 - AD_OFFSET) // 如果电池电压小于4.15V-死区值
+                                           ;	.line	432; "MC32F7361.c"	else if (adc_val < 2124 - AD_OFFSET) // 如果电池电压小于4.15V-死区值
 00008f   3c08     movai   0x8              	MOVAI	0x08
 000090   482a     rsubar  0x2a             	RSUBAR	(_adc_val + 1)
 000091   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000092   a095     goto    0x95             	GOTO	_00480_DS_
+000092   a095     goto    0x95             	GOTO	_00485_DS_
 000093   3c23     movai   0x23             	MOVAI	0x23
 000094   4829     rsubar  0x29             	RSUBAR	_adc_val
-                                           _00480_DS_
+                                           _00485_DS_
 000095   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
 000096   a099     goto    0x99             	GOTO	_00381_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	425; "MC32F7361.c"	flag_is_full_charged = 0;
+                                           ;	.line	434; "MC32F7361.c"	flag_is_full_charged = 0;
 000097   d431     bclr    0x31, 0x2        	BCLR	_flag1,2
-                                           ;	.line	426; "MC32F7361.c"	P15D = 1; // 使能主机电池的充电
+                                           ;	.line	435; "MC32F7361.c"	P15D = 1; // 使能主机电池的充电
 000098   cb94     bset    0x194, 0x5       	BSET	_IOP1bits,5
                                            _00381_DS_
-                                           ;	.line	430; "MC32F7361.c"	LED_RED_OFF();
-000099   8183     call    0x183            	CALL	_led_red_off
-                                           ;	.line	431; "MC32F7361.c"	LED_BLUE_OFF();
-00009a   817b     call    0x17b            	CALL	_led_blue_off
-                                           ;	.line	432; "MC32F7361.c"	flag_is_dev_open = 0;
+                                           ;	.line	439; "MC32F7361.c"	LED_RED_OFF();
+000099   8186     call    0x186            	CALL	_led_red_off
+                                           ;	.line	440; "MC32F7361.c"	LED_BLUE_OFF();
+00009a   817e     call    0x17e            	CALL	_led_blue_off
+                                           ;	.line	441; "MC32F7361.c"	flag_is_dev_open = 0;
 00009b   d031     bclr    0x31, 0          	BCLR	_flag1,0
-                                           ;	.line	433; "MC32F7361.c"	led_mode = 2; // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
+                                           ;	.line	442; "MC32F7361.c"	led_mode = 2; // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
 00009c   3c02     movai   0x2              	MOVAI	0x02
 00009d   5630     movra   0x30             	MOVRA	_led_mode
                                            _00388_DS_
-                                           ;	.line	436; "MC32F7361.c"	if (flag_is_dev_open && 0 == flag_is_in_charging)
+                                           ;	.line	445; "MC32F7361.c"	if (flag_is_dev_open && 0 == flag_is_in_charging)
 00009e   e031     jbset   0x31, 0          	JBSET	_flag1,0
 00009f   a0b9     goto    0xb9             	GOTO	_00394_DS_
 0000a0   f231     jbclr   0x31, 0x1        	JBCLR	_flag1,1
 0000a1   a0b9     goto    0xb9             	GOTO	_00394_DS_
-                                           ;	.line	439; "MC32F7361.c"	adc_val = adc_get_val();
-0000a2   81bd     call    0x1bd            	CALL	_adc_get_val
+                                           ;	.line	448; "MC32F7361.c"	adc_val = adc_get_val();
+0000a2   81c0     call    0x1c0            	CALL	_adc_get_val
 0000a3   562a     movra   0x2a             	MOVRA	(_adc_val + 1)
 0000a4   5806     movar   0x6              	MOVAR	STK00
 0000a5   5629     movra   0x29             	MOVRA	_adc_val
                                            ;;unsigned compare: left < lit(0x666=1638), size=2
-                                           ;	.line	441; "MC32F7361.c"	if (adc_val < 1638) // 电池电压小于3.2V(实际测试是3.22-3.23V)
+                                           ;	.line	450; "MC32F7361.c"	if (adc_val < 1638) // 电池电压小于3.2V(实际测试是3.22-3.23V)
 0000a6   3c06     movai   0x6              	MOVAI	0x06
 0000a7   482a     rsubar  0x2a             	RSUBAR	(_adc_val + 1)
 0000a8   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-0000a9   a0ac     goto    0xac             	GOTO	_00481_DS_
+0000a9   a0ac     goto    0xac             	GOTO	_00486_DS_
 0000aa   3c66     movai   0x66             	MOVAI	0x66
 0000ab   4829     rsubar  0x29             	RSUBAR	_adc_val
-                                           _00481_DS_
+                                           _00486_DS_
 0000ac   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
 0000ad   a0af     goto    0xaf             	GOTO	_00390_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	443; "MC32F7361.c"	flag_is_power_low = 1;
+                                           ;	.line	452; "MC32F7361.c"	flag_is_power_low = 1;
 0000ae   c631     bset    0x31, 0x3        	BSET	_flag1,3
                                            ;;unsigned compare: left < lit(0x633=1587), size=2
                                            _00390_DS_
-                                           ;	.line	456; "MC32F7361.c"	if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
+                                           ;	.line	465; "MC32F7361.c"	if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
 0000af   3c06     movai   0x6              	MOVAI	0x06
 0000b0   482a     rsubar  0x2a             	RSUBAR	(_adc_val + 1)
 0000b1   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-0000b2   a0b5     goto    0xb5             	GOTO	_00482_DS_
+0000b2   a0b5     goto    0xb5             	GOTO	_00487_DS_
 0000b3   3c33     movai   0x33             	MOVAI	0x33
 0000b4   4829     rsubar  0x29             	RSUBAR	_adc_val
-                                           _00482_DS_
+                                           _00487_DS_
 0000b5   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
 0000b6   a0ba     goto    0xba             	GOTO	_00395_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	458; "MC32F7361.c"	flag_is_dev_open = 0; // 关机
+                                           ;	.line	467; "MC32F7361.c"	flag_is_dev_open = 0; // 关机
 0000b7   d031     bclr    0x31, 0          	BCLR	_flag1,0
 0000b8   a0ba     goto    0xba             	GOTO	_00395_DS_
                                            _00394_DS_
-                                           ;	.line	463; "MC32F7361.c"	flag_is_power_low = 0;
+                                           ;	.line	472; "MC32F7361.c"	flag_is_power_low = 0;
 0000b9   d631     bclr    0x31, 0x3        	BCLR	_flag1,3
                                            _00395_DS_
-                                           ;	.line	475; "MC32F7361.c"	key_event_handle();
-0000ba   80ea     call    0xea             	CALL	_key_event_handle
-                                           ;	.line	477; "MC32F7361.c"	if (0 == flag_is_dev_open &&    // 设备工作时，不进入低功耗
+                                           ;	.line	484; "MC32F7361.c"	key_event_handle();
+0000ba   80ec     call    0xec             	CALL	_key_event_handle
+                                           ;	.line	486; "MC32F7361.c"	if (0 == flag_is_dev_open &&    // 设备工作时，不进入低功耗
 0000bb   f031     jbclr   0x31, 0          	JBCLR	_flag1,0
-0000bc   a0e7     goto    0xe7             	GOTO	_00407_DS_
-                                           ;	.line	478; "MC32F7361.c"	0 == flag_is_in_charging && // 充电时，不进入低功耗
+0000bc   a0e9     goto    0xe9             	GOTO	_00407_DS_
+                                           ;	.line	487; "MC32F7361.c"	0 == flag_is_in_charging && // 充电时，不进入低功耗
 0000bd   f231     jbclr   0x31, 0x1        	JBCLR	_flag1,1
-0000be   a0e7     goto    0xe7             	GOTO	_00407_DS_
-                                           ;	.line	479; "MC32F7361.c"	KEY_SCAN_PIN)               // 有按键按下，不进入低功耗
+0000be   a0e9     goto    0xe9             	GOTO	_00407_DS_
+                                           ;	.line	488; "MC32F7361.c"	KEY_SCAN_PIN &&/* 有按键按下(为低电平)，不进入低功耗 */ 
 0000bf   e190     jbset   0x190, 0         	JBSET	_IOP0bits,0
-0000c0   a0e7     goto    0xe7             	GOTO	_00407_DS_
-                                           ;	.line	482; "MC32F7361.c"	GIE = 0;      // 禁用所有中断
-0000c1   df88     bclr    0x188, 0x7       	BCLR	_MCRbits,7
-                                           ;	.line	483; "MC32F7361.c"	DRVCR = 0x80; // IO改回普通驱动
-0000c2   3c80     movai   0x80             	MOVAI	0x80
-0000c3   578c     movra   0x18c            	MOVRA	_DRVCR
-                                           ;	.line	484; "MC32F7361.c"	LED_BLUE_OFF();
-0000c4   817b     call    0x17b            	CALL	_led_blue_off
-                                           ;	.line	485; "MC32F7361.c"	LED_GREEN_OFF();
-0000c5   d794     bclr    0x194, 0x3       	BCLR	_IOP1bits,3
-                                           ;	.line	486; "MC32F7361.c"	LED_RED_OFF();
-0000c6   8183     call    0x183            	CALL	_led_red_off
-                                           ;	.line	487; "MC32F7361.c"	P15D = 0; // 断开给主机电池的充电
-0000c7   db94     bclr    0x194, 0x5       	BCLR	_IOP1bits,5
-                                           ;	.line	494; "MC32F7361.c"	T3EN = 0;
-0000c8   dfa4     bclr    0x1a4, 0x7       	BCLR	_T3CRbits,7
-                                           ;	.line	495; "MC32F7361.c"	T3IE = 0;
-0000c9   df8a     bclr    0x18a, 0x7       	BCLR	_INTEbits,7
-                                           ;	.line	498; "MC32F7361.c"	ADCHS3 = 0;
-0000ca   dfb0     bclr    0x1b0, 0x7       	BCLR	_ADCR0bits,7
-                                           ;	.line	499; "MC32F7361.c"	ADCHS2 = 0;
-0000cb   ddb0     bclr    0x1b0, 0x6       	BCLR	_ADCR0bits,6
-                                           ;	.line	500; "MC32F7361.c"	ADCHS1 = 0;
-0000cc   dbb0     bclr    0x1b0, 0x5       	BCLR	_ADCR0bits,5
-                                           ;	.line	501; "MC32F7361.c"	ADCHS0 = 0;
-0000cd   d9b0     bclr    0x1b0, 0x4       	BCLR	_ADCR0bits,4
-                                           ;	.line	502; "MC32F7361.c"	ADEN = 0; // 关闭adc
-0000ce   d1b0     bclr    0x1b0, 0         	BCLR	_ADCR0bits,0
-                                           ;	.line	505; "MC32F7361.c"	P00KE = 1;
-0000cf   c18d     bset    0x18d, 0         	BSET	_P0KBCRbits,0
-                                           ;	.line	510; "MC32F7361.c"	P04KE = 1;
-0000d0   c98d     bset    0x18d, 0x4       	BSET	_P0KBCRbits,4
-                                           ;	.line	512; "MC32F7361.c"	KBIF = 0;
-0000d1   d98b     bclr    0x18b, 0x4       	BCLR	_INTFbits,4
-                                           ;	.line	513; "MC32F7361.c"	KBIE = 1;
-0000d2   c98a     bset    0x18a, 0x4       	BSET	_INTEbits,4
-                                           ;	.line	514; "MC32F7361.c"	LVDEN = 0;
-0000d3   dfaf     bclr    0x1af, 0x7       	BCLR	_LVDCRbits,7
-                                           ;	.line	515; "MC32F7361.c"	HFEN = 0; // 关闭高速时钟
-0000d4   d1ae     bclr    0x1ae, 0         	BCLR	_OSCMRbits,0
-                                           ;	.line	516; "MC32F7361.c"	LFEN = 0; // 关闭低速时钟
-0000d5   d3ae     bclr    0x1ae, 0x1       	BCLR	_OSCMRbits,1
-                                           ;	.line	518; "MC32F7361.c"	Nop();
-0000d6   0000     nop                      	nop	
-                                           ;	.line	519; "MC32F7361.c"	Nop();
-0000d7   0000     nop                      	nop	
-                                           ;	.line	520; "MC32F7361.c"	Stop();
-0000d8   000b     stop                     	stop	
-                                           ;	.line	521; "MC32F7361.c"	Nop();
+0000c0   a0e9     goto    0xe9             	GOTO	_00407_DS_
+                                           ;	.line	489; "MC32F7361.c"	flag_is_enable_into_low_power) /*  */
+0000c1   e831     jbset   0x31, 0x4        	JBSET	_flag1,4
+0000c2   a0e9     goto    0xe9             	GOTO	_00407_DS_
+                                           ;	.line	492; "MC32F7361.c"	GIE = 0;      // 禁用所有中断
+0000c3   df88     bclr    0x188, 0x7       	BCLR	_MCRbits,7
+                                           ;	.line	493; "MC32F7361.c"	DRVCR = 0x80; // IO改回普通驱动
+0000c4   3c80     movai   0x80             	MOVAI	0x80
+0000c5   578c     movra   0x18c            	MOVRA	_DRVCR
+                                           ;	.line	494; "MC32F7361.c"	LED_BLUE_OFF();
+0000c6   817e     call    0x17e            	CALL	_led_blue_off
+                                           ;	.line	495; "MC32F7361.c"	LED_GREEN_OFF();
+0000c7   d794     bclr    0x194, 0x3       	BCLR	_IOP1bits,3
+                                           ;	.line	496; "MC32F7361.c"	LED_RED_OFF();
+0000c8   8186     call    0x186            	CALL	_led_red_off
+                                           ;	.line	497; "MC32F7361.c"	P15D = 0; // 断开给主机电池的充电
+0000c9   db94     bclr    0x194, 0x5       	BCLR	_IOP1bits,5
+                                           ;	.line	504; "MC32F7361.c"	T3EN = 0;
+0000ca   dfa4     bclr    0x1a4, 0x7       	BCLR	_T3CRbits,7
+                                           ;	.line	505; "MC32F7361.c"	T3IE = 0;
+0000cb   df8a     bclr    0x18a, 0x7       	BCLR	_INTEbits,7
+                                           ;	.line	508; "MC32F7361.c"	ADCHS3 = 0;
+0000cc   dfb0     bclr    0x1b0, 0x7       	BCLR	_ADCR0bits,7
+                                           ;	.line	509; "MC32F7361.c"	ADCHS2 = 0;
+0000cd   ddb0     bclr    0x1b0, 0x6       	BCLR	_ADCR0bits,6
+                                           ;	.line	510; "MC32F7361.c"	ADCHS1 = 0;
+0000ce   dbb0     bclr    0x1b0, 0x5       	BCLR	_ADCR0bits,5
+                                           ;	.line	511; "MC32F7361.c"	ADCHS0 = 0;
+0000cf   d9b0     bclr    0x1b0, 0x4       	BCLR	_ADCR0bits,4
+                                           ;	.line	512; "MC32F7361.c"	ADEN = 0; // 关闭adc
+0000d0   d1b0     bclr    0x1b0, 0         	BCLR	_ADCR0bits,0
+                                           ;	.line	515; "MC32F7361.c"	P00KE = 1;
+0000d1   c18d     bset    0x18d, 0         	BSET	_P0KBCRbits,0
+                                           ;	.line	520; "MC32F7361.c"	P04KE = 1;
+0000d2   c98d     bset    0x18d, 0x4       	BSET	_P0KBCRbits,4
+                                           ;	.line	522; "MC32F7361.c"	KBIF = 0;
+0000d3   d98b     bclr    0x18b, 0x4       	BCLR	_INTFbits,4
+                                           ;	.line	523; "MC32F7361.c"	KBIE = 1;
+0000d4   c98a     bset    0x18a, 0x4       	BSET	_INTEbits,4
+                                           ;	.line	524; "MC32F7361.c"	LVDEN = 0;
+0000d5   dfaf     bclr    0x1af, 0x7       	BCLR	_LVDCRbits,7
+                                           ;	.line	525; "MC32F7361.c"	HFEN = 0; // 关闭高速时钟
+0000d6   d1ae     bclr    0x1ae, 0         	BCLR	_OSCMRbits,0
+                                           ;	.line	526; "MC32F7361.c"	LFEN = 0; // 关闭低速时钟
+0000d7   d3ae     bclr    0x1ae, 0x1       	BCLR	_OSCMRbits,1
+                                           ;	.line	528; "MC32F7361.c"	Nop();
+0000d8   0000     nop                      	nop	
+                                           ;	.line	529; "MC32F7361.c"	Nop();
 0000d9   0000     nop                      	nop	
-                                           ;	.line	522; "MC32F7361.c"	Nop();
-0000da   0000     nop                      	nop	
-                                           ;	.line	523; "MC32F7361.c"	HFEN = 1; // 开启高速时钟
-0000db   c1ae     bset    0x1ae, 0         	BSET	_OSCMRbits,0
-                                           ;	.line	524; "MC32F7361.c"	LVDEN = 1;
-0000dc   cfaf     bset    0x1af, 0x7       	BSET	_LVDCRbits,7
-                                           ;	.line	525; "MC32F7361.c"	P00KE = 0;
-0000dd   d18d     bclr    0x18d, 0         	BCLR	_P0KBCRbits,0
-                                           ;	.line	529; "MC32F7361.c"	P04KE = 0;
-0000de   d98d     bclr    0x18d, 0x4       	BCLR	_P0KBCRbits,4
-                                           ;	.line	531; "MC32F7361.c"	KBIE = 0;
-0000df   d98a     bclr    0x18a, 0x4       	BCLR	_INTEbits,4
-                                           ;	.line	532; "MC32F7361.c"	KBIF = 0;
-0000e0   d98b     bclr    0x18b, 0x4       	BCLR	_INTFbits,4
-                                           ;	.line	534; "MC32F7361.c"	Sys_Init(); // 按键检测内部的标志位和静态变量没有清除，这里直接清除所有变量的值，全为0,并且重新初始化
-0000e1   816c     call    0x16c            	CALL	_Sys_Init
-                                           ;	.line	535; "MC32F7361.c"	delay_ms(1);
-0000e2   3c01     movai   0x1              	MOVAI	0x01
-0000e3   5606     movra   0x6              	MOVRA	STK00
-0000e4   3c00     movai   0                	MOVAI	0x00
-0000e5   8283     call    0x283            	CALL	_delay_ms
-                                           ;	.line	536; "MC32F7361.c"	GIE = 1;
-0000e6   cf88     bset    0x188, 0x7       	BSET	_MCRbits,7
+                                           ;	.line	530; "MC32F7361.c"	Stop();
+0000da   000b     stop                     	stop	
+                                           ;	.line	531; "MC32F7361.c"	Nop();
+0000db   0000     nop                      	nop	
+                                           ;	.line	532; "MC32F7361.c"	Nop();
+0000dc   0000     nop                      	nop	
+                                           ;	.line	533; "MC32F7361.c"	HFEN = 1; // 开启高速时钟
+0000dd   c1ae     bset    0x1ae, 0         	BSET	_OSCMRbits,0
+                                           ;	.line	534; "MC32F7361.c"	LVDEN = 1;
+0000de   cfaf     bset    0x1af, 0x7       	BSET	_LVDCRbits,7
+                                           ;	.line	535; "MC32F7361.c"	P00KE = 0;
+0000df   d18d     bclr    0x18d, 0         	BCLR	_P0KBCRbits,0
+                                           ;	.line	539; "MC32F7361.c"	P04KE = 0;
+0000e0   d98d     bclr    0x18d, 0x4       	BCLR	_P0KBCRbits,4
+                                           ;	.line	541; "MC32F7361.c"	KBIE = 0;
+0000e1   d98a     bclr    0x18a, 0x4       	BCLR	_INTEbits,4
+                                           ;	.line	542; "MC32F7361.c"	KBIF = 0;
+0000e2   d98b     bclr    0x18b, 0x4       	BCLR	_INTFbits,4
+                                           ;	.line	544; "MC32F7361.c"	Sys_Init(); // 按键检测内部的标志位和静态变量没有清除，这里直接清除所有变量的值，全为0,并且重新初始化
+0000e3   816f     call    0x16f            	CALL	_Sys_Init
+                                           ;	.line	545; "MC32F7361.c"	delay_ms(1);
+0000e4   3c01     movai   0x1              	MOVAI	0x01
+0000e5   5606     movra   0x6              	MOVRA	STK00
+0000e6   3c00     movai   0                	MOVAI	0x00
+0000e7   8286     call    0x286            	CALL	_delay_ms
+                                           ;	.line	546; "MC32F7361.c"	GIE = 1;
+0000e8   cf88     bset    0x188, 0x7       	BSET	_MCRbits,7
                                            _00407_DS_
-                                           ;	.line	543; "MC32F7361.c"	__endasm;
+                                           ;	.line	553; "MC32F7361.c"	__endasm;
                                            	;
-0000e7   000e     clrwdt                   	clrwdt;
+0000e9   000e     clrwdt                   	clrwdt;
                                            	
-0000e8   a067     goto    0x67             	GOTO	_00411_DS_
-                                           ;	.line	545; "MC32F7361.c"	}
-0000e9   000c     return                   	RETURN	
+0000ea   a067     goto    0x67             	GOTO	_00412_DS_
+                                           ;	.line	555; "MC32F7361.c"	}
+0000eb   000c     return                   	RETURN	
                                            ; exit point of _main
                                            
                                            ;***
@@ -943,116 +948,118 @@ Address  Value    Disassembly              Source
                                            ;   _led_blue_on
                                            ;   _led_red_on
                                            ;   _led_blue_on
-                                           ;   _led_red_off
-                                           ;   _led_blue_off
-                                           ;   _led_red_on
-                                           ;   _led_blue_on
-                                           ;   _led_blue_off
-                                           ;   _led_red_on
-                                           ;   _led_red_off
-                                           ;   _led_blue_on
                                            ;   _led_red_on
                                            ;   _led_blue_on
                                            ;   _led_red_off
                                            ;   _led_blue_off
+                                           ;   _led_blue_off
+                                           ;   _led_red_on
+                                           ;   _led_red_off
+                                           ;   _led_blue_on
                                            ;   _led_red_on
                                            ;   _led_blue_on
+                                           ;   _led_red_on
+                                           ;   _led_blue_on
+                                           ;   _led_red_off
+                                           ;   _led_blue_off
                                            ;; Starting pCode block
                                            _key_event_handle	;Function start
                                            ; 2 exit points
                                            ;	.line	303; "MC32F7361.c"	if (flag_is_in_charging)
-0000ea   e231     jbset   0x31, 0x1        	JBSET	_flag1,1
-0000eb   a0ee     goto    0xee             	GOTO	_00311_DS_
+0000ec   e231     jbset   0x31, 0x1        	JBSET	_flag1,1
+0000ed   a0f0     goto    0xf0             	GOTO	_00311_DS_
                                            ;	.line	306; "MC32F7361.c"	key_event = KEY_EVENT_NONE;
-0000ec   762c     clrr    0x2c             	CLRR	_key_event
+0000ee   762c     clrr    0x2c             	CLRR	_key_event
                                            ;	.line	307; "MC32F7361.c"	return;
-0000ed   a121     goto    0x121            	GOTO	_00360_DS_
+0000ef   a124     goto    0x124            	GOTO	_00360_DS_
                                            _00311_DS_
                                            ;	.line	310; "MC32F7361.c"	if (KEY_EVENT_PRESS == key_event)
-0000ee   582c     movar   0x2c             	MOVAR	_key_event
-0000ef   3901     xorai   0x1              	XORAI	0x01
-0000f0   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-0000f1   a112     goto    0x112            	GOTO	_00358_DS_
+0000f0   582c     movar   0x2c             	MOVAR	_key_event
+0000f1   3901     xorai   0x1              	XORAI	0x01
+0000f2   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+0000f3   a119     goto    0x119            	GOTO	_00358_DS_
                                            ;	.line	312; "MC32F7361.c"	if (flag_is_dev_open)
-0000f2   e031     jbset   0x31, 0          	JBSET	_flag1,0
-0000f3   a120     goto    0x120            	GOTO	_00359_DS_
+0000f4   e031     jbset   0x31, 0          	JBSET	_flag1,0
+0000f5   a114     goto    0x114            	GOTO	_00338_DS_
                                            ;	.line	314; "MC32F7361.c"	if (0 == led_mode)
-0000f4   3c00     movai   0                	MOVAI	0x00
-0000f5   5c30     orar    0x30             	ORAR	_led_mode
-0000f6   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-0000f7   a0fd     goto    0xfd             	GOTO	_00336_DS_
+0000f6   3c00     movai   0                	MOVAI	0x00
+0000f7   5c30     orar    0x30             	ORAR	_led_mode
+0000f8   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+0000f9   a0ff     goto    0xff             	GOTO	_00336_DS_
                                            ;	.line	317; "MC32F7361.c"	LED_BLUE_OFF();
-0000f8   817b     call    0x17b            	CALL	_led_blue_off
+0000fa   817e     call    0x17e            	CALL	_led_blue_off
                                            ;	.line	318; "MC32F7361.c"	LED_RED_ON();
-0000f9   8188     call    0x188            	CALL	_led_red_on
+0000fb   818b     call    0x18b            	CALL	_led_red_on
                                            ;	.line	319; "MC32F7361.c"	led_mode = 1;
-0000fa   3c01     movai   0x1              	MOVAI	0x01
-0000fb   5630     movra   0x30             	MOVRA	_led_mode
-0000fc   a10d     goto    0x10d            	GOTO	_00337_DS_
+0000fc   3c01     movai   0x1              	MOVAI	0x01
+0000fd   5630     movra   0x30             	MOVRA	_led_mode
+0000fe   a10f     goto    0x10f            	GOTO	_00337_DS_
                                            _00336_DS_
                                            ;	.line	321; "MC32F7361.c"	else if (1 == led_mode)
-0000fd   5830     movar   0x30             	MOVAR	_led_mode
-0000fe   3901     xorai   0x1              	XORAI	0x01
-0000ff   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000100   a106     goto    0x106            	GOTO	_00333_DS_
+0000ff   5830     movar   0x30             	MOVAR	_led_mode
+000100   3901     xorai   0x1              	XORAI	0x01
+000101   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+000102   a108     goto    0x108            	GOTO	_00333_DS_
                                            ;	.line	324; "MC32F7361.c"	LED_RED_OFF();
-000101   8183     call    0x183            	CALL	_led_red_off
+000103   8186     call    0x186            	CALL	_led_red_off
                                            ;	.line	325; "MC32F7361.c"	LED_BLUE_ON();
-000102   8180     call    0x180            	CALL	_led_blue_on
+000104   8183     call    0x183            	CALL	_led_blue_on
                                            ;	.line	326; "MC32F7361.c"	led_mode = 2;
-000103   3c02     movai   0x2              	MOVAI	0x02
-000104   5630     movra   0x30             	MOVRA	_led_mode
-000105   a10d     goto    0x10d            	GOTO	_00337_DS_
+000105   3c02     movai   0x2              	MOVAI	0x02
+000106   5630     movra   0x30             	MOVRA	_led_mode
+000107   a10f     goto    0x10f            	GOTO	_00337_DS_
                                            _00333_DS_
                                            ;	.line	328; "MC32F7361.c"	else if (2 == led_mode)
-000106   5830     movar   0x30             	MOVAR	_led_mode
-000107   3902     xorai   0x2              	XORAI	0x02
-000108   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000109   a10d     goto    0x10d            	GOTO	_00337_DS_
+000108   5830     movar   0x30             	MOVAR	_led_mode
+000109   3902     xorai   0x2              	XORAI	0x02
+00010a   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+00010b   a10f     goto    0x10f            	GOTO	_00337_DS_
                                            ;	.line	331; "MC32F7361.c"	LED_RED_ON();
-00010a   8188     call    0x188            	CALL	_led_red_on
+00010c   818b     call    0x18b            	CALL	_led_red_on
                                            ;	.line	332; "MC32F7361.c"	LED_BLUE_ON();
-00010b   8180     call    0x180            	CALL	_led_blue_on
+00010d   8183     call    0x183            	CALL	_led_blue_on
                                            ;	.line	333; "MC32F7361.c"	led_mode = 0;
-00010c   7630     clrr    0x30             	CLRR	_led_mode
+00010e   7630     clrr    0x30             	CLRR	_led_mode
                                            _00337_DS_
                                            ;	.line	336; "MC32F7361.c"	power_off_cnt = 0; // 清空关机计数
-00010d   7625     clrr    0x25             	CLRR	_power_off_cnt
-00010e   7626     clrr    0x26             	CLRR	(_power_off_cnt + 1)
-00010f   7627     clrr    0x27             	CLRR	(_power_off_cnt + 2)
-000110   7628     clrr    0x28             	CLRR	(_power_off_cnt + 3)
-000111   a120     goto    0x120            	GOTO	_00359_DS_
+00010f   7625     clrr    0x25             	CLRR	_power_off_cnt
+000110   7626     clrr    0x26             	CLRR	(_power_off_cnt + 1)
+000111   7627     clrr    0x27             	CLRR	(_power_off_cnt + 2)
+000112   7628     clrr    0x28             	CLRR	(_power_off_cnt + 3)
+000113   a123     goto    0x123            	GOTO	_00359_DS_
+                                           _00338_DS_
+                                           ;	.line	341; "MC32F7361.c"	LED_RED_ON();
+000114   818b     call    0x18b            	CALL	_led_red_on
+                                           ;	.line	342; "MC32F7361.c"	LED_BLUE_ON();
+000115   8183     call    0x183            	CALL	_led_blue_on
+                                           ;	.line	343; "MC32F7361.c"	led_mode = 0; // 表示当前是紫光
+000116   7630     clrr    0x30             	CLRR	_led_mode
+                                           ;	.line	344; "MC32F7361.c"	flag_is_dev_open = 1;
+000117   c031     bset    0x31, 0          	BSET	_flag1,0
+000118   a123     goto    0x123            	GOTO	_00359_DS_
                                            _00358_DS_
-                                           ;	.line	339; "MC32F7361.c"	else if (KEY_EVENT_HOLD == key_event)
-000112   582c     movar   0x2c             	MOVAR	_key_event
-000113   3902     xorai   0x2              	XORAI	0x02
-000114   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000115   a120     goto    0x120            	GOTO	_00359_DS_
-                                           ;	.line	341; "MC32F7361.c"	if (flag_is_dev_open)
-000116   e031     jbset   0x31, 0          	JBSET	_flag1,0
-000117   a11c     goto    0x11c            	GOTO	_00346_DS_
-                                           ;	.line	343; "MC32F7361.c"	LED_RED_OFF();
-000118   8183     call    0x183            	CALL	_led_red_off
-                                           ;	.line	344; "MC32F7361.c"	LED_BLUE_OFF();
-000119   817b     call    0x17b            	CALL	_led_blue_off
-                                           ;	.line	345; "MC32F7361.c"	flag_is_dev_open = 0;
-00011a   d031     bclr    0x31, 0          	BCLR	_flag1,0
-00011b   a120     goto    0x120            	GOTO	_00359_DS_
-                                           _00346_DS_
-                                           ;	.line	350; "MC32F7361.c"	LED_RED_ON();
-00011c   8188     call    0x188            	CALL	_led_red_on
-                                           ;	.line	351; "MC32F7361.c"	LED_BLUE_ON();
-00011d   8180     call    0x180            	CALL	_led_blue_on
-                                           ;	.line	352; "MC32F7361.c"	led_mode = 0; // 表示当前是紫光
-00011e   7630     clrr    0x30             	CLRR	_led_mode
-                                           ;	.line	353; "MC32F7361.c"	flag_is_dev_open = 1;
-00011f   c031     bset    0x31, 0          	BSET	_flag1,0
+                                           ;	.line	347; "MC32F7361.c"	else if (KEY_EVENT_HOLD == key_event)
+000119   582c     movar   0x2c             	MOVAR	_key_event
+00011a   3902     xorai   0x2              	XORAI	0x02
+00011b   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+00011c   a123     goto    0x123            	GOTO	_00359_DS_
+                                           ;	.line	349; "MC32F7361.c"	if (flag_is_dev_open)
+00011d   e031     jbset   0x31, 0          	JBSET	_flag1,0
+00011e   a123     goto    0x123            	GOTO	_00359_DS_
+                                           ;	.line	351; "MC32F7361.c"	LED_RED_OFF();
+00011f   8186     call    0x186            	CALL	_led_red_off
+                                           ;	.line	352; "MC32F7361.c"	LED_BLUE_OFF();
+000120   817e     call    0x17e            	CALL	_led_blue_off
+                                           ;	.line	353; "MC32F7361.c"	flag_is_dev_open = 0;
+000121   d031     bclr    0x31, 0          	BCLR	_flag1,0
+                                           ;	.line	354; "MC32F7361.c"	flag_is_enable_into_low_power = 1;
+000122   c831     bset    0x31, 0x4        	BSET	_flag1,4
                                            _00359_DS_
-                                           ;	.line	358; "MC32F7361.c"	key_event = KEY_EVENT_NONE;
-000120   762c     clrr    0x2c             	CLRR	_key_event
+                                           ;	.line	367; "MC32F7361.c"	key_event = KEY_EVENT_NONE;
+000123   762c     clrr    0x2c             	CLRR	_key_event
                                            _00360_DS_
-                                           ;	.line	359; "MC32F7361.c"	}
-000121   000c     return                   	RETURN	
+                                           ;	.line	368; "MC32F7361.c"	}
+000124   000c     return                   	RETURN	
                                            ; exit point of _key_event_handle
                                            
                                            ;***
@@ -1065,127 +1072,127 @@ Address  Value    Disassembly              Source
                                            _key_scan	;Function start
                                            ; 2 exit points
                                            ;	.line	225; "MC32F7361.c"	volatile u8 cur_key_id = KEY_ID_NONE;
-000122   761c     clrr    0x1c             	CLRR	_key_scan_cur_key_id_65536_46
+000125   761c     clrr    0x1c             	CLRR	_key_scan_cur_key_id_65536_46
                                            ;	.line	228; "MC32F7361.c"	if (0 == KEY_SCAN_PIN)
-000123   f190     jbclr   0x190, 0         	JBCLR	_IOP0bits,0
-000124   a128     goto    0x128            	GOTO	_00226_DS_
+000126   f190     jbclr   0x190, 0         	JBCLR	_IOP0bits,0
+000127   a12b     goto    0x12b            	GOTO	_00226_DS_
                                            ;	.line	230; "MC32F7361.c"	cur_key_id = KEY_ID_BUTTOM;
-000125   3c01     movai   0x1              	MOVAI	0x01
-000126   561c     movra   0x1c             	MOVRA	_key_scan_cur_key_id_65536_46
-000127   a129     goto    0x129            	GOTO	_00227_DS_
+000128   3c01     movai   0x1              	MOVAI	0x01
+000129   561c     movra   0x1c             	MOVRA	_key_scan_cur_key_id_65536_46
+00012a   a12c     goto    0x12c            	GOTO	_00227_DS_
                                            _00226_DS_
                                            ;	.line	234; "MC32F7361.c"	cur_key_id = KEY_ID_NONE;
-000128   761c     clrr    0x1c             	CLRR	_key_scan_cur_key_id_65536_46
+00012b   761c     clrr    0x1c             	CLRR	_key_scan_cur_key_id_65536_46
                                            _00227_DS_
                                            ;	.line	237; "MC32F7361.c"	if (cur_key_id != filter_key_id)
-000129   581e     movar   0x1e             	MOVAR	_key_scan_filter_key_id_65536_46
-00012a   401c     xorar   0x1c             	XORAR	_key_scan_cur_key_id_65536_46
-00012b   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-00012c   a12e     goto    0x12e            	GOTO	_00303_DS_
-00012d   a132     goto    0x132            	GOTO	_00229_DS_
+00012c   581e     movar   0x1e             	MOVAR	_key_scan_filter_key_id_65536_46
+00012d   401c     xorar   0x1c             	XORAR	_key_scan_cur_key_id_65536_46
+00012e   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+00012f   a131     goto    0x131            	GOTO	_00303_DS_
+000130   a135     goto    0x135            	GOTO	_00229_DS_
                                            _00303_DS_
                                            ;	.line	240; "MC32F7361.c"	filter_cnt = 0;
-00012e   761d     clrr    0x1d             	CLRR	_key_scan_filter_cnt_65536_46
+000131   761d     clrr    0x1d             	CLRR	_key_scan_filter_cnt_65536_46
                                            ;	.line	241; "MC32F7361.c"	filter_key_id = cur_key_id;
-00012f   581c     movar   0x1c             	MOVAR	_key_scan_cur_key_id_65536_46
-000130   561e     movra   0x1e             	MOVRA	_key_scan_filter_key_id_65536_46
+000132   581c     movar   0x1c             	MOVAR	_key_scan_cur_key_id_65536_46
+000133   561e     movra   0x1e             	MOVRA	_key_scan_filter_key_id_65536_46
                                            ;	.line	242; "MC32F7361.c"	return;
-000131   a16b     goto    0x16b            	GOTO	_00253_DS_
+000134   a16e     goto    0x16e            	GOTO	_00253_DS_
                                            ;;unsigned compare: left < lit(0x2=2), size=1
                                            _00229_DS_
                                            ;	.line	245; "MC32F7361.c"	if (filter_cnt < KEY_FILTER_TIMES)
-000132   3c02     movai   0x2              	MOVAI	0x02
-000133   481d     rsubar  0x1d             	RSUBAR	_key_scan_filter_cnt_65536_46
-000134   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-000135   a138     goto    0x138            	GOTO	_00231_DS_
+000135   3c02     movai   0x2              	MOVAI	0x02
+000136   481d     rsubar  0x1d             	RSUBAR	_key_scan_filter_cnt_65536_46
+000137   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
+000138   a13b     goto    0x13b            	GOTO	_00231_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	249; "MC32F7361.c"	filter_cnt++;
-000136   661d     incr    0x1d             	INCR	_key_scan_filter_cnt_65536_46
+000139   661d     incr    0x1d             	INCR	_key_scan_filter_cnt_65536_46
                                            ;	.line	250; "MC32F7361.c"	return;
-000137   a16b     goto    0x16b            	GOTO	_00253_DS_
+00013a   a16e     goto    0x16e            	GOTO	_00253_DS_
                                            _00231_DS_
                                            ;	.line	255; "MC32F7361.c"	if (last_key_id != cur_key_id)
-000138   581c     movar   0x1c             	MOVAR	_key_scan_cur_key_id_65536_46
-000139   4021     xorar   0x21             	XORAR	_key_scan_last_key_id_65536_46
-00013a   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-00013b   a13d     goto    0x13d            	GOTO	_00305_DS_
-00013c   a154     goto    0x154            	GOTO	_00251_DS_
+00013b   581c     movar   0x1c             	MOVAR	_key_scan_cur_key_id_65536_46
+00013c   4021     xorar   0x21             	XORAR	_key_scan_last_key_id_65536_46
+00013d   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+00013e   a140     goto    0x140            	GOTO	_00305_DS_
+00013f   a157     goto    0x157            	GOTO	_00251_DS_
                                            _00305_DS_
                                            ;	.line	257; "MC32F7361.c"	if (last_key_id == KEY_ID_NONE)
-00013d   3c00     movai   0                	MOVAI	0x00
-00013e   5c21     orar    0x21             	ORAR	_key_scan_last_key_id_65536_46
-00013f   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000140   a143     goto    0x143            	GOTO	_00240_DS_
+000140   3c00     movai   0                	MOVAI	0x00
+000141   5c21     orar    0x21             	ORAR	_key_scan_last_key_id_65536_46
+000142   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+000143   a146     goto    0x146            	GOTO	_00240_DS_
                                            ;	.line	260; "MC32F7361.c"	press_cnt = 0;
-000141   761f     clrr    0x1f             	CLRR	_key_scan_press_cnt_65536_46
-000142   a169     goto    0x169            	GOTO	_00252_DS_
+000144   761f     clrr    0x1f             	CLRR	_key_scan_press_cnt_65536_46
+000145   a16c     goto    0x16c            	GOTO	_00252_DS_
                                            _00240_DS_
                                            ;	.line	262; "MC32F7361.c"	else if (cur_key_id == KEY_ID_NONE)
-000143   3c00     movai   0                	MOVAI	0x00
-000144   5c1c     orar    0x1c             	ORAR	_key_scan_cur_key_id_65536_46
-000145   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000146   a169     goto    0x169            	GOTO	_00252_DS_
+000146   3c00     movai   0                	MOVAI	0x00
+000147   5c1c     orar    0x1c             	ORAR	_key_scan_cur_key_id_65536_46
+000148   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+000149   a16c     goto    0x16c            	GOTO	_00252_DS_
                                            ;;unsigned compare: left < lit(0x4B=75), size=1
                                            ;	.line	265; "MC32F7361.c"	if (press_cnt < 75)
-000147   3c4b     movai   0x4b             	MOVAI	0x4b
-000148   481f     rsubar  0x1f             	RSUBAR	_key_scan_press_cnt_65536_46
-000149   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-00014a   a152     goto    0x152            	GOTO	_00235_DS_
+00014a   3c4b     movai   0x4b             	MOVAI	0x4b
+00014b   481f     rsubar  0x1f             	RSUBAR	_key_scan_press_cnt_65536_46
+00014c   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
+00014d   a155     goto    0x155            	GOTO	_00235_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	268; "MC32F7361.c"	if (KEY_ID_BUTTOM == last_key_id)
-00014b   5821     movar   0x21             	MOVAR	_key_scan_last_key_id_65536_46
-00014c   3901     xorai   0x1              	XORAI	0x01
-00014d   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-00014e   a169     goto    0x169            	GOTO	_00252_DS_
+00014e   5821     movar   0x21             	MOVAR	_key_scan_last_key_id_65536_46
+00014f   3901     xorai   0x1              	XORAI	0x01
+000150   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+000151   a16c     goto    0x16c            	GOTO	_00252_DS_
                                            ;	.line	271; "MC32F7361.c"	key_event = KEY_EVENT_PRESS;
-00014f   3c01     movai   0x1              	MOVAI	0x01
-000150   562c     movra   0x2c             	MOVRA	_key_event
-000151   a169     goto    0x169            	GOTO	_00252_DS_
+000152   3c01     movai   0x1              	MOVAI	0x01
+000153   562c     movra   0x2c             	MOVRA	_key_event
+000154   a16c     goto    0x16c            	GOTO	_00252_DS_
                                            _00235_DS_
                                            ;	.line	277; "MC32F7361.c"	flag_is_key_mode_hold = 0;
-000152   7620     clrr    0x20             	CLRR	_key_scan_flag_is_key_mode_hold_65536_46
-000153   a169     goto    0x169            	GOTO	_00252_DS_
+000155   7620     clrr    0x20             	CLRR	_key_scan_flag_is_key_mode_hold_65536_46
+000156   a16c     goto    0x16c            	GOTO	_00252_DS_
                                            _00251_DS_
                                            ;	.line	281; "MC32F7361.c"	else if (cur_key_id != KEY_ID_NONE)
-000154   3c00     movai   0                	MOVAI	0x00
-000155   5c1c     orar    0x1c             	ORAR	_key_scan_cur_key_id_65536_46
-000156   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
-000157   a169     goto    0x169            	GOTO	_00252_DS_
+000157   3c00     movai   0                	MOVAI	0x00
+000158   5c1c     orar    0x1c             	ORAR	_key_scan_cur_key_id_65536_46
+000159   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
+00015a   a16c     goto    0x16c            	GOTO	_00252_DS_
                                            ;;unsigned compare: left < lit(0xFF=255), size=1
                                            ;	.line	284; "MC32F7361.c"	if (press_cnt < 255)
-000158   3cff     movai   0xff             	MOVAI	0xff
-000159   481f     rsubar  0x1f             	RSUBAR	_key_scan_press_cnt_65536_46
-00015a   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-00015b   a15d     goto    0x15d            	GOTO	_00243_DS_
+00015b   3cff     movai   0xff             	MOVAI	0xff
+00015c   481f     rsubar  0x1f             	RSUBAR	_key_scan_press_cnt_65536_46
+00015d   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
+00015e   a160     goto    0x160            	GOTO	_00243_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	285; "MC32F7361.c"	press_cnt++;
-00015c   661f     incr    0x1f             	INCR	_key_scan_press_cnt_65536_46
+00015f   661f     incr    0x1f             	INCR	_key_scan_press_cnt_65536_46
                                            _00243_DS_
                                            ;	.line	287; "MC32F7361.c"	if (0 == flag_is_key_mode_hold)
-00015d   3c00     movai   0                	MOVAI	0x00
-00015e   5c20     orar    0x20             	ORAR	_key_scan_flag_is_key_mode_hold_65536_46
-00015f   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-000160   a169     goto    0x169            	GOTO	_00252_DS_
+000160   3c00     movai   0                	MOVAI	0x00
+000161   5c20     orar    0x20             	ORAR	_key_scan_flag_is_key_mode_hold_65536_46
+000162   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+000163   a16c     goto    0x16c            	GOTO	_00252_DS_
                                            ;;unsigned compare: left < lit(0x64=100), size=1
                                            ;	.line	289; "MC32F7361.c"	if (press_cnt >= 100) // xx ms
-000161   3c64     movai   0x64             	MOVAI	0x64
-000162   481f     rsubar  0x1f             	RSUBAR	_key_scan_press_cnt_65536_46
-000163   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-000164   a169     goto    0x169            	GOTO	_00252_DS_
+000164   3c64     movai   0x64             	MOVAI	0x64
+000165   481f     rsubar  0x1f             	RSUBAR	_key_scan_press_cnt_65536_46
+000166   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+000167   a16c     goto    0x16c            	GOTO	_00252_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	291; "MC32F7361.c"	key_event = KEY_EVENT_HOLD;
-000165   3c02     movai   0x2              	MOVAI	0x02
-000166   562c     movra   0x2c             	MOVRA	_key_event
+000168   3c02     movai   0x2              	MOVAI	0x02
+000169   562c     movra   0x2c             	MOVRA	_key_event
                                            ;	.line	292; "MC32F7361.c"	flag_is_key_mode_hold = 1;
-000167   3c01     movai   0x1              	MOVAI	0x01
-000168   5620     movra   0x20             	MOVRA	_key_scan_flag_is_key_mode_hold_65536_46
+00016a   3c01     movai   0x1              	MOVAI	0x01
+00016b   5620     movra   0x20             	MOVRA	_key_scan_flag_is_key_mode_hold_65536_46
                                            _00252_DS_
                                            ;	.line	297; "MC32F7361.c"	last_key_id = cur_key_id;
-000169   581c     movar   0x1c             	MOVAR	_key_scan_cur_key_id_65536_46
-00016a   5621     movra   0x21             	MOVRA	_key_scan_last_key_id_65536_46
+00016c   581c     movar   0x1c             	MOVAR	_key_scan_cur_key_id_65536_46
+00016d   5621     movra   0x21             	MOVRA	_key_scan_last_key_id_65536_46
                                            _00253_DS_
                                            ;	.line	298; "MC32F7361.c"	}
-00016b   000c     return                   	RETURN	
+00016e   000c     return                   	RETURN	
                                            ; exit point of _key_scan
                                            
                                            ;***
@@ -1215,35 +1222,35 @@ Address  Value    Disassembly              Source
                                            _Sys_Init	;Function start
                                            ; 2 exit points
                                            ;	.line	187; "MC32F7361.c"	GIE = 0;
-00016c   df88     bclr    0x188, 0x7       	BCLR	_MCRbits,7
+00016f   df88     bclr    0x188, 0x7       	BCLR	_MCRbits,7
                                            ;	.line	188; "MC32F7361.c"	CLR_RAM();
-00016d   8277     call    0x277            	CALL	_CLR_RAM
+000170   827a     call    0x27a            	CALL	_CLR_RAM
                                            ;	.line	189; "MC32F7361.c"	IO_Init();
-00016e   8261     call    0x261            	CALL	_IO_Init
+000171   8264     call    0x264            	CALL	_IO_Init
                                            ;	.line	192; "MC32F7361.c"	led_red_pwm_config();
-00016f   8193     call    0x193            	CALL	_led_red_pwm_config
+000172   8196     call    0x196            	CALL	_led_red_pwm_config
                                            ;	.line	194; "MC32F7361.c"	led_blue_pwm_config();
-000170   818b     call    0x18b            	CALL	_led_blue_pwm_config
+000173   818e     call    0x18e            	CALL	_led_blue_pwm_config
                                            ;	.line	195; "MC32F7361.c"	LED_RED_OFF();
-000171   8183     call    0x183            	CALL	_led_red_off
+000174   8186     call    0x186            	CALL	_led_red_off
                                            ;	.line	196; "MC32F7361.c"	LED_GREEN_OFF();
-000172   d794     bclr    0x194, 0x3       	BCLR	_IOP1bits,3
+000175   d794     bclr    0x194, 0x3       	BCLR	_IOP1bits,3
                                            ;	.line	197; "MC32F7361.c"	LED_BLUE_OFF();
-000173   817b     call    0x17b            	CALL	_led_blue_off
+000176   817e     call    0x17e            	CALL	_led_blue_off
                                            ;	.line	200; "MC32F7361.c"	P00PU = 1; // 上拉--看看能不能去掉这里(可以去掉，但是要加外部上拉)
-000174   c192     bset    0x192, 0         	BSET	_PUP0bits,0
+000177   c192     bset    0x192, 0         	BSET	_PUP0bits,0
                                            ;	.line	201; "MC32F7361.c"	P00OE = 0; // 输入模式
-000175   d191     bclr    0x191, 0         	BCLR	_OEP0bits,0
+000178   d191     bclr    0x191, 0         	BCLR	_OEP0bits,0
                                            ;	.line	207; "MC32F7361.c"	P04OE = 0; // 输入模式
-000176   d991     bclr    0x191, 0x4       	BCLR	_OEP0bits,4
+000179   d991     bclr    0x191, 0x4       	BCLR	_OEP0bits,4
                                            ;	.line	210; "MC32F7361.c"	adc_config();
-000177   825a     call    0x25a            	CALL	_adc_config
+00017a   825d     call    0x25d            	CALL	_adc_config
                                            ;	.line	211; "MC32F7361.c"	timer3_config();
-000178   819b     call    0x19b            	CALL	_timer3_config
+00017b   819e     call    0x19e            	CALL	_timer3_config
                                            ;	.line	213; "MC32F7361.c"	GIE = 1;
-000179   cf88     bset    0x188, 0x7       	BSET	_MCRbits,7
+00017c   cf88     bset    0x188, 0x7       	BSET	_MCRbits,7
                                            ;	.line	214; "MC32F7361.c"	}
-00017a   000c     return                   	RETURN	
+00017d   000c     return                   	RETURN	
                                            ; exit point of _Sys_Init
                                            
                                            ;***
@@ -1256,15 +1263,15 @@ Address  Value    Disassembly              Source
                                            _led_blue_off	;Function start
                                            ; 2 exit points
                                            ;	.line	173; "MC32F7361.c"	PWM1EC = 0;
-00017b   dd9c     bclr    0x19c, 0x6       	BCLR	_T1CRbits,6
+00017e   dd9c     bclr    0x19c, 0x6       	BCLR	_T1CRbits,6
                                            ;	.line	174; "MC32F7361.c"	T1EN = 0;
-00017c   df9c     bclr    0x19c, 0x7       	BCLR	_T1CRbits,7
+00017f   df9c     bclr    0x19c, 0x7       	BCLR	_T1CRbits,7
                                            ;	.line	175; "MC32F7361.c"	P17OE = 1;
-00017d   cf95     bset    0x195, 0x7       	BSET	_OEP1bits,7
+000180   cf95     bset    0x195, 0x7       	BSET	_OEP1bits,7
                                            ;	.line	176; "MC32F7361.c"	LED_BLUE_PIN = 1; // 高电平表示熄灭
-00017e   cf94     bset    0x194, 0x7       	BSET	_IOP1bits,7
+000181   cf94     bset    0x194, 0x7       	BSET	_IOP1bits,7
                                            ;	.line	177; "MC32F7361.c"	}
-00017f   000c     return                   	RETURN	
+000182   000c     return                   	RETURN	
                                            ; exit point of _led_blue_off
                                            
                                            ;***
@@ -1277,11 +1284,11 @@ Address  Value    Disassembly              Source
                                            _led_blue_on	;Function start
                                            ; 2 exit points
                                            ;	.line	167; "MC32F7361.c"	PWM1EC = 1;
-000180   cd9c     bset    0x19c, 0x6       	BSET	_T1CRbits,6
+000183   cd9c     bset    0x19c, 0x6       	BSET	_T1CRbits,6
                                            ;	.line	168; "MC32F7361.c"	T1EN = 1;
-000181   cf9c     bset    0x19c, 0x7       	BSET	_T1CRbits,7
+000184   cf9c     bset    0x19c, 0x7       	BSET	_T1CRbits,7
                                            ;	.line	169; "MC32F7361.c"	}
-000182   000c     return                   	RETURN	
+000185   000c     return                   	RETURN	
                                            ; exit point of _led_blue_on
                                            
                                            ;***
@@ -1294,15 +1301,15 @@ Address  Value    Disassembly              Source
                                            _led_red_off	;Function start
                                            ; 2 exit points
                                            ;	.line	159; "MC32F7361.c"	PWM0EC = 0;
-000183   dd98     bclr    0x198, 0x6       	BCLR	_T0CRbits,6
+000186   dd98     bclr    0x198, 0x6       	BCLR	_T0CRbits,6
                                            ;	.line	160; "MC32F7361.c"	T0EN = 0;
-000184   df98     bclr    0x198, 0x7       	BCLR	_T0CRbits,7
+000187   df98     bclr    0x198, 0x7       	BCLR	_T0CRbits,7
                                            ;	.line	161; "MC32F7361.c"	P16OE = 1;
-000185   cd95     bset    0x195, 0x6       	BSET	_OEP1bits,6
+000188   cd95     bset    0x195, 0x6       	BSET	_OEP1bits,6
                                            ;	.line	162; "MC32F7361.c"	LED_RED_PIN = 1; // 高电平表示熄灭
-000186   cd94     bset    0x194, 0x6       	BSET	_IOP1bits,6
+000189   cd94     bset    0x194, 0x6       	BSET	_IOP1bits,6
                                            ;	.line	163; "MC32F7361.c"	}
-000187   000c     return                   	RETURN	
+00018a   000c     return                   	RETURN	
                                            ; exit point of _led_red_off
                                            
                                            ;***
@@ -1315,11 +1322,11 @@ Address  Value    Disassembly              Source
                                            _led_red_on	;Function start
                                            ; 2 exit points
                                            ;	.line	153; "MC32F7361.c"	PWM0EC = 1;
-000188   cd98     bset    0x198, 0x6       	BSET	_T0CRbits,6
+00018b   cd98     bset    0x198, 0x6       	BSET	_T0CRbits,6
                                            ;	.line	154; "MC32F7361.c"	T0EN = 1;
-000189   cf98     bset    0x198, 0x7       	BSET	_T0CRbits,7
+00018c   cf98     bset    0x198, 0x7       	BSET	_T0CRbits,7
                                            ;	.line	155; "MC32F7361.c"	}
-00018a   000c     return                   	RETURN	
+00018d   000c     return                   	RETURN	
                                            ; exit point of _led_red_on
                                            
                                            ;***
@@ -1332,18 +1339,18 @@ Address  Value    Disassembly              Source
                                            _led_blue_pwm_config	;Function start
                                            ; 2 exit points
                                            ;	.line	141; "MC32F7361.c"	T1CR = DEF_SET_BIT6 | DEF_SET_BIT1 | DEF_SET_BIT0; // 使能PWM,CPU,8分频
-00018b   3c43     movai   0x43             	MOVAI	0x43
-00018c   579c     movra   0x19c            	MOVRA	_T1CR
+00018e   3c43     movai   0x43             	MOVAI	0x43
+00018f   579c     movra   0x19c            	MOVRA	_T1CR
                                            ;	.line	143; "MC32F7361.c"	T1LOAD = 100 - 1; // 100us
-00018d   3c63     movai   0x63             	MOVAI	0x63
-00018e   579e     movra   0x19e            	MOVRA	_T1LOAD
+000190   3c63     movai   0x63             	MOVAI	0x63
+000191   579e     movra   0x19e            	MOVRA	_T1LOAD
                                            ;	.line	144; "MC32F7361.c"	T1DATA = 50;
-00018f   3c32     movai   0x32             	MOVAI	0x32
-000190   579f     movra   0x19f            	MOVRA	_T1DATA
+000192   3c32     movai   0x32             	MOVAI	0x32
+000193   579f     movra   0x19f            	MOVRA	_T1DATA
                                            ;	.line	148; "MC32F7361.c"	T1EN = 1;
-000191   cf9c     bset    0x19c, 0x7       	BSET	_T1CRbits,7
+000194   cf9c     bset    0x19c, 0x7       	BSET	_T1CRbits,7
                                            ;	.line	149; "MC32F7361.c"	}
-000192   000c     return                   	RETURN	
+000195   000c     return                   	RETURN	
                                            ; exit point of _led_blue_pwm_config
                                            
                                            ;***
@@ -1356,18 +1363,18 @@ Address  Value    Disassembly              Source
                                            _led_red_pwm_config	;Function start
                                            ; 2 exit points
                                            ;	.line	128; "MC32F7361.c"	T0CR = DEF_SET_BIT6 | DEF_SET_BIT0 | DEF_SET_BIT1; // 使能PWM,CPU,8分频
-000193   3c43     movai   0x43             	MOVAI	0x43
-000194   5798     movra   0x198            	MOVRA	_T0CR
+000196   3c43     movai   0x43             	MOVAI	0x43
+000197   5798     movra   0x198            	MOVRA	_T0CR
                                            ;	.line	130; "MC32F7361.c"	T0LOAD = 100 - 1; // 100us
-000195   3c63     movai   0x63             	MOVAI	0x63
-000196   579a     movra   0x19a            	MOVRA	_T0LOAD
+000198   3c63     movai   0x63             	MOVAI	0x63
+000199   579a     movra   0x19a            	MOVRA	_T0LOAD
                                            ;	.line	132; "MC32F7361.c"	T0DATA = 60;
-000197   3c3c     movai   0x3c             	MOVAI	0x3c
-000198   579b     movra   0x19b            	MOVRA	_T0DATA
+00019a   3c3c     movai   0x3c             	MOVAI	0x3c
+00019b   579b     movra   0x19b            	MOVRA	_T0DATA
                                            ;	.line	136; "MC32F7361.c"	T0EN = 1;
-000199   cf98     bset    0x198, 0x7       	BSET	_T0CRbits,7
+00019c   cf98     bset    0x198, 0x7       	BSET	_T0CRbits,7
                                            ;	.line	137; "MC32F7361.c"	}
-00019a   000c     return                   	RETURN	
+00019d   000c     return                   	RETURN	
                                            ; exit point of _led_red_pwm_config
                                            
                                            ;***
@@ -1380,15 +1387,15 @@ Address  Value    Disassembly              Source
                                            _timer3_config	;Function start
                                            ; 2 exit points
                                            ;	.line	121; "MC32F7361.c"	T3LOAD = 135 - 1; // FCPU 64分频后，这里是1ms触发一次中断（用计算出来的值会有误差，这里加上了一些补偿）
-00019b   3c86     movai   0x86             	MOVAI	0x86
-00019c   57a6     movra   0x1a6            	MOVRA	_T3LOAD
+00019e   3c86     movai   0x86             	MOVAI	0x86
+00019f   57a6     movra   0x1a6            	MOVRA	_T3LOAD
                                            ;	.line	122; "MC32F7361.c"	T3CR = 0x86;      // 使能定时器，时钟源选择FCPU，64分频
-00019d   3c86     movai   0x86             	MOVAI	0x86
-00019e   57a4     movra   0x1a4            	MOVRA	_T3CR
+0001a0   3c86     movai   0x86             	MOVAI	0x86
+0001a1   57a4     movra   0x1a4            	MOVRA	_T3CR
                                            ;	.line	123; "MC32F7361.c"	T3IE = 1;
-00019f   cf8a     bset    0x18a, 0x7       	BSET	_INTEbits,7
+0001a2   cf8a     bset    0x18a, 0x7       	BSET	_INTEbits,7
                                            ;	.line	124; "MC32F7361.c"	}
-0001a0   000c     return                   	RETURN	
+0001a3   000c     return                   	RETURN	
                                            ; exit point of _timer3_config
                                            
                                            ;***
@@ -1409,46 +1416,46 @@ Address  Value    Disassembly              Source
                                            _adc_get_val_once	;Function start
                                            ; 2 exit points
                                            ;	.line	110; "MC32F7361.c"	ADEOC = 0; // 清除ADC转换完成标志位，启动AD转换
-0001a1   d3b0     bclr    0x1b0, 0x1       	BCLR	_ADCR0bits,1
+0001a4   d3b0     bclr    0x1b0, 0x1       	BCLR	_ADCR0bits,1
                                            _00188_DS_
                                            ;	.line	111; "MC32F7361.c"	while (!ADEOC)
-0001a2   e3b0     jbset   0x1b0, 0x1       	JBSET	_ADCR0bits,1
-0001a3   a1a2     goto    0x1a2            	GOTO	_00188_DS_
+0001a5   e3b0     jbset   0x1b0, 0x1       	JBSET	_ADCR0bits,1
+0001a6   a1a5     goto    0x1a5            	GOTO	_00188_DS_
                                            ;	.line	113; "MC32F7361.c"	g_temp_value = ADRH; // 取出转换后的值
-0001a4   59b4     movar   0x1b4            	MOVAR	_ADRH
-0001a5   5616     movra   0x16             	MOVRA	r0x1021
-0001a6   7617     clrr    0x17             	CLRR	r0x1022
+0001a7   59b4     movar   0x1b4            	MOVAR	_ADRH
+0001a8   5616     movra   0x16             	MOVRA	r0x1021
+0001a9   7617     clrr    0x17             	CLRR	r0x1022
                                            ;	.line	114; "MC32F7361.c"	g_temp_value = g_temp_value << 4 | (ADRL & 0x0F);
-0001a7   4417     swapar  0x17             	SWAPAR	r0x1022
-0001a8   3ef0     andai   0xf0             	ANDAI	0xf0
-0001a9   5619     movra   0x19             	MOVRA	r0x1023
-0001aa   4416     swapar  0x16             	SWAPAR	r0x1021
-0001ab   5618     movra   0x18             	MOVRA	r0x1024
-0001ac   3e0f     andai   0xf              	ANDAI	0x0f
-0001ad   5e19     orra    0x19             	ORRA	r0x1023
-0001ae   4218     xorra   0x18             	XORRA	r0x1024
-0001af   59b5     movar   0x1b5            	MOVAR	_ADRL
-0001b0   5616     movra   0x16             	MOVRA	r0x1021
-0001b1   7617     clrr    0x17             	CLRR	r0x1022
-0001b2   3c0f     movai   0xf              	MOVAI	0x0f
-0001b3   7a16     andra   0x16             	ANDRA	r0x1021
+0001aa   4417     swapar  0x17             	SWAPAR	r0x1022
+0001ab   3ef0     andai   0xf0             	ANDAI	0xf0
+0001ac   5619     movra   0x19             	MOVRA	r0x1023
+0001ad   4416     swapar  0x16             	SWAPAR	r0x1021
+0001ae   5618     movra   0x18             	MOVRA	r0x1024
+0001af   3e0f     andai   0xf              	ANDAI	0x0f
+0001b0   5e19     orra    0x19             	ORRA	r0x1023
+0001b1   4218     xorra   0x18             	XORRA	r0x1024
+0001b2   59b5     movar   0x1b5            	MOVAR	_ADRL
+0001b3   5616     movra   0x16             	MOVRA	r0x1021
 0001b4   7617     clrr    0x17             	CLRR	r0x1022
+0001b5   3c0f     movai   0xf              	MOVAI	0x0f
+0001b6   7a16     andra   0x16             	ANDRA	r0x1021
+0001b7   7617     clrr    0x17             	CLRR	r0x1022
                                            ;;101	MOVAR	r0x1021
                                            ;;99	MOVRA	r0x1025
                                            ;;104	MOVAR	r0x1022
                                            ;;102	MOVRA	r0x1026
                                            ;;100	MOVAR	r0x1025
-0001b5   5816     movar   0x16             	MOVAR	r0x1021
-0001b6   5e18     orra    0x18             	ORRA	r0x1024
+0001b8   5816     movar   0x16             	MOVAR	r0x1021
+0001b9   5e18     orra    0x18             	ORRA	r0x1024
                                            ;;103	MOVAR	r0x1026
-0001b7   3c00     movai   0                	MOVAI	0x00
-0001b8   5e19     orra    0x19             	ORRA	r0x1023
+0001ba   3c00     movai   0                	MOVAI	0x00
+0001bb   5e19     orra    0x19             	ORRA	r0x1023
                                            ;	.line	115; "MC32F7361.c"	return g_temp_value;
-0001b9   5818     movar   0x18             	MOVAR	r0x1024
-0001ba   5606     movra   0x6              	MOVRA	STK00
-0001bb   5819     movar   0x19             	MOVAR	r0x1023
+0001bc   5818     movar   0x18             	MOVAR	r0x1024
+0001bd   5606     movra   0x6              	MOVRA	STK00
+0001be   5819     movar   0x19             	MOVAR	r0x1023
                                            ;	.line	116; "MC32F7361.c"	}
-0001bc   000c     return                   	RETURN	
+0001bf   000c     return                   	RETURN	
                                            ; exit point of _adc_get_val_once
                                            
                                            ;***
@@ -1478,211 +1485,211 @@ Address  Value    Disassembly              Source
                                            _adc_get_val	;Function start
                                            ; 2 exit points
                                            ;	.line	79; "MC32F7361.c"	u32 g_tmpbuff = 0;
-0001bd   7608     clrr    0x8              	CLRR	r0x1012
-0001be   7607     clrr    0x7              	CLRR	r0x1013
-0001bf   7609     clrr    0x9              	CLRR	r0x1014
-0001c0   760a     clrr    0xa              	CLRR	r0x1015
+0001c0   7608     clrr    0x8              	CLRR	r0x1012
+0001c1   7607     clrr    0x7              	CLRR	r0x1013
+0001c2   7609     clrr    0x9              	CLRR	r0x1014
+0001c3   760a     clrr    0xa              	CLRR	r0x1015
                                            ;	.line	80; "MC32F7361.c"	u16 g_adcmax = 0;
-0001c1   760b     clrr    0xb              	CLRR	r0x1016
-0001c2   760c     clrr    0xc              	CLRR	r0x1017
+0001c4   760b     clrr    0xb              	CLRR	r0x1016
+0001c5   760c     clrr    0xc              	CLRR	r0x1017
                                            ;	.line	81; "MC32F7361.c"	u16 g_adcmin = 0xFFFF;
-0001c3   3cff     movai   0xff             	MOVAI	0xff
-0001c4   560d     movra   0xd              	MOVRA	r0x1018
-0001c5   560e     movra   0xe              	MOVRA	r0x1019
+0001c6   3cff     movai   0xff             	MOVAI	0xff
+0001c7   560d     movra   0xd              	MOVRA	r0x1018
+0001c8   560e     movra   0xe              	MOVRA	r0x1019
                                            ;	.line	84; "MC32F7361.c"	for (i = 0; i < 20; i++)
-0001c6   760f     clrr    0xf              	CLRR	r0x101A
+0001c9   760f     clrr    0xf              	CLRR	r0x101A
                                            _00142_DS_
                                            ;	.line	86; "MC32F7361.c"	ADEOC = 0; // 清除ADC转换完成标志位，启动AD转换
-0001c7   d3b0     bclr    0x1b0, 0x1       	BCLR	_ADCR0bits,1
+0001ca   d3b0     bclr    0x1b0, 0x1       	BCLR	_ADCR0bits,1
                                            _00131_DS_
                                            ;	.line	87; "MC32F7361.c"	while (!ADEOC)
-0001c8   e3b0     jbset   0x1b0, 0x1       	JBSET	_ADCR0bits,1
-0001c9   a1c8     goto    0x1c8            	GOTO	_00131_DS_
+0001cb   e3b0     jbset   0x1b0, 0x1       	JBSET	_ADCR0bits,1
+0001cc   a1cb     goto    0x1cb            	GOTO	_00131_DS_
                                            ;	.line	89; "MC32F7361.c"	g_temp_value = ADRH; // 取出转换后的值
-0001ca   59b4     movar   0x1b4            	MOVAR	_ADRH
-0001cb   5610     movra   0x10             	MOVRA	r0x101B
-0001cc   7611     clrr    0x11             	CLRR	r0x101C
+0001cd   59b4     movar   0x1b4            	MOVAR	_ADRH
+0001ce   5610     movra   0x10             	MOVRA	r0x101B
+0001cf   7611     clrr    0x11             	CLRR	r0x101C
                                            ;	.line	90; "MC32F7361.c"	g_temp_value = g_temp_value << 4 | (ADRL & 0x0F);
-0001cd   4411     swapar  0x11             	SWAPAR	r0x101C
-0001ce   3ef0     andai   0xf0             	ANDAI	0xf0
-0001cf   5613     movra   0x13             	MOVRA	r0x101D
-0001d0   4410     swapar  0x10             	SWAPAR	r0x101B
-0001d1   5612     movra   0x12             	MOVRA	r0x101E
-0001d2   3e0f     andai   0xf              	ANDAI	0x0f
-0001d3   5e13     orra    0x13             	ORRA	r0x101D
-0001d4   4212     xorra   0x12             	XORRA	r0x101E
-0001d5   59b5     movar   0x1b5            	MOVAR	_ADRL
-0001d6   5610     movra   0x10             	MOVRA	r0x101B
-0001d7   7611     clrr    0x11             	CLRR	r0x101C
-0001d8   3c0f     movai   0xf              	MOVAI	0x0f
-0001d9   7a10     andra   0x10             	ANDRA	r0x101B
+0001d0   4411     swapar  0x11             	SWAPAR	r0x101C
+0001d1   3ef0     andai   0xf0             	ANDAI	0xf0
+0001d2   5613     movra   0x13             	MOVRA	r0x101D
+0001d3   4410     swapar  0x10             	SWAPAR	r0x101B
+0001d4   5612     movra   0x12             	MOVRA	r0x101E
+0001d5   3e0f     andai   0xf              	ANDAI	0x0f
+0001d6   5e13     orra    0x13             	ORRA	r0x101D
+0001d7   4212     xorra   0x12             	XORRA	r0x101E
+0001d8   59b5     movar   0x1b5            	MOVAR	_ADRL
+0001d9   5610     movra   0x10             	MOVRA	r0x101B
 0001da   7611     clrr    0x11             	CLRR	r0x101C
+0001db   3c0f     movai   0xf              	MOVAI	0x0f
+0001dc   7a10     andra   0x10             	ANDRA	r0x101B
+0001dd   7611     clrr    0x11             	CLRR	r0x101C
                                            ;;120	MOVAR	r0x101B
-0001db   3c00     movai   0                	MOVAI	0x00
-0001dc   5615     movra   0x15             	MOVRA	r0x1020
+0001de   3c00     movai   0                	MOVAI	0x00
+0001df   5615     movra   0x15             	MOVRA	r0x1020
                                            ;;119	MOVAR	r0x101F
-0001dd   5810     movar   0x10             	MOVAR	r0x101B
-0001de   5614     movra   0x14             	MOVRA	r0x101F
-0001df   5c12     orar    0x12             	ORAR	r0x101E
-0001e0   5610     movra   0x10             	MOVRA	r0x101B
-0001e1   5815     movar   0x15             	MOVAR	r0x1020
-0001e2   5c13     orar    0x13             	ORAR	r0x101D
-0001e3   5611     movra   0x11             	MOVRA	r0x101C
+0001e0   5810     movar   0x10             	MOVAR	r0x101B
+0001e1   5614     movra   0x14             	MOVRA	r0x101F
+0001e2   5c12     orar    0x12             	ORAR	r0x101E
+0001e3   5610     movra   0x10             	MOVRA	r0x101B
+0001e4   5815     movar   0x15             	MOVAR	r0x1020
+0001e5   5c13     orar    0x13             	ORAR	r0x101D
+0001e6   5611     movra   0x11             	MOVRA	r0x101C
                                            ;;unsigned compare: left < lit(0x2=2), size=1
                                            ;	.line	91; "MC32F7361.c"	if (i < 2)
-0001e4   3c02     movai   0x2              	MOVAI	0x02
-0001e5   480f     rsubar  0xf              	RSUBAR	r0x101A
-0001e6   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-0001e7   a212     goto    0x212            	GOTO	_00140_DS_
+0001e7   3c02     movai   0x2              	MOVAI	0x02
+0001e8   480f     rsubar  0xf              	RSUBAR	r0x101A
+0001e9   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+0001ea   a215     goto    0x215            	GOTO	_00140_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	93; "MC32F7361.c"	if (g_temp_value > g_adcmax)
-0001e8   5811     movar   0x11             	MOVAR	r0x101C
-0001e9   480c     rsubar  0xc              	RSUBAR	r0x1017
-0001ea   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-0001eb   a1ee     goto    0x1ee            	GOTO	_00182_DS_
-0001ec   5810     movar   0x10             	MOVAR	r0x101B
-0001ed   480b     rsubar  0xb              	RSUBAR	r0x1016
+0001eb   5811     movar   0x11             	MOVAR	r0x101C
+0001ec   480c     rsubar  0xc              	RSUBAR	r0x1017
+0001ed   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+0001ee   a1f1     goto    0x1f1            	GOTO	_00182_DS_
+0001ef   5810     movar   0x10             	MOVAR	r0x101B
+0001f0   480b     rsubar  0xb              	RSUBAR	r0x1016
                                            _00182_DS_
-0001ee   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-0001ef   a1f4     goto    0x1f4            	GOTO	_00137_DS_
+0001f1   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
+0001f2   a1f7     goto    0x1f7            	GOTO	_00137_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	94; "MC32F7361.c"	g_adcmax = g_temp_value; // 最大
-0001f0   5810     movar   0x10             	MOVAR	r0x101B
-0001f1   560b     movra   0xb              	MOVRA	r0x1016
-0001f2   5811     movar   0x11             	MOVAR	r0x101C
-0001f3   560c     movra   0xc              	MOVRA	r0x1017
+0001f3   5810     movar   0x10             	MOVAR	r0x101B
+0001f4   560b     movra   0xb              	MOVRA	r0x1016
+0001f5   5811     movar   0x11             	MOVAR	r0x101C
+0001f6   560c     movra   0xc              	MOVRA	r0x1017
                                            _00137_DS_
                                            ;	.line	95; "MC32F7361.c"	if (g_temp_value < g_adcmin)
-0001f4   580e     movar   0xe              	MOVAR	r0x1019
-0001f5   4811     rsubar  0x11             	RSUBAR	r0x101C
-0001f6   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
-0001f7   a1fa     goto    0x1fa            	GOTO	_00183_DS_
-0001f8   580d     movar   0xd              	MOVAR	r0x1018
-0001f9   4810     rsubar  0x10             	RSUBAR	r0x101B
+0001f7   580e     movar   0xe              	MOVAR	r0x1019
+0001f8   4811     rsubar  0x11             	RSUBAR	r0x101C
+0001f9   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
+0001fa   a1fd     goto    0x1fd            	GOTO	_00183_DS_
+0001fb   580d     movar   0xd              	MOVAR	r0x1018
+0001fc   4810     rsubar  0x10             	RSUBAR	r0x101B
                                            _00183_DS_
-0001fa   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-0001fb   a200     goto    0x200            	GOTO	_00139_DS_
+0001fd   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
+0001fe   a203     goto    0x203            	GOTO	_00139_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	96; "MC32F7361.c"	g_adcmin = g_temp_value; // 最小
-0001fc   5810     movar   0x10             	MOVAR	r0x101B
-0001fd   560d     movra   0xd              	MOVRA	r0x1018
-0001fe   5811     movar   0x11             	MOVAR	r0x101C
-0001ff   560e     movra   0xe              	MOVRA	r0x1019
+0001ff   5810     movar   0x10             	MOVAR	r0x101B
+000200   560d     movra   0xd              	MOVRA	r0x1018
+000201   5811     movar   0x11             	MOVAR	r0x101C
+000202   560e     movra   0xe              	MOVRA	r0x1019
                                            ;;116	MOVAR	r0x101B
                                            ;;118	MOVAR	r0x101C
                                            _00139_DS_
                                            ;	.line	97; "MC32F7361.c"	g_tmpbuff += g_temp_value;
-000200   7614     clrr    0x14             	CLRR	r0x101F
-000201   7615     clrr    0x15             	CLRR	r0x1020
+000203   7614     clrr    0x14             	CLRR	r0x101F
+000204   7615     clrr    0x15             	CLRR	r0x1020
                                            ;;115	MOVAR	r0x101E
-000202   5810     movar   0x10             	MOVAR	r0x101B
-000203   5612     movra   0x12             	MOVRA	r0x101E
-000204   7e08     addra   0x8              	ADDRA	r0x1012
+000205   5810     movar   0x10             	MOVAR	r0x101B
+000206   5612     movra   0x12             	MOVRA	r0x101E
+000207   7e08     addra   0x8              	ADDRA	r0x1012
                                            ;;117	MOVAR	r0x101D
-000205   5811     movar   0x11             	MOVAR	r0x101C
-000206   5613     movra   0x13             	MOVRA	r0x101D
-000207   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-000208   6013     jzar    0x13             	JZAR	r0x101D
-000209   7e07     addra   0x7              	ADDRA	r0x1013
-00020a   5814     movar   0x14             	MOVAR	r0x101F
-00020b   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-00020c   6014     jzar    0x14             	JZAR	r0x101F
-00020d   7e09     addra   0x9              	ADDRA	r0x1014
-00020e   5815     movar   0x15             	MOVAR	r0x1020
-00020f   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-000210   6015     jzar    0x15             	JZAR	r0x1020
-000211   7e0a     addra   0xa              	ADDRA	r0x1015
+000208   5811     movar   0x11             	MOVAR	r0x101C
+000209   5613     movra   0x13             	MOVRA	r0x101D
+00020a   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
+00020b   6013     jzar    0x13             	JZAR	r0x101D
+00020c   7e07     addra   0x7              	ADDRA	r0x1013
+00020d   5814     movar   0x14             	MOVAR	r0x101F
+00020e   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
+00020f   6014     jzar    0x14             	JZAR	r0x101F
+000210   7e09     addra   0x9              	ADDRA	r0x1014
+000211   5815     movar   0x15             	MOVAR	r0x1020
+000212   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
+000213   6015     jzar    0x15             	JZAR	r0x1020
+000214   7e0a     addra   0xa              	ADDRA	r0x1015
                                            _00140_DS_
                                            ;	.line	84; "MC32F7361.c"	for (i = 0; i < 20; i++)
-000212   660f     incr    0xf              	INCR	r0x101A
+000215   660f     incr    0xf              	INCR	r0x101A
                                            ;;unsigned compare: left < lit(0x14=20), size=1
-000213   3c14     movai   0x14             	MOVAI	0x14
-000214   480f     rsubar  0xf              	RSUBAR	r0x101A
-000215   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-000216   a1c7     goto    0x1c7            	GOTO	_00142_DS_
+000216   3c14     movai   0x14             	MOVAI	0x14
+000217   480f     rsubar  0xf              	RSUBAR	r0x101A
+000218   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+000219   a1ca     goto    0x1ca            	GOTO	_00142_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;;114	MOVAR	r0x1016
                                            ;	.line	99; "MC32F7361.c"	g_tmpbuff -= g_adcmax;           // 去掉一个最大
-000217   580c     movar   0xc              	MOVAR	r0x1017
-000218   5610     movra   0x10             	MOVRA	r0x101B
-000219   7611     clrr    0x11             	CLRR	r0x101C
-00021a   7612     clrr    0x12             	CLRR	r0x101E
+00021a   580c     movar   0xc              	MOVAR	r0x1017
+00021b   5610     movra   0x10             	MOVRA	r0x101B
+00021c   7611     clrr    0x11             	CLRR	r0x101C
+00021d   7612     clrr    0x12             	CLRR	r0x101E
                                            ;;113	MOVAR	r0x101A
-00021b   580b     movar   0xb              	MOVAR	r0x1016
-00021c   560f     movra   0xf              	MOVRA	r0x101A
-00021d   4808     rsubar  0x8              	RSUBAR	r0x1012
-00021e   560b     movra   0xb              	MOVRA	r0x1016
-00021f   5807     movar   0x7              	MOVAR	r0x1013
-000220   560c     movra   0xc              	MOVRA	r0x1017
-000221   5810     movar   0x10             	MOVAR	r0x101B
-000222   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-000223   6010     jzar    0x10             	JZAR	r0x101B
-000224   4a0c     rsubra  0xc              	RSUBRA	r0x1017
-000225   5809     movar   0x9              	MOVAR	r0x1014
-000226   5613     movra   0x13             	MOVRA	r0x101D
-000227   5811     movar   0x11             	MOVAR	r0x101C
-000228   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-000229   6011     jzar    0x11             	JZAR	r0x101C
-00022a   4a13     rsubra  0x13             	RSUBRA	r0x101D
-00022b   5812     movar   0x12             	MOVAR	r0x101E
-00022c   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-00022d   6412     incar   0x12             	INCAR	r0x101E
-00022e   480a     rsubar  0xa              	RSUBAR	r0x1015
-00022f   5614     movra   0x14             	MOVRA	r0x101F
+00021e   580b     movar   0xb              	MOVAR	r0x1016
+00021f   560f     movra   0xf              	MOVRA	r0x101A
+000220   4808     rsubar  0x8              	RSUBAR	r0x1012
+000221   560b     movra   0xb              	MOVRA	r0x1016
+000222   5807     movar   0x7              	MOVAR	r0x1013
+000223   560c     movra   0xc              	MOVRA	r0x1017
+000224   5810     movar   0x10             	MOVAR	r0x101B
+000225   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+000226   6010     jzar    0x10             	JZAR	r0x101B
+000227   4a0c     rsubra  0xc              	RSUBRA	r0x1017
+000228   5809     movar   0x9              	MOVAR	r0x1014
+000229   5613     movra   0x13             	MOVRA	r0x101D
+00022a   5811     movar   0x11             	MOVAR	r0x101C
+00022b   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+00022c   6011     jzar    0x11             	JZAR	r0x101C
+00022d   4a13     rsubra  0x13             	RSUBRA	r0x101D
+00022e   5812     movar   0x12             	MOVAR	r0x101E
+00022f   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+000230   6412     incar   0x12             	INCAR	r0x101E
+000231   480a     rsubar  0xa              	RSUBAR	r0x1015
+000232   5614     movra   0x14             	MOVRA	r0x101F
                                            ;;106	MOVAR	r0x1018
                                            ;;108	MOVAR	r0x1019
                                            ;	.line	100; "MC32F7361.c"	g_tmpbuff -= g_adcmin;           // 去掉一个最小
-000230   7609     clrr    0x9              	CLRR	r0x1014
-000231   760a     clrr    0xa              	CLRR	r0x1015
+000233   7609     clrr    0x9              	CLRR	r0x1014
+000234   760a     clrr    0xa              	CLRR	r0x1015
                                            ;;105	MOVAR	r0x1012
-000232   580d     movar   0xd              	MOVAR	r0x1018
-000233   5608     movra   0x8              	MOVRA	r0x1012
-000234   4a0b     rsubra  0xb              	RSUBRA	r0x1016
+000235   580d     movar   0xd              	MOVAR	r0x1018
+000236   5608     movra   0x8              	MOVRA	r0x1012
+000237   4a0b     rsubra  0xb              	RSUBRA	r0x1016
                                            ;;107	MOVAR	r0x1013
-000235   580e     movar   0xe              	MOVAR	r0x1019
-000236   5607     movra   0x7              	MOVRA	r0x1013
-000237   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-000238   6007     jzar    0x7              	JZAR	r0x1013
-000239   4a0c     rsubra  0xc              	RSUBRA	r0x1017
-00023a   5809     movar   0x9              	MOVAR	r0x1014
-00023b   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-00023c   6009     jzar    0x9              	JZAR	r0x1014
-00023d   4a13     rsubra  0x13             	RSUBRA	r0x101D
-00023e   580a     movar   0xa              	MOVAR	r0x1015
-00023f   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-000240   600a     jzar    0xa              	JZAR	r0x1015
-000241   4a14     rsubra  0x14             	RSUBRA	r0x101F
+000238   580e     movar   0xe              	MOVAR	r0x1019
+000239   5607     movra   0x7              	MOVRA	r0x1013
+00023a   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+00023b   6007     jzar    0x7              	JZAR	r0x1013
+00023c   4a0c     rsubra  0xc              	RSUBRA	r0x1017
+00023d   5809     movar   0x9              	MOVAR	r0x1014
+00023e   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+00023f   6009     jzar    0x9              	JZAR	r0x1014
+000240   4a13     rsubra  0x13             	RSUBRA	r0x101D
+000241   580a     movar   0xa              	MOVAR	r0x1015
+000242   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+000243   600a     jzar    0xa              	JZAR	r0x1015
+000244   4a14     rsubra  0x14             	RSUBRA	r0x101F
                                            ;	.line	101; "MC32F7361.c"	g_temp_value = (g_tmpbuff >> 4); // 除以16，取平均值
-000242   440b     swapar  0xb              	SWAPAR	r0x1016
-000243   3e0f     andai   0xf              	ANDAI	0x0f
-000244   5608     movra   0x8              	MOVRA	r0x1012
-000245   440c     swapar  0xc              	SWAPAR	r0x1017
-000246   5607     movra   0x7              	MOVRA	r0x1013
-000247   3ef0     andai   0xf0             	ANDAI	0xf0
-000248   5e08     orra    0x8              	ORRA	r0x1012
-000249   4207     xorra   0x7              	XORRA	r0x1013
-00024a   4413     swapar  0x13             	SWAPAR	r0x101D
-00024b   5609     movra   0x9              	MOVRA	r0x1014
-00024c   3ef0     andai   0xf0             	ANDAI	0xf0
-00024d   5e07     orra    0x7              	ORRA	r0x1013
-00024e   4209     xorra   0x9              	XORRA	r0x1014
-00024f   4414     swapar  0x14             	SWAPAR	r0x101F
-000250   560a     movra   0xa              	MOVRA	r0x1015
-000251   3ef0     andai   0xf0             	ANDAI	0xf0
-000252   5e09     orra    0x9              	ORRA	r0x1014
-000253   420a     xorra   0xa              	XORRA	r0x1015
+000245   440b     swapar  0xb              	SWAPAR	r0x1016
+000246   3e0f     andai   0xf              	ANDAI	0x0f
+000247   5608     movra   0x8              	MOVRA	r0x1012
+000248   440c     swapar  0xc              	SWAPAR	r0x1017
+000249   5607     movra   0x7              	MOVRA	r0x1013
+00024a   3ef0     andai   0xf0             	ANDAI	0xf0
+00024b   5e08     orra    0x8              	ORRA	r0x1012
+00024c   4207     xorra   0x7              	XORRA	r0x1013
+00024d   4413     swapar  0x13             	SWAPAR	r0x101D
+00024e   5609     movra   0x9              	MOVRA	r0x1014
+00024f   3ef0     andai   0xf0             	ANDAI	0xf0
+000250   5e07     orra    0x7              	ORRA	r0x1013
+000251   4209     xorra   0x9              	XORRA	r0x1014
+000252   4414     swapar  0x14             	SWAPAR	r0x101F
+000253   560a     movra   0xa              	MOVRA	r0x1015
+000254   3ef0     andai   0xf0             	ANDAI	0xf0
+000255   5e09     orra    0x9              	ORRA	r0x1014
+000256   420a     xorra   0xa              	XORRA	r0x1015
                                            ;;110	MOVAR	r0x1012
                                            ;;112	MOVAR	r0x1013
                                            ;;109	MOVAR	r0x1016
                                            ;	.line	103; "MC32F7361.c"	return g_temp_value;
-000254   5808     movar   0x8              	MOVAR	r0x1012
-000255   560b     movra   0xb              	MOVRA	r0x1016
-000256   5606     movra   0x6              	MOVRA	STK00
+000257   5808     movar   0x8              	MOVAR	r0x1012
+000258   560b     movra   0xb              	MOVRA	r0x1016
+000259   5606     movra   0x6              	MOVRA	STK00
                                            ;;111	MOVAR	r0x1017
-000257   5807     movar   0x7              	MOVAR	r0x1013
-000258   560c     movra   0xc              	MOVRA	r0x1017
+00025a   5807     movar   0x7              	MOVAR	r0x1013
+00025b   560c     movra   0xc              	MOVRA	r0x1017
                                            ;	.line	104; "MC32F7361.c"	}
-000259   000c     return                   	RETURN	
+00025c   000c     return                   	RETURN	
                                            ; exit point of _adc_get_val
                                            
                                            ;***
@@ -1695,16 +1702,16 @@ Address  Value    Disassembly              Source
                                            _adc_config	;Function start
                                            ; 2 exit points
                                            ;	.line	69; "MC32F7361.c"	ADCR0 = 0xAB; // 12位精度，使能adc,adc通道选择  1/4 VDD
-00025a   3cab     movai   0xab             	MOVAI	0xab
-00025b   57b0     movra   0x1b0            	MOVRA	_ADCR0
+00025d   3cab     movai   0xab             	MOVAI	0xab
+00025e   57b0     movra   0x1b0            	MOVRA	_ADCR0
                                            ;	.line	70; "MC32F7361.c"	ADCR1 = 0x80; // adc转换时钟选择 FHIRC/32，使用內部2.0V参考电压
-00025c   3c80     movai   0x80             	MOVAI	0x80
-00025d   57b1     movra   0x1b1            	MOVRA	_ADCR1
+00025f   3c80     movai   0x80             	MOVAI	0x80
+000260   57b1     movra   0x1b1            	MOVRA	_ADCR1
                                            ;	.line	71; "MC32F7361.c"	ADCR2 = 0x0F; // 采样时间，只能固定是15 个 ADCLK
-00025e   3c0f     movai   0xf              	MOVAI	0x0f
-00025f   57b2     movra   0x1b2            	MOVRA	_ADCR2
+000261   3c0f     movai   0xf              	MOVAI	0x0f
+000262   57b2     movra   0x1b2            	MOVRA	_ADCR2
                                            ;	.line	72; "MC32F7361.c"	}
-000260   000c     return                   	RETURN	
+000263   000c     return                   	RETURN	
                                            ; exit point of _adc_config
                                            
                                            ;***
@@ -1717,44 +1724,44 @@ Address  Value    Disassembly              Source
                                            _IO_Init	;Function start
                                            ; 2 exit points
                                            ;	.line	37; "MC32F7361.c"	IOP0 = 0x00;   // io口数据位
-000261   7790     clrr    0x190            	CLRR	_IOP0
+000264   7790     clrr    0x190            	CLRR	_IOP0
                                            ;	.line	38; "MC32F7361.c"	OEP0 = 0x3F;   // io口方向 1:out  0:in
-000262   3c3f     movai   0x3f             	MOVAI	0x3f
-000263   5791     movra   0x191            	MOVRA	_OEP0
+000265   3c3f     movai   0x3f             	MOVAI	0x3f
+000266   5791     movra   0x191            	MOVRA	_OEP0
                                            ;	.line	39; "MC32F7361.c"	PUP0 = 0x00;   // io口上拉电阻   1:enable  0:disable
-000264   7792     clrr    0x192            	CLRR	_PUP0
+000267   7792     clrr    0x192            	CLRR	_PUP0
                                            ;	.line	40; "MC32F7361.c"	PDP0 = 0x00;   // io口下拉电阻   1:enable  0:disable
-000265   7793     clrr    0x193            	CLRR	_PDP0
+000268   7793     clrr    0x193            	CLRR	_PDP0
                                            ;	.line	41; "MC32F7361.c"	P0ADCR = 0x00; // io类型选择  1:模拟输入  0:通用io
-000266   77b6     clrr    0x1b6            	CLRR	_P0ADCR
+000269   77b6     clrr    0x1b6            	CLRR	_P0ADCR
                                            ;	.line	44; "MC32F7361.c"	IOP1 = 0xD0;   // 不点亮LED
-000267   3cd0     movai   0xd0             	MOVAI	0xd0
-000268   5794     movra   0x194            	MOVRA	_IOP1
+00026a   3cd0     movai   0xd0             	MOVAI	0xd0
+00026b   5794     movra   0x194            	MOVRA	_IOP1
                                            ;	.line	45; "MC32F7361.c"	OEP1 = 0xFF;   // io口方向 1:out  0:in
-000269   3cff     movai   0xff             	MOVAI	0xff
-00026a   5795     movra   0x195            	MOVRA	_OEP1
+00026c   3cff     movai   0xff             	MOVAI	0xff
+00026d   5795     movra   0x195            	MOVRA	_OEP1
                                            ;	.line	46; "MC32F7361.c"	PUP1 = 0x00;   // io口上拉电阻   1:enable  0:disable
-00026b   7796     clrr    0x196            	CLRR	_PUP1
+00026e   7796     clrr    0x196            	CLRR	_PUP1
                                            ;	.line	47; "MC32F7361.c"	PDP1 = 0x00;   // io口下拉电阻   1:enable  0:disable
-00026c   7797     clrr    0x197            	CLRR	_PDP1
+00026f   7797     clrr    0x197            	CLRR	_PDP1
                                            ;	.line	48; "MC32F7361.c"	P1ADCR = 0x00; // io类型选择  1:模拟输入  0:通用io
-00026d   77b7     clrr    0x1b7            	CLRR	_P1ADCR
+000270   77b7     clrr    0x1b7            	CLRR	_P1ADCR
                                            ;	.line	50; "MC32F7361.c"	IOP2 = 0x00; // io口数据位
-00026e   77b8     clrr    0x1b8            	CLRR	_IOP2
+000271   77b8     clrr    0x1b8            	CLRR	_IOP2
                                            ;	.line	51; "MC32F7361.c"	OEP2 = 0x0F; // io口方向 1:out  0:in
-00026f   3c0f     movai   0xf              	MOVAI	0x0f
-000270   57b9     movra   0x1b9            	MOVRA	_OEP2
+000272   3c0f     movai   0xf              	MOVAI	0x0f
+000273   57b9     movra   0x1b9            	MOVRA	_OEP2
                                            ;	.line	52; "MC32F7361.c"	PUP2 = 0x00; // io口上拉电阻   1:enable  0:disable
-000271   77ba     clrr    0x1ba            	CLRR	_PUP2
+000274   77ba     clrr    0x1ba            	CLRR	_PUP2
                                            ;	.line	53; "MC32F7361.c"	PDP2 = 0x00; // io口下拉电阻   1:enable  0:disablea
-000272   77bb     clrr    0x1bb            	CLRR	_PDP2
+000275   77bb     clrr    0x1bb            	CLRR	_PDP2
                                            ;	.line	55; "MC32F7361.c"	PMOD = 0x00; // P00、P01、P13 io端口值从寄存器读，推挽输出
-000273   77bc     clrr    0x1bc            	CLRR	_PMOD
+000276   77bc     clrr    0x1bc            	CLRR	_PMOD
                                            ;	.line	58; "MC32F7361.c"	DRVCR = 0x80; // P16、P17输出驱动电流25mA，其他普通IO正常驱动电流输出
-000274   3c80     movai   0x80             	MOVAI	0x80
-000275   578c     movra   0x18c            	MOVRA	_DRVCR
+000277   3c80     movai   0x80             	MOVAI	0x80
+000278   578c     movra   0x18c            	MOVRA	_DRVCR
                                            ;	.line	59; "MC32F7361.c"	}
-000276   000c     return                   	RETURN	
+000279   000c     return                   	RETURN	
                                            ; exit point of _IO_Init
                                            
                                            ;***
@@ -1767,27 +1774,27 @@ Address  Value    Disassembly              Source
                                            _CLR_RAM	;Function start
                                            ; 2 exit points
                                            ;	.line	22; "MC32F7361.c"	for (FSR0 = 0; FSR0 < 0xff; FSR0++)
-000277   7784     clrr    0x184            	CLRR	_FSR0
+00027a   7784     clrr    0x184            	CLRR	_FSR0
                                            ;;unsigned compare: left < lit(0xFF=255), size=1
                                            _00118_DS_
-000278   3cff     movai   0xff             	MOVAI	0xff
-000279   4984     rsubar  0x184            	RSUBAR	_FSR0
-00027a   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
-00027b   a27f     goto    0x27f            	GOTO	_00116_DS_
+00027b   3cff     movai   0xff             	MOVAI	0xff
+00027c   4984     rsubar  0x184            	RSUBAR	_FSR0
+00027d   f187     jbclr   0x187, 0         	JBCLR	PFLAG,0
+00027e   a282     goto    0x282            	GOTO	_00116_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
                                            ;	.line	24; "MC32F7361.c"	INDF0 = 0x00;
-00027c   7780     clrr    0x180            	CLRR	_INDF0
+00027f   7780     clrr    0x180            	CLRR	_INDF0
                                            ;	.line	22; "MC32F7361.c"	for (FSR0 = 0; FSR0 < 0xff; FSR0++)
-00027d   6784     incr    0x184            	INCR	_FSR0
-00027e   a278     goto    0x278            	GOTO	_00118_DS_
+000280   6784     incr    0x184            	INCR	_FSR0
+000281   a27b     goto    0x27b            	GOTO	_00118_DS_
                                            _00116_DS_
                                            ;	.line	26; "MC32F7361.c"	FSR0 = 0xFF;
-00027f   3cff     movai   0xff             	MOVAI	0xff
-000280   5784     movra   0x184            	MOVRA	_FSR0
+000282   3cff     movai   0xff             	MOVAI	0xff
+000283   5784     movra   0x184            	MOVRA	_FSR0
                                            ;	.line	27; "MC32F7361.c"	INDF0 = 0x00;
-000281   7780     clrr    0x180            	CLRR	_INDF0
+000284   7780     clrr    0x180            	CLRR	_INDF0
                                            ;	.line	28; "MC32F7361.c"	}
-000282   000c     return                   	RETURN	
+000285   000c     return                   	RETURN	
                                            ; exit point of _CLR_RAM
                                            
                                            ;***
@@ -1807,62 +1814,62 @@ Address  Value    Disassembly              Source
                                            ;; Starting pCode block
                                            _delay_ms	;Function start
                                            ; 2 exit points
-                                           ;	.line	197; "user.h"	void delay_ms(u16 xms)
-000283   5608     movra   0x8              	MOVRA	r0x1012
-000284   5806     movar   0x6              	MOVAR	STK00
-000285   5607     movra   0x7              	MOVRA	r0x1013
+                                           ;	.line	198; "user.h"	void delay_ms(u16 xms)
+000286   5608     movra   0x8              	MOVRA	r0x1012
+000287   5806     movar   0x6              	MOVAR	STK00
+000288   5607     movra   0x7              	MOVRA	r0x1013
                                            _00108_DS_
-                                           ;	.line	199; "user.h"	while (xms)
-000286   5807     movar   0x7              	MOVAR	r0x1013
-000287   5c08     orar    0x8              	ORAR	r0x1012
-000288   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
-000289   a2a2     goto    0x2a2            	GOTO	_00111_DS_
-                                           ;	.line	202; "user.h"	while (i--)
-00028a   3c3c     movai   0x3c             	MOVAI	0x3c
-00028b   5609     movra   0x9              	MOVRA	r0x1014
-00028c   3c02     movai   0x2              	MOVAI	0x02
-00028d   560a     movra   0xa              	MOVRA	r0x1015
+                                           ;	.line	200; "user.h"	while (xms)
+000289   5807     movar   0x7              	MOVAR	r0x1013
+00028a   5c08     orar    0x8              	ORAR	r0x1012
+00028b   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
+00028c   a2a5     goto    0x2a5            	GOTO	_00111_DS_
+                                           ;	.line	203; "user.h"	while (i--)
+00028d   3c3c     movai   0x3c             	MOVAI	0x3c
+00028e   5609     movra   0x9              	MOVRA	r0x1014
+00028f   3c02     movai   0x2              	MOVAI	0x02
+000290   560a     movra   0xa              	MOVRA	r0x1015
                                            _00105_DS_
-00028e   5809     movar   0x9              	MOVAR	r0x1014
-00028f   560b     movra   0xb              	MOVRA	r0x1016
-000290   580a     movar   0xa              	MOVAR	r0x1015
-000291   560c     movra   0xc              	MOVRA	r0x1017
-000292   3cff     movai   0xff             	MOVAI	0xff
-000293   7e09     addra   0x9              	ADDRA	r0x1014
-000294   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-000295   6e0a     decr    0xa              	DECR	r0x1015
-000296   580b     movar   0xb              	MOVAR	r0x1016
-000297   5c0c     orar    0xc              	ORAR	r0x1017
-000298   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
-000299   a29c     goto    0x29c            	GOTO	_00107_DS_
-                                           ;	.line	204; "user.h"	Nop();
-00029a   0000     nop                      	nop	
-00029b   a28e     goto    0x28e            	GOTO	_00105_DS_
+000291   5809     movar   0x9              	MOVAR	r0x1014
+000292   560b     movra   0xb              	MOVRA	r0x1016
+000293   580a     movar   0xa              	MOVAR	r0x1015
+000294   560c     movra   0xc              	MOVRA	r0x1017
+000295   3cff     movai   0xff             	MOVAI	0xff
+000296   7e09     addra   0x9              	ADDRA	r0x1014
+000297   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+000298   6e0a     decr    0xa              	DECR	r0x1015
+000299   580b     movar   0xb              	MOVAR	r0x1016
+00029a   5c0c     orar    0xc              	ORAR	r0x1017
+00029b   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
+00029c   a29f     goto    0x29f            	GOTO	_00107_DS_
+                                           ;	.line	205; "user.h"	Nop();
+00029d   0000     nop                      	nop	
+00029e   a291     goto    0x291            	GOTO	_00105_DS_
                                            _00107_DS_
-                                           ;	.line	206; "user.h"	xms--; // 把 --操作放在while()判断条件外面，更节省空间
-00029c   3cff     movai   0xff             	MOVAI	0xff
-00029d   7e07     addra   0x7              	ADDRA	r0x1013
-00029e   e187     jbset   0x187, 0         	JBSET	PFLAG,0
-00029f   6e08     decr    0x8              	DECR	r0x1012
-                                           ;	.line	210; "user.h"	__endasm;
+                                           ;	.line	207; "user.h"	xms--; // 把 --操作放在while()判断条件外面，更节省空间
+00029f   3cff     movai   0xff             	MOVAI	0xff
+0002a0   7e07     addra   0x7              	ADDRA	r0x1013
+0002a1   e187     jbset   0x187, 0         	JBSET	PFLAG,0
+0002a2   6e08     decr    0x8              	DECR	r0x1012
+                                           ;	.line	211; "user.h"	__endasm;
                                            	;
-0002a0   000e     clrwdt                   	clrwdt;
+0002a3   000e     clrwdt                   	clrwdt;
                                            	
-0002a1   a286     goto    0x286            	GOTO	_00108_DS_
+0002a4   a289     goto    0x289            	GOTO	_00108_DS_
                                            _00111_DS_
-                                           ;	.line	212; "user.h"	}
-0002a2   000c     return                   	RETURN	
+                                           ;	.line	213; "user.h"	}
+0002a5   000c     return                   	RETURN	
                                            ; exit point of _delay_ms
                                            
                                            
                                            ;	code size estimation:
-                                           ;	  652+    0 =   652 instructions ( 1304 byte)
+                                           ;	  655+    0 =   655 instructions ( 1310 byte)
                                            
                                            	end
                                            ;--------------------------------------------------------
                                            ; File Created by SN-SDCC : SinoMCU ANSI-C Compiler
                                            ; Version 2.0.0 (Dec 11 2019) (MINGW32)
-                                           ; This file was generated Mon Feb 24 09:56:35 2025
+                                           ; This file was generated Mon Feb 24 17:51:09 2025
                                            ;--------------------------------------------------------
                                            ; MC32 port for the RISC core
                                            ;--------------------------------------------------------
@@ -2348,10 +2355,12 @@ Address  Value    Disassembly              Source
                                            ;@Allocation info for local variables in function 'int_isr'
                                            ;@int_isr key_scan_cnt              Allocated to registers ;size:1
                                            ;@int_isr blink_cnt                 Allocated to registers ;size:2
+                                           ;@int_isr cnt                       Allocated to registers ;size:2
                                            ;@end Allocation info for local variables in function 'int_isr';
                                            ;@Allocation info for local variables in function 'int_isr'
                                            ;@int_isr key_scan_cnt              Allocated to registers ;size:1
                                            ;@int_isr blink_cnt                 Allocated to registers ;size:2
+                                           ;@int_isr cnt                       Allocated to registers ;size:2
                                            ;@end Allocation info for local variables in function 'int_isr';
                                            
                                            ;--------------------------------------------------------
@@ -2382,13 +2391,13 @@ Address  Value    Disassembly              Source
                                            ;; Starting pCode block
                                            _int_isr	;Function start
                                            ; 0 exit points
-                                           ;	.line	558; "MC32F7361.c"	__endasm;
+                                           ;	.line	568; "MC32F7361.c"	__endasm;
                                            	;
                                            	movra	_abuf;
                                            	swapar	_PFLAG;
                                            	movra	_statusbuf;
                                            	
-                                           ;	.line	560; "MC32F7361.c"	if (T3IF & T3IE)
+                                           ;	.line	570; "MC32F7361.c"	if (T3IF & T3IE)
                                            	CLRR	r0x1027
                                            	JBCLR	_INTFbits,7
                                            	INCR	r0x1027
@@ -2400,77 +2409,77 @@ Address  Value    Disassembly              Source
                                            	MOVAI	0x00
                                            	ORAR	r0x1027
                                            	JBCLR	PFLAG,2
-                                           	GOTO	_00513_DS_
-                                           ;	.line	565; "MC32F7361.c"	key_scan_cnt++;
+                                           	GOTO	_00524_DS_
+                                           ;	.line	575; "MC32F7361.c"	key_scan_cnt++;
                                            	INCR	_int_isr_key_scan_cnt_196608_121
                                            ;;unsigned compare: left < lit(0xA=10), size=1
-                                           ;	.line	566; "MC32F7361.c"	if (key_scan_cnt >= 10)
+                                           ;	.line	576; "MC32F7361.c"	if (key_scan_cnt >= 10)
                                            	MOVAI	0x0a
                                            	RSUBAR	_int_isr_key_scan_cnt_196608_121
                                            	JBSET	PFLAG,0
-                                           	GOTO	_00488_DS_
+                                           	GOTO	_00493_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	568; "MC32F7361.c"	key_scan_cnt = 0;
+                                           ;	.line	578; "MC32F7361.c"	key_scan_cnt = 0;
                                            	CLRR	_int_isr_key_scan_cnt_196608_121
-                                           ;	.line	569; "MC32F7361.c"	key_scan();
+                                           ;	.line	579; "MC32F7361.c"	key_scan();
                                            	CALL	_key_scan
-                                           _00488_DS_
-                                           ;	.line	575; "MC32F7361.c"	if (flag_is_power_low)
+                                           _00493_DS_
+                                           ;	.line	585; "MC32F7361.c"	if (flag_is_power_low)
                                            	JBSET	_flag1,3
-                                           	GOTO	_00505_DS_
-                                           ;	.line	577; "MC32F7361.c"	blink_cnt++;
+                                           	GOTO	_00510_DS_
+                                           ;	.line	587; "MC32F7361.c"	blink_cnt++;
                                            	INCR	_int_isr_blink_cnt_196608_123
                                            	JBCLR	PFLAG,2
                                            	INCR	(_int_isr_blink_cnt_196608_123 + 1)
                                            ;;swapping arguments (AOP_TYPEs 1/3)
                                            ;;unsigned compare: left >= lit(0x15F=351), size=2
-                                           ;	.line	578; "MC32F7361.c"	if (blink_cnt <= 350)
+                                           ;	.line	588; "MC32F7361.c"	if (blink_cnt <= 350)
                                            	MOVAI	0x01
                                            	RSUBAR	(_int_isr_blink_cnt_196608_123 + 1)
                                            	JBSET	PFLAG,2
-                                           	GOTO	_00545_DS_
+                                           	GOTO	_00560_DS_
                                            	MOVAI	0x5f
                                            	RSUBAR	_int_isr_blink_cnt_196608_123
-                                           _00545_DS_
+                                           _00560_DS_
                                            	JBCLR	PFLAG,0
-                                           	GOTO	_00499_DS_
+                                           	GOTO	_00504_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	580; "MC32F7361.c"	LED_GREEN_ON();
+                                           ;	.line	590; "MC32F7361.c"	LED_GREEN_ON();
                                            	BSET	_IOP1bits,3
-                                           	GOTO	_00506_DS_
+                                           	GOTO	_00511_DS_
                                            ;;swapping arguments (AOP_TYPEs 1/3)
                                            ;;unsigned compare: left >= lit(0x2BD=701), size=2
-                                           _00499_DS_
-                                           ;	.line	582; "MC32F7361.c"	else if (blink_cnt <= 700)
+                                           _00504_DS_
+                                           ;	.line	592; "MC32F7361.c"	else if (blink_cnt <= 700)
                                            	MOVAI	0x02
                                            	RSUBAR	(_int_isr_blink_cnt_196608_123 + 1)
                                            	JBSET	PFLAG,2
-                                           	GOTO	_00546_DS_
+                                           	GOTO	_00561_DS_
                                            	MOVAI	0xbd
                                            	RSUBAR	_int_isr_blink_cnt_196608_123
-                                           _00546_DS_
+                                           _00561_DS_
                                            	JBCLR	PFLAG,0
-                                           	GOTO	_00496_DS_
+                                           	GOTO	_00501_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	584; "MC32F7361.c"	LED_GREEN_OFF();
+                                           ;	.line	594; "MC32F7361.c"	LED_GREEN_OFF();
                                            	BCLR	_IOP1bits,3
-                                           	GOTO	_00506_DS_
-                                           _00496_DS_
-                                           ;	.line	588; "MC32F7361.c"	blink_cnt = 0;
+                                           	GOTO	_00511_DS_
+                                           _00501_DS_
+                                           ;	.line	598; "MC32F7361.c"	blink_cnt = 0;
                                            	CLRR	_int_isr_blink_cnt_196608_123
                                            	CLRR	(_int_isr_blink_cnt_196608_123 + 1)
-                                           	GOTO	_00506_DS_
-                                           _00505_DS_
-                                           ;	.line	610; "MC32F7361.c"	blink_cnt = 0;
+                                           	GOTO	_00511_DS_
+                                           _00510_DS_
+                                           ;	.line	619; "MC32F7361.c"	blink_cnt = 0;
                                            	CLRR	_int_isr_blink_cnt_196608_123
                                            	CLRR	(_int_isr_blink_cnt_196608_123 + 1)
-                                           ;	.line	611; "MC32F7361.c"	LED_GREEN_OFF();
+                                           ;	.line	620; "MC32F7361.c"	LED_GREEN_OFF();
                                            	BCLR	_IOP1bits,3
-                                           _00506_DS_
-                                           ;	.line	616; "MC32F7361.c"	if (flag_is_dev_open)
+                                           _00511_DS_
+                                           ;	.line	625; "MC32F7361.c"	if (flag_is_dev_open)
                                            	JBSET	_flag1,0
-                                           	GOTO	_00510_DS_
-                                           ;	.line	618; "MC32F7361.c"	power_off_cnt++;
+                                           	GOTO	_00515_DS_
+                                           ;	.line	627; "MC32F7361.c"	power_off_cnt++;
                                            	INCR	_power_off_cnt
                                            	JBCLR	PFLAG,2
                                            	INCR	(_power_off_cnt + 1)
@@ -2479,44 +2488,44 @@ Address  Value    Disassembly              Source
                                            	JBCLR	PFLAG,2
                                            	INCR	(_power_off_cnt + 3)
                                            ;;unsigned compare: left < lit(0x57E40=360000), size=4
-                                           ;	.line	619; "MC32F7361.c"	if (power_off_cnt >= 360000) // 6min
+                                           ;	.line	628; "MC32F7361.c"	if (power_off_cnt >= 360000) // 6min
                                            	MOVAI	0x00
                                            	RSUBAR	(_power_off_cnt + 3)
                                            	JBSET	PFLAG,2
-                                           	GOTO	_00547_DS_
+                                           	GOTO	_00562_DS_
                                            	MOVAI	0x05
                                            	RSUBAR	(_power_off_cnt + 2)
                                            	JBSET	PFLAG,2
-                                           	GOTO	_00547_DS_
+                                           	GOTO	_00562_DS_
                                            	MOVAI	0x7e
                                            	RSUBAR	(_power_off_cnt + 1)
                                            	JBSET	PFLAG,2
-                                           	GOTO	_00547_DS_
+                                           	GOTO	_00562_DS_
                                            	MOVAI	0x40
                                            	RSUBAR	_power_off_cnt
-                                           _00547_DS_
+                                           _00562_DS_
                                            	JBSET	PFLAG,0
-                                           	GOTO	_00511_DS_
+                                           	GOTO	_00516_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	621; "MC32F7361.c"	power_off_cnt = 0;
+                                           ;	.line	630; "MC32F7361.c"	power_off_cnt = 0;
                                            	CLRR	_power_off_cnt
                                            	CLRR	(_power_off_cnt + 1)
                                            	CLRR	(_power_off_cnt + 2)
                                            	CLRR	(_power_off_cnt + 3)
-                                           ;	.line	622; "MC32F7361.c"	flag_is_dev_open = 0;
+                                           ;	.line	631; "MC32F7361.c"	flag_is_dev_open = 0;
                                            	BCLR	_flag1,0
-                                           	GOTO	_00511_DS_
-                                           _00510_DS_
-                                           ;	.line	627; "MC32F7361.c"	power_off_cnt = 0;
+                                           	GOTO	_00516_DS_
+                                           _00515_DS_
+                                           ;	.line	636; "MC32F7361.c"	power_off_cnt = 0;
                                            	CLRR	_power_off_cnt
                                            	CLRR	(_power_off_cnt + 1)
                                            	CLRR	(_power_off_cnt + 2)
                                            	CLRR	(_power_off_cnt + 3)
-                                           _00511_DS_
-                                           ;	.line	631; "MC32F7361.c"	T3IF = 0;
+                                           _00516_DS_
+                                           ;	.line	658; "MC32F7361.c"	T3IF = 0;
                                            	BCLR	_INTFbits,7
-                                           _00513_DS_
-                                           ;	.line	639; "MC32F7361.c"	__endasm;
+                                           _00524_DS_
+                                           ;	.line	666; "MC32F7361.c"	__endasm;
                                            	;
                                            	swapar	_statusbuf;
                                            	movra	_PFLAG;
@@ -2524,7 +2533,7 @@ Address  Value    Disassembly              Source
                                            	swapar	_abuf;
                                            	
                                            END_OF_INTERRUPT
-                                           ;	.line	640; "MC32F7361.c"	}
+                                           ;	.line	667; "MC32F7361.c"	}
                                            	RETIE	
                                            
                                            ;--------------------------------------------------------
@@ -2567,232 +2576,235 @@ Address  Value    Disassembly              Source
                                            ;; Starting pCode block
                                            _main	;Function start
                                            ; 2 exit points
-                                           ;	.line	369; "MC32F7361.c"	Sys_Init();
+                                           ;	.line	378; "MC32F7361.c"	Sys_Init();
                                            	CALL	_Sys_Init
-                                           _00411_DS_
-                                           ;	.line	384; "MC32F7361.c"	if (0 == flag_is_in_charging)
+                                           _00412_DS_
+                                           ;	.line	393; "MC32F7361.c"	if (0 == flag_is_in_charging)
                                            	JBCLR	_flag1,1
                                            	GOTO	_00374_DS_
-                                           ;	.line	386; "MC32F7361.c"	if (CHARGE_SCAN_PIN)
+                                           ;	.line	395; "MC32F7361.c"	if (CHARGE_SCAN_PIN)
                                            	JBSET	_IOP0bits,4
                                            	GOTO	_00375_DS_
-                                           ;	.line	389; "MC32F7361.c"	delay_ms(100);
+                                           ;	.line	398; "MC32F7361.c"	delay_ms(100);
                                            	MOVAI	0x64
                                            	MOVRA	STK00
                                            	MOVAI	0x00
                                            	CALL	_delay_ms
-                                           ;	.line	390; "MC32F7361.c"	if (CHARGE_SCAN_PIN)
+                                           ;	.line	399; "MC32F7361.c"	if (CHARGE_SCAN_PIN)
                                            	JBSET	_IOP0bits,4
                                            	GOTO	_00375_DS_
-                                           ;	.line	392; "MC32F7361.c"	flag_is_in_charging = 1;
+                                           ;	.line	401; "MC32F7361.c"	flag_is_in_charging = 1;
                                            	BSET	_flag1,1
-                                           ;	.line	393; "MC32F7361.c"	P15D = 1; // 使能主机电池的充电
+                                           ;	.line	402; "MC32F7361.c"	P15D = 1; // 使能主机电池的充电
                                            	BSET	_IOP1bits,5
                                            	GOTO	_00375_DS_
                                            _00374_DS_
-                                           ;	.line	400; "MC32F7361.c"	if (0 == CHARGE_SCAN_PIN)
+                                           ;	.line	409; "MC32F7361.c"	if (0 == CHARGE_SCAN_PIN)
                                            	JBCLR	_IOP0bits,4
                                            	GOTO	_00375_DS_
-                                           ;	.line	403; "MC32F7361.c"	delay_ms(100);
+                                           ;	.line	412; "MC32F7361.c"	delay_ms(100);
                                            	MOVAI	0x64
                                            	MOVRA	STK00
                                            	MOVAI	0x00
                                            	CALL	_delay_ms
-                                           ;	.line	404; "MC32F7361.c"	if (0 == CHARGE_SCAN_PIN)
+                                           ;	.line	413; "MC32F7361.c"	if (0 == CHARGE_SCAN_PIN)
                                            	JBCLR	_IOP0bits,4
                                            	GOTO	_00375_DS_
-                                           ;	.line	406; "MC32F7361.c"	flag_is_in_charging = 0;
+                                           ;	.line	415; "MC32F7361.c"	flag_is_in_charging = 0;
                                            	BCLR	_flag1,1
-                                           ;	.line	407; "MC32F7361.c"	flag_is_full_charged = 0;
+                                           ;	.line	416; "MC32F7361.c"	flag_is_full_charged = 0;
                                            	BCLR	_flag1,2
                                            _00375_DS_
-                                           ;	.line	413; "MC32F7361.c"	if (flag_is_in_charging)
+                                           ;	.line	422; "MC32F7361.c"	if (flag_is_in_charging)
                                            	JBSET	_flag1,1
                                            	GOTO	_00388_DS_
-                                           ;	.line	415; "MC32F7361.c"	adc_val = adc_get_val();
+                                           ;	.line	424; "MC32F7361.c"	adc_val = adc_get_val();
                                            	CALL	_adc_get_val
                                            	MOVRA	(_adc_val + 1)
                                            	MOVAR	STK00
                                            	MOVRA	_adc_val
                                            ;;unsigned compare: left < lit(0x866=2150), size=2
-                                           ;	.line	418; "MC32F7361.c"	if (adc_val >= 2150) // 如果电池电压大于4.2V
+                                           ;	.line	427; "MC32F7361.c"	if (adc_val >= 2150) // 如果电池电压大于4.2V
                                            	MOVAI	0x08
                                            	RSUBAR	(_adc_val + 1)
                                            	JBSET	PFLAG,2
-                                           	GOTO	_00479_DS_
+                                           	GOTO	_00484_DS_
                                            	MOVAI	0x66
                                            	RSUBAR	_adc_val
-                                           _00479_DS_
+                                           _00484_DS_
                                            	JBSET	PFLAG,0
                                            	GOTO	_00379_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	420; "MC32F7361.c"	flag_is_full_charged = 1;
+                                           ;	.line	429; "MC32F7361.c"	flag_is_full_charged = 1;
                                            	BSET	_flag1,2
-                                           ;	.line	421; "MC32F7361.c"	P15D = 0; // 断开对主机电池的充电
+                                           ;	.line	430; "MC32F7361.c"	P15D = 0; // 断开对主机电池的充电
                                            	BCLR	_IOP1bits,5
                                            	GOTO	_00381_DS_
                                            ;;unsigned compare: left < lit(0x823=2083), size=2
                                            _00379_DS_
-                                           ;	.line	423; "MC32F7361.c"	else if (adc_val < 2124 - AD_OFFSET) // 如果电池电压小于4.15V-死区值
+                                           ;	.line	432; "MC32F7361.c"	else if (adc_val < 2124 - AD_OFFSET) // 如果电池电压小于4.15V-死区值
                                            	MOVAI	0x08
                                            	RSUBAR	(_adc_val + 1)
                                            	JBSET	PFLAG,2
-                                           	GOTO	_00480_DS_
+                                           	GOTO	_00485_DS_
                                            	MOVAI	0x23
                                            	RSUBAR	_adc_val
-                                           _00480_DS_
+                                           _00485_DS_
                                            	JBCLR	PFLAG,0
                                            	GOTO	_00381_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	425; "MC32F7361.c"	flag_is_full_charged = 0;
+                                           ;	.line	434; "MC32F7361.c"	flag_is_full_charged = 0;
                                            	BCLR	_flag1,2
-                                           ;	.line	426; "MC32F7361.c"	P15D = 1; // 使能主机电池的充电
+                                           ;	.line	435; "MC32F7361.c"	P15D = 1; // 使能主机电池的充电
                                            	BSET	_IOP1bits,5
                                            _00381_DS_
-                                           ;	.line	430; "MC32F7361.c"	LED_RED_OFF();
+                                           ;	.line	439; "MC32F7361.c"	LED_RED_OFF();
                                            	CALL	_led_red_off
-                                           ;	.line	431; "MC32F7361.c"	LED_BLUE_OFF();
+                                           ;	.line	440; "MC32F7361.c"	LED_BLUE_OFF();
                                            	CALL	_led_blue_off
-                                           ;	.line	432; "MC32F7361.c"	flag_is_dev_open = 0;
+                                           ;	.line	441; "MC32F7361.c"	flag_is_dev_open = 0;
                                            	BCLR	_flag1,0
-                                           ;	.line	433; "MC32F7361.c"	led_mode = 2; // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
+                                           ;	.line	442; "MC32F7361.c"	led_mode = 2; // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
                                            	MOVAI	0x02
                                            	MOVRA	_led_mode
                                            _00388_DS_
-                                           ;	.line	436; "MC32F7361.c"	if (flag_is_dev_open && 0 == flag_is_in_charging)
+                                           ;	.line	445; "MC32F7361.c"	if (flag_is_dev_open && 0 == flag_is_in_charging)
                                            	JBSET	_flag1,0
                                            	GOTO	_00394_DS_
                                            	JBCLR	_flag1,1
                                            	GOTO	_00394_DS_
-                                           ;	.line	439; "MC32F7361.c"	adc_val = adc_get_val();
+                                           ;	.line	448; "MC32F7361.c"	adc_val = adc_get_val();
                                            	CALL	_adc_get_val
                                            	MOVRA	(_adc_val + 1)
                                            	MOVAR	STK00
                                            	MOVRA	_adc_val
                                            ;;unsigned compare: left < lit(0x666=1638), size=2
-                                           ;	.line	441; "MC32F7361.c"	if (adc_val < 1638) // 电池电压小于3.2V(实际测试是3.22-3.23V)
+                                           ;	.line	450; "MC32F7361.c"	if (adc_val < 1638) // 电池电压小于3.2V(实际测试是3.22-3.23V)
                                            	MOVAI	0x06
                                            	RSUBAR	(_adc_val + 1)
                                            	JBSET	PFLAG,2
-                                           	GOTO	_00481_DS_
+                                           	GOTO	_00486_DS_
                                            	MOVAI	0x66
                                            	RSUBAR	_adc_val
-                                           _00481_DS_
+                                           _00486_DS_
                                            	JBCLR	PFLAG,0
                                            	GOTO	_00390_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	443; "MC32F7361.c"	flag_is_power_low = 1;
+                                           ;	.line	452; "MC32F7361.c"	flag_is_power_low = 1;
                                            	BSET	_flag1,3
                                            ;;unsigned compare: left < lit(0x633=1587), size=2
                                            _00390_DS_
-                                           ;	.line	456; "MC32F7361.c"	if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
+                                           ;	.line	465; "MC32F7361.c"	if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
                                            	MOVAI	0x06
                                            	RSUBAR	(_adc_val + 1)
                                            	JBSET	PFLAG,2
-                                           	GOTO	_00482_DS_
+                                           	GOTO	_00487_DS_
                                            	MOVAI	0x33
                                            	RSUBAR	_adc_val
-                                           _00482_DS_
+                                           _00487_DS_
                                            	JBCLR	PFLAG,0
                                            	GOTO	_00395_DS_
                                            ;;genSkipc:3291: created from rifx:013B5EFC
-                                           ;	.line	458; "MC32F7361.c"	flag_is_dev_open = 0; // 关机
+                                           ;	.line	467; "MC32F7361.c"	flag_is_dev_open = 0; // 关机
                                            	BCLR	_flag1,0
                                            	GOTO	_00395_DS_
                                            _00394_DS_
-                                           ;	.line	463; "MC32F7361.c"	flag_is_power_low = 0;
+                                           ;	.line	472; "MC32F7361.c"	flag_is_power_low = 0;
                                            	BCLR	_flag1,3
                                            _00395_DS_
-                                           ;	.line	475; "MC32F7361.c"	key_event_handle();
+                                           ;	.line	484; "MC32F7361.c"	key_event_handle();
                                            	CALL	_key_event_handle
-                                           ;	.line	477; "MC32F7361.c"	if (0 == flag_is_dev_open &&    // 设备工作时，不进入低功耗
+                                           ;	.line	486; "MC32F7361.c"	if (0 == flag_is_dev_open &&    // 设备工作时，不进入低功耗
                                            	JBCLR	_flag1,0
                                            	GOTO	_00407_DS_
-                                           ;	.line	478; "MC32F7361.c"	0 == flag_is_in_charging && // 充电时，不进入低功耗
+                                           ;	.line	487; "MC32F7361.c"	0 == flag_is_in_charging && // 充电时，不进入低功耗
                                            	JBCLR	_flag1,1
                                            	GOTO	_00407_DS_
-                                           ;	.line	479; "MC32F7361.c"	KEY_SCAN_PIN)               // 有按键按下，不进入低功耗
+                                           ;	.line	488; "MC32F7361.c"	KEY_SCAN_PIN &&/* 有按键按下(为低电平)，不进入低功耗 */ 
                                            	JBSET	_IOP0bits,0
                                            	GOTO	_00407_DS_
-                                           ;	.line	482; "MC32F7361.c"	GIE = 0;      // 禁用所有中断
+                                           ;	.line	489; "MC32F7361.c"	flag_is_enable_into_low_power) /*  */
+                                           	JBSET	_flag1,4
+                                           	GOTO	_00407_DS_
+                                           ;	.line	492; "MC32F7361.c"	GIE = 0;      // 禁用所有中断
                                            	BCLR	_MCRbits,7
-                                           ;	.line	483; "MC32F7361.c"	DRVCR = 0x80; // IO改回普通驱动
+                                           ;	.line	493; "MC32F7361.c"	DRVCR = 0x80; // IO改回普通驱动
                                            	MOVAI	0x80
                                            	MOVRA	_DRVCR
-                                           ;	.line	484; "MC32F7361.c"	LED_BLUE_OFF();
+                                           ;	.line	494; "MC32F7361.c"	LED_BLUE_OFF();
                                            	CALL	_led_blue_off
-                                           ;	.line	485; "MC32F7361.c"	LED_GREEN_OFF();
+                                           ;	.line	495; "MC32F7361.c"	LED_GREEN_OFF();
                                            	BCLR	_IOP1bits,3
-                                           ;	.line	486; "MC32F7361.c"	LED_RED_OFF();
+                                           ;	.line	496; "MC32F7361.c"	LED_RED_OFF();
                                            	CALL	_led_red_off
-                                           ;	.line	487; "MC32F7361.c"	P15D = 0; // 断开给主机电池的充电
+                                           ;	.line	497; "MC32F7361.c"	P15D = 0; // 断开给主机电池的充电
                                            	BCLR	_IOP1bits,5
-                                           ;	.line	494; "MC32F7361.c"	T3EN = 0;
+                                           ;	.line	504; "MC32F7361.c"	T3EN = 0;
                                            	BCLR	_T3CRbits,7
-                                           ;	.line	495; "MC32F7361.c"	T3IE = 0;
+                                           ;	.line	505; "MC32F7361.c"	T3IE = 0;
                                            	BCLR	_INTEbits,7
-                                           ;	.line	498; "MC32F7361.c"	ADCHS3 = 0;
+                                           ;	.line	508; "MC32F7361.c"	ADCHS3 = 0;
                                            	BCLR	_ADCR0bits,7
-                                           ;	.line	499; "MC32F7361.c"	ADCHS2 = 0;
+                                           ;	.line	509; "MC32F7361.c"	ADCHS2 = 0;
                                            	BCLR	_ADCR0bits,6
-                                           ;	.line	500; "MC32F7361.c"	ADCHS1 = 0;
+                                           ;	.line	510; "MC32F7361.c"	ADCHS1 = 0;
                                            	BCLR	_ADCR0bits,5
-                                           ;	.line	501; "MC32F7361.c"	ADCHS0 = 0;
+                                           ;	.line	511; "MC32F7361.c"	ADCHS0 = 0;
                                            	BCLR	_ADCR0bits,4
-                                           ;	.line	502; "MC32F7361.c"	ADEN = 0; // 关闭adc
+                                           ;	.line	512; "MC32F7361.c"	ADEN = 0; // 关闭adc
                                            	BCLR	_ADCR0bits,0
-                                           ;	.line	505; "MC32F7361.c"	P00KE = 1;
+                                           ;	.line	515; "MC32F7361.c"	P00KE = 1;
                                            	BSET	_P0KBCRbits,0
-                                           ;	.line	510; "MC32F7361.c"	P04KE = 1;
+                                           ;	.line	520; "MC32F7361.c"	P04KE = 1;
                                            	BSET	_P0KBCRbits,4
-                                           ;	.line	512; "MC32F7361.c"	KBIF = 0;
+                                           ;	.line	522; "MC32F7361.c"	KBIF = 0;
                                            	BCLR	_INTFbits,4
-                                           ;	.line	513; "MC32F7361.c"	KBIE = 1;
+                                           ;	.line	523; "MC32F7361.c"	KBIE = 1;
                                            	BSET	_INTEbits,4
-                                           ;	.line	514; "MC32F7361.c"	LVDEN = 0;
+                                           ;	.line	524; "MC32F7361.c"	LVDEN = 0;
                                            	BCLR	_LVDCRbits,7
-                                           ;	.line	515; "MC32F7361.c"	HFEN = 0; // 关闭高速时钟
+                                           ;	.line	525; "MC32F7361.c"	HFEN = 0; // 关闭高速时钟
                                            	BCLR	_OSCMRbits,0
-                                           ;	.line	516; "MC32F7361.c"	LFEN = 0; // 关闭低速时钟
+                                           ;	.line	526; "MC32F7361.c"	LFEN = 0; // 关闭低速时钟
                                            	BCLR	_OSCMRbits,1
-                                           ;	.line	518; "MC32F7361.c"	Nop();
+                                           ;	.line	528; "MC32F7361.c"	Nop();
                                            	nop	
-                                           ;	.line	519; "MC32F7361.c"	Nop();
+                                           ;	.line	529; "MC32F7361.c"	Nop();
                                            	nop	
-                                           ;	.line	520; "MC32F7361.c"	Stop();
+                                           ;	.line	530; "MC32F7361.c"	Stop();
                                            	stop	
-                                           ;	.line	521; "MC32F7361.c"	Nop();
+                                           ;	.line	531; "MC32F7361.c"	Nop();
                                            	nop	
-                                           ;	.line	522; "MC32F7361.c"	Nop();
+                                           ;	.line	532; "MC32F7361.c"	Nop();
                                            	nop	
-                                           ;	.line	523; "MC32F7361.c"	HFEN = 1; // 开启高速时钟
+                                           ;	.line	533; "MC32F7361.c"	HFEN = 1; // 开启高速时钟
                                            	BSET	_OSCMRbits,0
-                                           ;	.line	524; "MC32F7361.c"	LVDEN = 1;
+                                           ;	.line	534; "MC32F7361.c"	LVDEN = 1;
                                            	BSET	_LVDCRbits,7
-                                           ;	.line	525; "MC32F7361.c"	P00KE = 0;
+                                           ;	.line	535; "MC32F7361.c"	P00KE = 0;
                                            	BCLR	_P0KBCRbits,0
-                                           ;	.line	529; "MC32F7361.c"	P04KE = 0;
+                                           ;	.line	539; "MC32F7361.c"	P04KE = 0;
                                            	BCLR	_P0KBCRbits,4
-                                           ;	.line	531; "MC32F7361.c"	KBIE = 0;
+                                           ;	.line	541; "MC32F7361.c"	KBIE = 0;
                                            	BCLR	_INTEbits,4
-                                           ;	.line	532; "MC32F7361.c"	KBIF = 0;
+                                           ;	.line	542; "MC32F7361.c"	KBIF = 0;
                                            	BCLR	_INTFbits,4
-                                           ;	.line	534; "MC32F7361.c"	Sys_Init(); // 按键检测内部的标志位和静态变量没有清除，这里直接清除所有变量的值，全为0,并且重新初始化
+                                           ;	.line	544; "MC32F7361.c"	Sys_Init(); // 按键检测内部的标志位和静态变量没有清除，这里直接清除所有变量的值，全为0,并且重新初始化
                                            	CALL	_Sys_Init
-                                           ;	.line	535; "MC32F7361.c"	delay_ms(1);
+                                           ;	.line	545; "MC32F7361.c"	delay_ms(1);
                                            	MOVAI	0x01
                                            	MOVRA	STK00
                                            	MOVAI	0x00
                                            	CALL	_delay_ms
-                                           ;	.line	536; "MC32F7361.c"	GIE = 1;
+                                           ;	.line	546; "MC32F7361.c"	GIE = 1;
                                            	BSET	_MCRbits,7
                                            _00407_DS_
-                                           ;	.line	543; "MC32F7361.c"	__endasm;
+                                           ;	.line	553; "MC32F7361.c"	__endasm;
                                            	;
                                            	clrwdt;
                                            	
-                                           	GOTO	_00411_DS_
-                                           ;	.line	545; "MC32F7361.c"	}
+                                           	GOTO	_00412_DS_
+                                           ;	.line	555; "MC32F7361.c"	}
                                            	RETURN	
                                            ; exit point of _main
                                            
@@ -2809,20 +2821,20 @@ Address  Value    Disassembly              Source
                                            ;   _led_blue_on
                                            ;   _led_red_on
                                            ;   _led_blue_on
-                                           ;   _led_red_off
-                                           ;   _led_blue_off
-                                           ;   _led_red_on
-                                           ;   _led_blue_on
-                                           ;   _led_blue_off
-                                           ;   _led_red_on
-                                           ;   _led_red_off
-                                           ;   _led_blue_on
                                            ;   _led_red_on
                                            ;   _led_blue_on
                                            ;   _led_red_off
                                            ;   _led_blue_off
+                                           ;   _led_blue_off
+                                           ;   _led_red_on
+                                           ;   _led_red_off
+                                           ;   _led_blue_on
                                            ;   _led_red_on
                                            ;   _led_blue_on
+                                           ;   _led_red_on
+                                           ;   _led_blue_on
+                                           ;   _led_red_off
+                                           ;   _led_blue_off
                                            ;; Starting pCode block
                                            _key_event_handle	;Function start
                                            ; 2 exit points
@@ -2841,7 +2853,7 @@ Address  Value    Disassembly              Source
                                            	GOTO	_00358_DS_
                                            ;	.line	312; "MC32F7361.c"	if (flag_is_dev_open)
                                            	JBSET	_flag1,0
-                                           	GOTO	_00359_DS_
+                                           	GOTO	_00338_DS_
                                            ;	.line	314; "MC32F7361.c"	if (0 == led_mode)
                                            	MOVAI	0x00
                                            	ORAR	_led_mode
@@ -2888,36 +2900,38 @@ Address  Value    Disassembly              Source
                                            	CLRR	(_power_off_cnt + 2)
                                            	CLRR	(_power_off_cnt + 3)
                                            	GOTO	_00359_DS_
+                                           _00338_DS_
+                                           ;	.line	341; "MC32F7361.c"	LED_RED_ON();
+                                           	CALL	_led_red_on
+                                           ;	.line	342; "MC32F7361.c"	LED_BLUE_ON();
+                                           	CALL	_led_blue_on
+                                           ;	.line	343; "MC32F7361.c"	led_mode = 0; // 表示当前是紫光
+                                           	CLRR	_led_mode
+                                           ;	.line	344; "MC32F7361.c"	flag_is_dev_open = 1;
+                                           	BSET	_flag1,0
+                                           	GOTO	_00359_DS_
                                            _00358_DS_
-                                           ;	.line	339; "MC32F7361.c"	else if (KEY_EVENT_HOLD == key_event)
+                                           ;	.line	347; "MC32F7361.c"	else if (KEY_EVENT_HOLD == key_event)
                                            	MOVAR	_key_event
                                            	XORAI	0x02
                                            	JBSET	PFLAG,2
                                            	GOTO	_00359_DS_
-                                           ;	.line	341; "MC32F7361.c"	if (flag_is_dev_open)
+                                           ;	.line	349; "MC32F7361.c"	if (flag_is_dev_open)
                                            	JBSET	_flag1,0
-                                           	GOTO	_00346_DS_
-                                           ;	.line	343; "MC32F7361.c"	LED_RED_OFF();
-                                           	CALL	_led_red_off
-                                           ;	.line	344; "MC32F7361.c"	LED_BLUE_OFF();
-                                           	CALL	_led_blue_off
-                                           ;	.line	345; "MC32F7361.c"	flag_is_dev_open = 0;
-                                           	BCLR	_flag1,0
                                            	GOTO	_00359_DS_
-                                           _00346_DS_
-                                           ;	.line	350; "MC32F7361.c"	LED_RED_ON();
-                                           	CALL	_led_red_on
-                                           ;	.line	351; "MC32F7361.c"	LED_BLUE_ON();
-                                           	CALL	_led_blue_on
-                                           ;	.line	352; "MC32F7361.c"	led_mode = 0; // 表示当前是紫光
-                                           	CLRR	_led_mode
-                                           ;	.line	353; "MC32F7361.c"	flag_is_dev_open = 1;
-                                           	BSET	_flag1,0
+                                           ;	.line	351; "MC32F7361.c"	LED_RED_OFF();
+                                           	CALL	_led_red_off
+                                           ;	.line	352; "MC32F7361.c"	LED_BLUE_OFF();
+                                           	CALL	_led_blue_off
+                                           ;	.line	353; "MC32F7361.c"	flag_is_dev_open = 0;
+                                           	BCLR	_flag1,0
+                                           ;	.line	354; "MC32F7361.c"	flag_is_enable_into_low_power = 1;
+                                           	BSET	_flag1,4
                                            _00359_DS_
-                                           ;	.line	358; "MC32F7361.c"	key_event = KEY_EVENT_NONE;
+                                           ;	.line	367; "MC32F7361.c"	key_event = KEY_EVENT_NONE;
                                            	CLRR	_key_event
                                            _00360_DS_
-                                           ;	.line	359; "MC32F7361.c"	}
+                                           ;	.line	368; "MC32F7361.c"	}
                                            	RETURN	
                                            ; exit point of _key_event_handle
                                            
@@ -3673,17 +3687,17 @@ Address  Value    Disassembly              Source
                                            ;; Starting pCode block
                                            _delay_ms	;Function start
                                            ; 2 exit points
-                                           ;	.line	197; "user.h"	void delay_ms(u16 xms)
+                                           ;	.line	198; "user.h"	void delay_ms(u16 xms)
                                            	MOVRA	r0x1012
                                            	MOVAR	STK00
                                            	MOVRA	r0x1013
                                            _00108_DS_
-                                           ;	.line	199; "user.h"	while (xms)
+                                           ;	.line	200; "user.h"	while (xms)
                                            	MOVAR	r0x1013
                                            	ORAR	r0x1012
                                            	JBCLR	PFLAG,2
                                            	GOTO	_00111_DS_
-                                           ;	.line	202; "user.h"	while (i--)
+                                           ;	.line	203; "user.h"	while (i--)
                                            	MOVAI	0x3c
                                            	MOVRA	r0x1014
                                            	MOVAI	0x02
@@ -3701,28 +3715,28 @@ Address  Value    Disassembly              Source
                                            	ORAR	r0x1017
                                            	JBCLR	PFLAG,2
                                            	GOTO	_00107_DS_
-                                           ;	.line	204; "user.h"	Nop();
+                                           ;	.line	205; "user.h"	Nop();
                                            	nop	
                                            	GOTO	_00105_DS_
                                            _00107_DS_
-                                           ;	.line	206; "user.h"	xms--; // 把 --操作放在while()判断条件外面，更节省空间
+                                           ;	.line	207; "user.h"	xms--; // 把 --操作放在while()判断条件外面，更节省空间
                                            	MOVAI	0xff
                                            	ADDRA	r0x1013
                                            	JBSET	PFLAG,0
                                            	DECR	r0x1012
-                                           ;	.line	210; "user.h"	__endasm;
+                                           ;	.line	211; "user.h"	__endasm;
                                            	;
                                            	clrwdt;
                                            	
                                            	GOTO	_00108_DS_
                                            _00111_DS_
-                                           ;	.line	212; "user.h"	}
+                                           ;	.line	213; "user.h"	}
                                            	RETURN	
                                            ; exit point of _delay_ms
                                            
                                            
                                            ;	code size estimation:
-                                           ;	  652+    0 =   652 instructions ( 1304 byte)
+                                           ;	  655+    0 =   655 instructions ( 1310 byte)
                                            
                                            	end
 
@@ -3750,9 +3764,9 @@ MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 0480 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
 04C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
 0500 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0540 : XXXXXX---------- ---------------- ---------------- ----------------
+0540 : XXXXXXXXXXXX---- ---------------- ---------------- ----------------
 
 All other memory blocks unused.
 
-Program Memory Words Used:   668
+Program Memory Words Used:   671
 

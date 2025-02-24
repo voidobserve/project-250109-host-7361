@@ -335,15 +335,6 @@ void key_event_handle(void)
 
             power_off_cnt = 0; // 清空关机计数
         }
-    }
-    else if (KEY_EVENT_HOLD == key_event)
-    {
-        if (flag_is_dev_open)
-        {
-            LED_RED_OFF();
-            LED_BLUE_OFF();
-            flag_is_dev_open = 0;
-        }
         else
         {
             // 关机->开机
@@ -352,6 +343,24 @@ void key_event_handle(void)
             led_mode = 0; // 表示当前是紫光
             flag_is_dev_open = 1;
         }
+    }
+    else if (KEY_EVENT_HOLD == key_event)
+    {
+        if (flag_is_dev_open)
+        {
+            LED_RED_OFF();
+            LED_BLUE_OFF();
+            flag_is_dev_open = 0;
+            flag_is_enable_into_low_power = 1;
+        }
+        // else
+        // {
+        //     // 关机->开机
+        //     LED_RED_ON();
+        //     LED_BLUE_ON();
+        //     led_mode = 0; // 表示当前是紫光
+        //     flag_is_dev_open = 1;
+        // }
     }
 
     // 处理完成后，清除按键事件
@@ -476,8 +485,10 @@ void main(void)
 
         if (0 == flag_is_dev_open &&    // 设备工作时，不进入低功耗
             0 == flag_is_in_charging && // 充电时，不进入低功耗
-            KEY_SCAN_PIN)               // 有按键按下，不进入低功耗
+            KEY_SCAN_PIN &&/* 有按键按下(为低电平)，不进入低功耗 */ 
+            flag_is_enable_into_low_power) /*  */
         {
+            // flag_is_enable_into_low_power = 0; // 这一句可以不加，因为后面会清除RAM
             // 进入低功耗
             GIE = 0;      // 禁用所有中断
             DRVCR = 0x80; // IO改回普通驱动
@@ -590,7 +601,6 @@ void int_isr(void) __interrupt
             }
             // else if (flag_is_in_charging && 0 == flag_is_full_charged)
             // {
-
             //     blink_cnt++;
             //     if (blink_cnt <= 500)
             //     {
@@ -625,6 +635,24 @@ void int_isr(void) __interrupt
             else
             {
                 power_off_cnt = 0;
+            }
+        }
+
+        {
+            u16 cnt = 0;
+            if (0 == flag_is_enable_into_low_power && 0 == flag_is_dev_open)
+            {
+                // 如果没有开机，且没有使能进入低功耗
+                cnt++;
+                if (cnt >= 1000) // xx ms
+                {
+                    cnt = 0;
+                    flag_is_enable_into_low_power = 1;
+                }
+            }
+            else
+            {
+                cnt = 0;
             }
         }
 

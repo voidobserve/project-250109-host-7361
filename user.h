@@ -138,8 +138,7 @@ enum
 {
 	CUR_STATUS_NONE = 0,	// 无操作
 	CUR_STATUS_WORKING,		// 正在工作
-	CUR_STATUS_BE_CHARGING, // 正在被充电
-							// CUR_STATUS_
+	CUR_STATUS_BE_CHARGING, // 正在被充电 
 };
 volatile u8 cur_dev_status; // 状态机，表示当前设备的状态
 
@@ -158,11 +157,12 @@ enum
 #define KEY_FILTER_TIMES 2
 volatile u8 key_event;
 
-u32 power_off_cnt; // 负责自动关机的时间计数
+volatile u32 power_off_cnt; // 负责自动关机的时间计数
 
 //===============Field Protection Variables===============
 volatile u8 abuf;
 volatile u8 statusbuf;
+
 volatile u16 adc_val;
 
 //===============Global Variable===============
@@ -191,6 +191,7 @@ volatile bit_flag flag1;
 #define flag_is_in_charging flag1.bits.bit1
 #define flag_is_full_charged flag1.bits.bit2
 #define flag_is_power_low flag1.bits.bit3
+#define flag_is_enable_into_low_power flag1.bits.bit4 // 标志位，是否使能进入低功耗
 
 // 毫秒级延时 (误差：在1%以内，1ms、10ms、100ms延时的误差均小于1%)
 // 前提条件：FCPU = FHOSC / 4
