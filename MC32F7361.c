@@ -128,7 +128,8 @@ void led_red_pwm_config(void)
     T0CR = DEF_SET_BIT6 | DEF_SET_BIT0 | DEF_SET_BIT1; // 使能PWM,CPU,8分频
     // T0CNT = 100-1;
     T0LOAD = 100 - 1; // 100us
-    T0DATA = 50;
+    // T0DATA = 50;
+    T0DATA = 60;
     // PWMCR0 |= 0x00;         // 正向输出
     // PWMCR1 |= 0x00;         // 普通模式
     // PWM0OPS = 0;
@@ -156,13 +157,13 @@ void led_red_on(void)
 void led_red_off(void)
 {
     PWM0EC = 0;
-    T0EN = 0; 
+    T0EN = 0;
     P16OE = 1;
-    LED_RED_PIN = 0; // 高电平表示熄灭
+    LED_RED_PIN = 1; // 高电平表示熄灭
 }
 
 void led_blue_on(void)
-{ 
+{
     PWM1EC = 1;
     T1EN = 1;
 }
@@ -377,7 +378,7 @@ void main(void)
 #endif
 
     while (1)
-    { 
+    {
 #if 1
         // 检测是否在充电
         if (0 == flag_is_in_charging)
