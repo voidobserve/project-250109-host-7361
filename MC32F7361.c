@@ -351,7 +351,6 @@ void key_event_handle(void)
             LED_RED_OFF();
             LED_BLUE_OFF();
             flag_is_dev_open = 0;
-            flag_is_enable_into_low_power = 1;
         }
         // else
         // {
@@ -361,6 +360,8 @@ void key_event_handle(void)
         //     led_mode = 0; // 表示当前是紫光
         //     flag_is_dev_open = 1;
         // }
+
+        flag_is_enable_into_low_power = 1; // 只要识别到长按就使能进入低功耗
     }
 
     // 处理完成后，清除按键事件
@@ -385,6 +386,8 @@ void main(void)
     T3EN = 0;
     P15D = 1; // 使能对主机电池的充电
 #endif
+
+    flag_is_enable_into_low_power = 1; // 一上电就使能进入低功耗
 
     while (1)
     {
@@ -439,6 +442,7 @@ void main(void)
             LED_RED_OFF();
             LED_BLUE_OFF();
             flag_is_dev_open = 0;
+            flag_is_enable_into_low_power = 1; // 使能进入低功耗
             led_mode = 2; // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
         }
 
@@ -465,6 +469,7 @@ void main(void)
             if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
             {
                 flag_is_dev_open = 0; // 关机
+                flag_is_enable_into_low_power = 1; // 使能进入低功耗
             }
         }
         else
@@ -483,11 +488,13 @@ void main(void)
 
         key_event_handle();
 
-        if (0 == flag_is_dev_open &&    // 设备工作时，不进入低功耗
-            0 == flag_is_in_charging && // 充电时，不进入低功耗
-            KEY_SCAN_PIN &&/* 有按键按下(为低电平)，不进入低功耗 */ 
-            flag_is_enable_into_low_power) /*  */
+        if (0 == flag_is_dev_open &&       // 设备工作时，不进入低功耗
+            0 == flag_is_in_charging &&    // 充电时，不进入低功耗
+            KEY_SCAN_PIN &&                /* 有按键按下(为低电平)，不进入低功耗 */
+            flag_is_enable_into_low_power) /* 如果使能进入低功耗 */
         {
+
+        label_low_power:
             // flag_is_enable_into_low_power = 0; // 这一句可以不加，因为后面会清除RAM
             // 进入低功耗
             GIE = 0;      // 禁用所有中断
@@ -545,6 +552,10 @@ void main(void)
             Sys_Init(); // 按键检测内部的标志位和静态变量没有清除，这里直接清除所有变量的值，全为0,并且重新初始化
             delay_ms(1);
             GIE = 1;
+
+            // 唤醒后直接调用一次按键扫描，
+            // 有可能是按键按下而唤醒，也有可能是充电唤醒
+            key_scan(); // 如果是按键按下唤醒，这里能够获取一次键值
         }
 
 #endif
@@ -630,6 +641,7 @@ void int_isr(void) __interrupt
                 {
                     power_off_cnt = 0;
                     flag_is_dev_open = 0;
+                    flag_is_enable_into_low_power = 1; // 使能进入低功耗
                 }
             }
             else
@@ -639,20 +651,22 @@ void int_isr(void) __interrupt
         }
 
         {
-            u16 cnt = 0;
-            if (0 == flag_is_enable_into_low_power && 0 == flag_is_dev_open)
+            static volatile u16 into_low_power_cnt = 0;
+            if (0 == flag_is_enable_into_low_power &&
+                0 == flag_is_dev_open &&
+                0 == flag_is_in_charging)
             {
                 // 如果没有开机，且没有使能进入低功耗
-                cnt++;
-                if (cnt >= 1000) // xx ms
+                into_low_power_cnt++;
+                if (into_low_power_cnt >= 1000) // xx ms
                 {
-                    cnt = 0;
+                    into_low_power_cnt = 0;
                     flag_is_enable_into_low_power = 1;
                 }
             }
             else
             {
-                cnt = 0;
+                into_low_power_cnt = 0;
             }
         }
 
