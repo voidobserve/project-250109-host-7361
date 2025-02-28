@@ -192,6 +192,7 @@ volatile bit_flag flag1;
 #define flag_is_full_charged flag1.bits.bit2
 #define flag_is_power_low flag1.bits.bit3
 #define flag_is_enable_into_low_power flag1.bits.bit4 // 标志位，是否使能进入低功耗
+#define flag_is_cut_down_charge flag1.bits.bit5 // 标志位，是否在充电时切断一次给电池的充电
 
 // 毫秒级延时 (误差：在1%以内，1ms、10ms、100ms延时的误差均小于1%)
 // 前提条件：FCPU = FHOSC / 4

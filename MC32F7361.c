@@ -41,7 +41,7 @@ void IO_Init(void)
     P0ADCR = 0x00; // io类型选择  1:模拟输入  0:通用io
 
     // IOP1 = 0x00;   // io口数据位
-    IOP1 = 0xD0;   // 不点亮LED
+    IOP1 = 0x88;   // 不点亮LED
     OEP1 = 0xFF;   // io口方向 1:out  0:in
     PUP1 = 0x00;   // io口上拉电阻   1:enable  0:disable
     PDP1 = 0x00;   // io口下拉电阻   1:enable  0:disable
@@ -133,7 +133,8 @@ void led_red_pwm_config(void)
     // PWMCR0 |= 0x00;         // 正向输出
     // PWMCR1 |= 0x00;         // 普通模式
     // PWM0OPS = 0;
-    T0EN = 1;
+    // T0EN = 1;
+    T0EN = 0;
 }
 
 void led_blue_pwm_config(void)
@@ -145,7 +146,8 @@ void led_blue_pwm_config(void)
     // PWMCR0 |= DEF_SET_BIT7 | DEF_SET_BIT3 | DEF_SET_BIT2 | DEF_SET_BIT0; // 使能FPWM，正向输出，死区4个时钟
     // PWMCR1 |= 0x00;                                                      // 普通模式
     // PWM1MD = 0;
-    T1EN = 1;
+    // T1EN = 1;
+    T0EN = 0;
 }
 
 void led_red_on(void)
@@ -188,13 +190,13 @@ void Sys_Init(void)
     CLR_RAM();
     IO_Init();
 
+    LED_RED_OFF();
+    LED_GREEN_OFF();
+    LED_BLUE_OFF();
     // 驱动红灯的PWM和引脚：
     led_red_pwm_config();
     // 驱动蓝灯的pwm和引脚
     led_blue_pwm_config();
-    LED_RED_OFF();
-    LED_GREEN_OFF();
-    LED_BLUE_OFF();
 
     // 按键检测引脚
     P00PU = 1; // 上拉--看看能不能去掉这里(可以去掉，但是要加外部上拉)
@@ -438,11 +440,26 @@ void main(void)
                 P15D = 1; // 使能主机电池的充电
             }
 
+            if (flag_is_cut_down_charge)
+            {
+                flag_is_cut_down_charge = 0;
+                P15D = 0; // 断开对主机电池的充电
+                delay_ms(10);
+                if (CHARGE_SCAN_PIN) // 如果断开对主机电池的充电，还发现有电压
+                {
+                    P15D = 1; // 重新使能给主机电池的充电
+                }
+                else
+                {
+                    // P15D = 0;
+                }
+            }
+
             // 充电时自动关机
             LED_RED_OFF();
             LED_BLUE_OFF();
             flag_is_dev_open = 0;
-            flag_is_enable_into_low_power = 1; // 使能进入低功耗
+            // flag_is_enable_into_low_power = 1; // 使能进入低功耗
             led_mode = 2; // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
         }
 
@@ -468,7 +485,7 @@ void main(void)
             // if (adc_val < 1587 - AD_OFFSET) // 电池电压小于3.1V(实际测试是3.04V)
             if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
             {
-                flag_is_dev_open = 0; // 关机
+                flag_is_dev_open = 0;              // 关机
                 flag_is_enable_into_low_power = 1; // 使能进入低功耗
             }
         }
@@ -476,15 +493,6 @@ void main(void)
         {
             flag_is_power_low = 0;
         }
-
-        // if (flag_is_in_charging && flag_is_full_charged)
-        // {
-        //     // 如果充满电 绿灯常亮
-        //     // LED_GREEN_ON();
-
-        //     // 如果充满电，关闭绿灯
-        //     LED_GREEN_OFF();
-        // }
 
         key_event_handle();
 
@@ -497,6 +505,11 @@ void main(void)
         label_low_power:
             // flag_is_enable_into_low_power = 0; // 这一句可以不加，因为后面会清除RAM
             // 进入低功耗
+
+            // 等待按键松手，再进入低功耗
+            while (0 == KEY_SCAN_PIN)
+                ;
+
             GIE = 0;      // 禁用所有中断
             DRVCR = 0x80; // IO改回普通驱动
             LED_BLUE_OFF();
@@ -591,6 +604,23 @@ void int_isr(void) __interrupt
                 key_scan();
             }
         } // 按键扫描
+
+        { // 充电时，负责定时关闭充电，看看是不是真的有充电
+            static u16 cut_down_charge_cnt = 0;
+            if (flag_is_in_charging)
+            {
+                cut_down_charge_cnt++;
+                if (cut_down_charge_cnt >= 5000) // xx ms
+                {
+                    cut_down_charge_cnt = 0;
+                    flag_is_cut_down_charge = 1;
+                }
+            }
+            else
+            {
+                cut_down_charge_cnt = 0;
+            }
+        }
 
         { // 充电、低电量时，负责灯光闪烁
             static u16 blink_cnt = 0;
