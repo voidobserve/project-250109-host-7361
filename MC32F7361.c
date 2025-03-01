@@ -40,8 +40,8 @@ void IO_Init(void)
     PDP0 = 0x00;   // io口下拉电阻   1:enable  0:disable
     P0ADCR = 0x00; // io类型选择  1:模拟输入  0:通用io
 
-    // IOP1 = 0x00;   // io口数据位
-    IOP1 = 0x88;   // 不点亮LED
+    // IOP1 = 0x00;   // io口数据位 
+    IOP1 = 0xC0;   // 不点亮LED
     OEP1 = 0xFF;   // io口方向 1:out  0:in
     PUP1 = 0x00;   // io口上拉电阻   1:enable  0:disable
     PDP1 = 0x00;   // io口下拉电阻   1:enable  0:disable
@@ -125,7 +125,7 @@ void timer3_config(void)
 
 void led_red_pwm_config(void)
 {
-    T0CR = DEF_SET_BIT6 | DEF_SET_BIT0 | DEF_SET_BIT1; // 使能PWM,CPU,8分频
+    T0CR = DEF_SET_BIT0 | DEF_SET_BIT1; // 不使能PWM,CPU,8分频
     // T0CNT = 100-1;
     T0LOAD = 100 - 1; // 100us
     // T0DATA = 50;
@@ -139,7 +139,7 @@ void led_red_pwm_config(void)
 
 void led_blue_pwm_config(void)
 {
-    T1CR = DEF_SET_BIT6 | DEF_SET_BIT1 | DEF_SET_BIT0; // 使能PWM,CPU,8分频
+    T1CR = DEF_SET_BIT1 | DEF_SET_BIT0; // 不使能PWM,CPU,8分频
     // T1CNT = 100 - 1;
     T1LOAD = 100 - 1; // 100us
     T1DATA = 50;
@@ -160,7 +160,7 @@ void led_red_off(void)
 {
     PWM0EC = 0;
     T0EN = 0;
-    P16OE = 1;
+    // P16OE = 1;
     LED_RED_PIN = 1; // 高电平表示熄灭
 }
 
@@ -174,7 +174,7 @@ void led_blue_off(void)
 {
     PWM1EC = 0;
     T1EN = 0;
-    P17OE = 1;
+    // P17OE = 1;
     LED_BLUE_PIN = 1; // 高电平表示熄灭
 }
 
@@ -191,11 +191,10 @@ void Sys_Init(void)
     IO_Init();
 
     // 驱动红灯的PWM和引脚：
-    led_red_pwm_config(); // 这里不会点亮灯光
+    led_red_pwm_config();  
     // 驱动蓝灯的pwm和引脚
-    led_blue_pwm_config();
-    // 如果把下面这一段去掉，按下按键时红蓝都会亮，短按松手时会暗一些
-    LED_RED_OFF(); 
+    led_blue_pwm_config(); 
+    LED_RED_OFF();
     LED_GREEN_OFF();
     LED_BLUE_OFF();
 
@@ -484,6 +483,7 @@ void main(void)
 
         key_event_handle();
 
+#if 1
         if (0 == flag_is_dev_open &&       // 设备工作时，不进入低功耗
             0 == flag_is_in_charging &&    // 充电时，不进入低功耗
             KEY_SCAN_PIN &&                /* 有按键按下(为低电平)，不进入低功耗 */
@@ -553,6 +553,7 @@ void main(void)
             // 有可能是按键按下而唤醒，也有可能是充电唤醒
             key_scan(); // 如果是按键按下唤醒，这里能够获取一次键值
         }
+#endif
 
 #endif
 
