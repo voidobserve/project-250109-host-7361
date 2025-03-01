@@ -40,8 +40,8 @@ void IO_Init(void)
     PDP0 = 0x00;   // io口下拉电阻   1:enable  0:disable
     P0ADCR = 0x00; // io类型选择  1:模拟输入  0:通用io
 
-    // IOP1 = 0x00;   // io口数据位
-    IOP1 = 0x88;   // 不点亮LED
+    // IOP1 = 0x00;   // io口数据位 
+    IOP1 = 0xC0;   // 不点亮LED
     OEP1 = 0xFF;   // io口方向 1:out  0:in
     PUP1 = 0x00;   // io口上拉电阻   1:enable  0:disable
     PDP1 = 0x00;   // io口下拉电阻   1:enable  0:disable
@@ -125,7 +125,7 @@ void timer3_config(void)
 
 void led_red_pwm_config(void)
 {
-    T0CR = DEF_SET_BIT6 | DEF_SET_BIT0 | DEF_SET_BIT1; // 使能PWM,CPU,8分频
+    T0CR = DEF_SET_BIT0 | DEF_SET_BIT1; // 不使能PWM,CPU,8分频
     // T0CNT = 100-1;
     T0LOAD = 100 - 1; // 100us
     // T0DATA = 50;
@@ -139,7 +139,7 @@ void led_red_pwm_config(void)
 
 void led_blue_pwm_config(void)
 {
-    T1CR = DEF_SET_BIT6 | DEF_SET_BIT1 | DEF_SET_BIT0; // 使能PWM,CPU,8分频
+    T1CR = DEF_SET_BIT1 | DEF_SET_BIT0; // 不使能PWM,CPU,8分频
     // T1CNT = 100 - 1;
     T1LOAD = 100 - 1; // 100us
     T1DATA = 50;
@@ -147,7 +147,7 @@ void led_blue_pwm_config(void)
     // PWMCR1 |= 0x00;                                                      // 普通模式
     // PWM1MD = 0;
     // T1EN = 1;
-    T0EN = 0;
+    T1EN = 0;
 }
 
 void led_red_on(void)
@@ -160,7 +160,7 @@ void led_red_off(void)
 {
     PWM0EC = 0;
     T0EN = 0;
-    P16OE = 1;
+    // P16OE = 1;
     LED_RED_PIN = 1; // 高电平表示熄灭
 }
 
@@ -174,7 +174,7 @@ void led_blue_off(void)
 {
     PWM1EC = 0;
     T1EN = 0;
-    P17OE = 1;
+    // P17OE = 1;
     LED_BLUE_PIN = 1; // 高电平表示熄灭
 }
 
@@ -190,13 +190,13 @@ void Sys_Init(void)
     CLR_RAM();
     IO_Init();
 
+    // 驱动红灯的PWM和引脚：
+    led_red_pwm_config();  
+    // 驱动蓝灯的pwm和引脚
+    led_blue_pwm_config(); 
     LED_RED_OFF();
     LED_GREEN_OFF();
     LED_BLUE_OFF();
-    // 驱动红灯的PWM和引脚：
-    led_red_pwm_config();
-    // 驱动蓝灯的pwm和引脚
-    led_blue_pwm_config();
 
     // 按键检测引脚
     P00PU = 1; // 上拉--看看能不能去掉这里(可以去掉，但是要加外部上拉)
@@ -443,15 +443,12 @@ void main(void)
             if (flag_is_cut_down_charge)
             {
                 flag_is_cut_down_charge = 0;
-                P15D = 0; // 断开对主机电池的充电
+                P15D = 0; // 断开给主机电池的充电
                 delay_ms(10);
-                if (CHARGE_SCAN_PIN) // 如果断开对主机电池的充电，还发现有电压
+                if (CHARGE_SCAN_PIN)
                 {
-                    P15D = 1; // 重新使能给主机电池的充电
-                }
-                else
-                {
-                    // P15D = 0;
+                    // 如果检测到还有充电
+                    P15D = 1; // 恢复给主机电池的充电
                 }
             }
 
@@ -459,8 +456,8 @@ void main(void)
             LED_RED_OFF();
             LED_BLUE_OFF();
             flag_is_dev_open = 0;
-            // flag_is_enable_into_low_power = 1; // 使能进入低功耗
-            led_mode = 2; // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
+            flag_is_enable_into_low_power = 1; // 使能进入低功耗
+            led_mode = 2;                      // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
         }
 
         if (flag_is_dev_open && 0 == flag_is_in_charging)
@@ -472,17 +469,7 @@ void main(void)
             {
                 flag_is_power_low = 1;
             }
-            // else if  (adc_val > 1638 + AD_OFFSET) // 如果电池电压大于3.2V+ad值死区，认为电池电量未到关机的阈值
-            // {
-            //     flag_is_power_low = 0;
-            // }
 
-            // if (adc_val < 1485 - AD_OFFSET) // 电池电压小于2.9V
-            // {
-            //     flag_is_dev_open = 0; // 关机
-            // }
-
-            // if (adc_val < 1587 - AD_OFFSET) // 电池电压小于3.1V(实际测试是3.04V)
             if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
             {
                 flag_is_dev_open = 0;              // 关机
@@ -496,6 +483,7 @@ void main(void)
 
         key_event_handle();
 
+#if 1
         if (0 == flag_is_dev_open &&       // 设备工作时，不进入低功耗
             0 == flag_is_in_charging &&    // 充电时，不进入低功耗
             KEY_SCAN_PIN &&                /* 有按键按下(为低电平)，不进入低功耗 */
@@ -505,11 +493,6 @@ void main(void)
         label_low_power:
             // flag_is_enable_into_low_power = 0; // 这一句可以不加，因为后面会清除RAM
             // 进入低功耗
-
-            // 等待按键松手，再进入低功耗
-            while (0 == KEY_SCAN_PIN)
-                ;
-
             GIE = 0;      // 禁用所有中断
             DRVCR = 0x80; // IO改回普通驱动
             LED_BLUE_OFF();
@@ -570,6 +553,7 @@ void main(void)
             // 有可能是按键按下而唤醒，也有可能是充电唤醒
             key_scan(); // 如果是按键按下唤醒，这里能够获取一次键值
         }
+#endif
 
 #endif
 
@@ -605,24 +589,7 @@ void int_isr(void) __interrupt
             }
         } // 按键扫描
 
-        { // 充电时，负责定时关闭充电，看看是不是真的有充电
-            static u16 cut_down_charge_cnt = 0;
-            if (flag_is_in_charging)
-            {
-                cut_down_charge_cnt++;
-                if (cut_down_charge_cnt >= 5000) // xx ms
-                {
-                    cut_down_charge_cnt = 0;
-                    flag_is_cut_down_charge = 1;
-                }
-            }
-            else
-            {
-                cut_down_charge_cnt = 0;
-            }
-        }
-
-        { // 充电、低电量时，负责灯光闪烁
+        { // 低电量时，负责灯光闪烁
             static u16 blink_cnt = 0;
             if (flag_is_power_low)
             {
@@ -640,22 +607,6 @@ void int_isr(void) __interrupt
                     blink_cnt = 0;
                 }
             }
-            // else if (flag_is_in_charging && 0 == flag_is_full_charged)
-            // {
-            //     blink_cnt++;
-            //     if (blink_cnt <= 500)
-            //     {
-            //         LED_GREEN_ON();
-            //     }
-            //     else if (blink_cnt <= 1000)
-            //     {
-            //         LED_GREEN_OFF();
-            //     }
-            //     else
-            //     {
-            //         blink_cnt = 0;
-            //     }
-            // }
             else
             {
                 blink_cnt = 0;
@@ -697,6 +648,23 @@ void int_isr(void) __interrupt
             else
             {
                 into_low_power_cnt = 0;
+            }
+        }
+
+        { // 充电时，负责每隔一段时间断开给电池的充电，看看是否还有在充电
+            static u16 cut_down_charge_cnt = 0;
+            if (flag_is_in_charging)
+            {
+                cut_down_charge_cnt++;
+                if (cut_down_charge_cnt >= 5000) // xx ms
+                {
+                    cut_down_charge_cnt = 0;
+                    flag_is_cut_down_charge = 1;
+                }
+            }
+            else
+            {
+                cut_down_charge_cnt = 0;
             }
         }
 
