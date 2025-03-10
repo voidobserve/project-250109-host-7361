@@ -40,7 +40,7 @@ void IO_Init(void)
     PDP0 = 0x00;   // io口下拉电阻   1:enable  0:disable
     P0ADCR = 0x00; // io类型选择  1:模拟输入  0:通用io
 
-    // IOP1 = 0x00;   // io口数据位 
+    // IOP1 = 0x00;   // io口数据位
     IOP1 = 0xC0;   // 不点亮LED
     OEP1 = 0xFF;   // io口方向 1:out  0:in
     PUP1 = 0x00;   // io口上拉电阻   1:enable  0:disable
@@ -191,9 +191,9 @@ void Sys_Init(void)
     IO_Init();
 
     // 驱动红灯的PWM和引脚：
-    led_red_pwm_config();  
+    led_red_pwm_config();
     // 驱动蓝灯的pwm和引脚
-    led_blue_pwm_config(); 
+    led_blue_pwm_config();
     LED_RED_OFF();
     LED_GREEN_OFF();
     LED_BLUE_OFF();
@@ -489,7 +489,6 @@ void main(void)
             KEY_SCAN_PIN &&                /* 有按键按下(为低电平)，不进入低功耗 */
             flag_is_enable_into_low_power) /* 如果使能进入低功耗 */
         {
-
         label_low_power:
             // flag_is_enable_into_low_power = 0; // 这一句可以不加，因为后面会清除RAM
             // 进入低功耗
@@ -551,7 +550,40 @@ void main(void)
 
             // 唤醒后直接调用一次按键扫描，
             // 有可能是按键按下而唤醒，也有可能是充电唤醒
-            key_scan(); // 如果是按键按下唤醒，这里能够获取一次键值
+            // key_scan(); // 如果是按键按下唤醒，这里能够获取一次键值
+
+            if (0 == KEY_SCAN_PIN) // 如果唤醒后，发现按键是按下的
+            {
+                // filter_key_id = KEY_ID_BUTTOM;
+                // filter_cnt = KEY_FILTER_TIMES + 1; // 给按键滤波计数值加到最大，跳过按键扫描函数 key_scan() 内部的滤波操作
+                // last_key_id = KEY_ID_BUTTOM;
+                // key_scan(); // 如果是按键按下唤醒，这里能够获取一次 key_id
+
+                volatile u8 key_press_cnt = 0;
+
+                T3IE = 0; // 屏蔽定时器中断
+                T3EN = 0; // 不使能定时器
+                T3CNT = 0; // 清除定时器计数值
+
+                while (0 == KEY_SCAN_PIN)
+                {
+                    if (key_press_cnt < 255)
+                    {
+                        key_press_cnt++;
+                    }
+
+                    delay_ms(10);
+                }
+
+                if (key_press_cnt < 75) // 按键按下时间小于750ms，是短按
+                {
+                    key_event = KEY_EVENT_PRESS;
+                    key_event_handle();
+                }
+
+                T3IE = 1; // 使能定时器中断
+                T3EN = 1; // 使能定时器
+            }
         }
 #endif
 

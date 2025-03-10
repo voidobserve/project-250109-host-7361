@@ -138,7 +138,7 @@ enum
 {
 	CUR_STATUS_NONE = 0,	// 无操作
 	CUR_STATUS_WORKING,		// 正在工作
-	CUR_STATUS_BE_CHARGING, // 正在被充电 
+	CUR_STATUS_BE_CHARGING, // 正在被充电
 };
 volatile u8 cur_dev_status; // 状态机，表示当前设备的状态
 
@@ -170,6 +170,16 @@ u8 i; // 循环计数值
 
 volatile u8 led_mode;
 
+// ===================================================
+// 主机按键扫描的相关配置                            //
+// ===================================================
+// static volatile u8 last_key_id;
+// static volatile u8 press_cnt;	  // 按键按下的时间计数
+// static volatile u8 filter_cnt;	  // 按键消抖，使用的变量
+// static volatile u8 filter_key_id; // 按键消抖时使用的变量
+
+// static volatile u8 flag_is_key_mode_hold;
+
 //============Define  Flag=================
 typedef union
 {
@@ -192,8 +202,7 @@ volatile bit_flag flag1;
 #define flag_is_full_charged flag1.bits.bit2
 #define flag_is_power_low flag1.bits.bit3
 #define flag_is_enable_into_low_power flag1.bits.bit4 // 标志位，是否使能进入低功耗
-#define flag_is_cut_down_charge flag1.bits.bit5 // 标志位，是否在充电时切断一次给主机电池的充电，以确认是否还有在无线充电
-
+#define flag_is_cut_down_charge flag1.bits.bit5		  // 标志位，是否在充电时切断一次给主机电池的充电，以确认是否还有在无线充电
 
 // 毫秒级延时 (误差：在1%以内，1ms、10ms、100ms延时的误差均小于1%)
 // 前提条件：FCPU = FHOSC / 4
