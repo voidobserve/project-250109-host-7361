@@ -429,12 +429,15 @@ void main(void)
             adc_val = adc_get_val();
             // if (adc_val >= 2124 - AD_OFFSET) // 如果电池电压大于4.15V
             // if (adc_val >= 2124) // 如果电池电压大于4.15V
-            if (adc_val >= 2150) // 如果电池电压大于4.2V
+            // if (adc_val >= 2150) // 如果电池电压大于4.2V,实际测试是4.1V左右
+            // if (adc_val >= 2048) // 实际测试，充电到3.95V就断开了
+            if (adc_val >= 2099) // 
             {
                 flag_is_full_charged = 1;
                 P15D = 0; // 断开对主机电池的充电
             }
             else if (adc_val < 2124 - AD_OFFSET) // 如果电池电压小于4.15V-死区值
+            // else if (adc_val < 2048 - AD_OFFSET) // 如果电池电压小于
             {
                 flag_is_full_charged = 0;
                 P15D = 1; // 使能主机电池的充电
