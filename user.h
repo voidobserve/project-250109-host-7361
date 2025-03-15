@@ -204,13 +204,32 @@ volatile bit_flag flag1;
 #define flag_is_enable_into_low_power flag1.bits.bit4 // 标志位，是否使能进入低功耗
 #define flag_is_cut_down_charge flag1.bits.bit5		  // 标志位，是否在充电时切断一次给主机电池的充电，以确认是否还有在无线充电
 
-// 毫秒级延时 (误差：在1%以内，1ms、10ms、100ms延时的误差均小于1%)
-// 前提条件：FCPU = FHOSC / 4
+// // 毫秒级延时 (误差：在1%以内，1ms、10ms、100ms延时的误差均小于1%)
+// // 前提条件：FCPU = FHOSC / 4
+// void delay_ms(u16 xms)
+// {
+// 	while (xms)
+// 	{
+// 		u16 i = 572;
+// 		while (i--)
+// 		{
+// 			Nop();
+// 		}
+// 		xms--; // 把 --操作放在while()判断条件外面，更节省空间
+
+// 		__asm;
+// 		clrwdt; // 喂狗
+// 		__endasm;
+// 	}
+// }
+
+// 毫秒级延时,误差在 1% ~ 2%
+// 前提条件：FCPU = FHOSC / 8
 void delay_ms(u16 xms)
 {
 	while (xms)
 	{
-		u16 i = 572;
+		u16 i = 284;
 		while (i--)
 		{
 			Nop();

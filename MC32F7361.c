@@ -118,35 +118,40 @@ u16 adc_get_val_once(void)
 // 定时器3
 void timer3_config(void)
 {
-    T3LOAD = 135 - 1; // FCPU 64分频后，这里是1ms触发一次中断（用计算出来的值会有误差，这里加上了一些补偿）
-    T3CR = 0x86;      // 使能定时器，时钟源选择FCPU，64分频
+    // FCPU == FHOSC / 4 时，FCPU == 8MHz：
+    // T3LOAD = 135 - 1; // FCPU 64分频后，这里是1ms触发一次中断（用计算出来的值会有误差，这里加上了一些补偿）
+    // T3CR = 0x86;      // 使能定时器，时钟源选择FCPU，64分频
+
+    // FCPU == FHOSC / 8 时，FCPU == 4MHz：
+    T3LOAD = 135 - 1; // 分频后，这里是1ms触发一次中断（用计算出来的值会有误差，这里加上了一些补偿）
+
+    T3CR = (0x01 << 7) | (0x01 << 2) | (0x01); // 使能定时器，时钟源选择FCPU，32分频
     T3IE = 1;
 }
 
 void led_red_pwm_config(void)
 {
-    T0CR = DEF_SET_BIT0 | DEF_SET_BIT1; // 不使能PWM,CPU,8分频
-    // T0CNT = 100-1;
+    // FCPU == FHOSC / 4 时，FCPU == 8MHz：
+    // T0CR = DEF_SET_BIT0 | DEF_SET_BIT1; // 不使能PWM,CPU,8分频
+
+    // FCPU == FHOSC / 8 时，FCPU == 4MHz：
+    T0CR = 0x01 << 1; // 不使能PWM,CPU,4分频
+
     T0LOAD = 100 - 1; // 100us
-    // T0DATA = 50;
     T0DATA = 60;
-    // PWMCR0 |= 0x00;         // 正向输出
-    // PWMCR1 |= 0x00;         // 普通模式
-    // PWM0OPS = 0;
-    // T0EN = 1;
     T0EN = 0;
 }
 
 void led_blue_pwm_config(void)
 {
-    T1CR = DEF_SET_BIT1 | DEF_SET_BIT0; // 不使能PWM,CPU,8分频
-    // T1CNT = 100 - 1;
+    // FCPU == FHOSC / 4 时，FCPU == 8MHz：
+    // T1CR = DEF_SET_BIT1 | DEF_SET_BIT0; // 不使能PWM,CPU,8分频
+
+    // FCPU == FHOSC / 8 时，FCPU == 4MHz：
+    T1CR = 0x01 << 1; // 不使能PWM,CPU,4分频
+
     T1LOAD = 100 - 1; // 100us
     T1DATA = 50;
-    // PWMCR0 |= DEF_SET_BIT7 | DEF_SET_BIT3 | DEF_SET_BIT2 | DEF_SET_BIT0; // 使能FPWM，正向输出，死区4个时钟
-    // PWMCR1 |= 0x00;                                                      // 普通模式
-    // PWM1MD = 0;
-    // T1EN = 1;
     T1EN = 0;
 }
 
@@ -388,11 +393,14 @@ void main(void)
     T3EN = 0;
     P15D = 1; // 使能对主机电池的充电
 #endif
-
+    // flag_is_dev_open = 1; // 测试时使用
+    // DEBUG_PIN = ~DEBUG_PIN;// 测试时使用
     flag_is_enable_into_low_power = 1; // 一上电就使能进入低功耗
 
     while (1)
     {
+        // DEBUG_PIN = ~DEBUG_PIN;
+        // delay_ms(1);
 #if 1
         // 检测是否在充电
         if (0 == flag_is_in_charging)
@@ -431,19 +439,21 @@ void main(void)
             // if (adc_val >= 2124) // 如果电池电压大于4.15V
             // if (adc_val >= 2150) // 如果电池电压大于4.2V,实际测试是4.1V左右
             // if (adc_val >= 2048) // 实际测试，充电到3.95V就断开了
-            if (adc_val >= 2099) // 
+            if (adc_val >= 2099) // 如果电池电压大于4.1V
             {
                 flag_is_full_charged = 1;
                 P15D = 0; // 断开对主机电池的充电
+                delay_ms(500);
             }
-            else if (adc_val < 2124 - AD_OFFSET) // 如果电池电压小于4.15V-死区值
+            // else if (adc_val < 2124 - AD_OFFSET) // 如果电池电压小于4.15V-死区值
             // else if (adc_val < 2048 - AD_OFFSET) // 如果电池电压小于
+            else
             {
                 flag_is_full_charged = 0;
                 P15D = 1; // 使能主机电池的充电
             }
 
-            if (flag_is_cut_down_charge)
+            if (flag_is_cut_down_charge && 0 == flag_is_full_charged)
             {
                 flag_is_cut_down_charge = 0;
                 P15D = 0; // 断开给主机电池的充电
@@ -468,12 +478,14 @@ void main(void)
             // 如果主机开启，且未在充电:
             adc_val = adc_get_val();
             // if (adc_val < 1638 - AD_OFFSET) // 电池电压小于3.2V(实际测试是3.14V)
-            if (adc_val < 1638) // 电池电压小于3.2V(实际测试是3.22-3.23V)
+            // if (adc_val < 1638) // 电池电压小于3.2V(实际测试是3.22-3.23V)
+            if (adc_val < 1689) // 电池电压小于3.3V
             {
                 flag_is_power_low = 1;
             }
 
-            if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
+            // if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
+            if (adc_val < 1536) // 如果电池电压小于3.0V
             {
                 flag_is_dev_open = 0;              // 关机
                 flag_is_enable_into_low_power = 1; // 使能进入低功耗
@@ -564,8 +576,8 @@ void main(void)
 
                 volatile u8 key_press_cnt = 0;
 
-                T3IE = 0; // 屏蔽定时器中断
-                T3EN = 0; // 不使能定时器
+                T3IE = 0;  // 屏蔽定时器中断
+                T3EN = 0;  // 不使能定时器
                 T3CNT = 0; // 清除定时器计数值
 
                 while (0 == KEY_SCAN_PIN)
@@ -614,6 +626,8 @@ void int_isr(void) __interrupt
     if (T3IF & T3IE)
     {
         // 目前每1ms进入一次中断
+        // DEBUG_PIN = ~DEBUG_PIN;
+
         { // 按键扫描
             static u8 key_scan_cnt = 0;
             key_scan_cnt++;
@@ -629,11 +643,11 @@ void int_isr(void) __interrupt
             if (flag_is_power_low)
             {
                 blink_cnt++;
-                if (blink_cnt <= 350)
+                if (blink_cnt <= 1000)
                 {
                     LED_GREEN_ON();
                 }
-                else if (blink_cnt <= 700)
+                else if (blink_cnt <= 2000)
                 {
                     LED_GREEN_OFF();
                 }
@@ -653,11 +667,14 @@ void int_isr(void) __interrupt
             if (flag_is_dev_open)
             {
                 power_off_cnt++;
-                if (power_off_cnt >= 360000) // 6min
+                if (power_off_cnt >= 360000) // 6min--客户测试是 390s
+                // if (power_off_cnt >= 332307) // 6min（计算出来的会有误差，这里做了补偿）
                 {
                     power_off_cnt = 0;
                     flag_is_dev_open = 0;
                     flag_is_enable_into_low_power = 1; // 使能进入低功耗
+
+                    // DEBUG_PIN = ~DEBUG_PIN;
                 }
             }
             else
@@ -687,8 +704,13 @@ void int_isr(void) __interrupt
         }
 
         { // 充电时，负责每隔一段时间断开给电池的充电，看看是否还有在充电
+            /*
+                如果充电座已经断开充电，主机却还开着给电池的充电，主机检测充电的引脚
+                可能还会检测到有充电的电压（应该是漏过来的电压）
+            */
+
             static u16 cut_down_charge_cnt = 0;
-            if (flag_is_in_charging)
+            if (flag_is_in_charging && 0 == flag_is_full_charged)
             {
                 cut_down_charge_cnt++;
                 if (cut_down_charge_cnt >= 5000) // xx ms
@@ -700,6 +722,7 @@ void int_isr(void) __interrupt
             else
             {
                 cut_down_charge_cnt = 0;
+                flag_is_cut_down_charge = 0; // 不在充电时，清空该标志位
             }
         }
 
