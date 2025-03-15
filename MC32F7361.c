@@ -439,7 +439,9 @@ void main(void)
             // if (adc_val >= 2124) // 如果电池电压大于4.15V
             // if (adc_val >= 2150) // 如果电池电压大于4.2V,实际测试是4.1V左右
             // if (adc_val >= 2048) // 实际测试，充电到3.95V就断开了
-            if (adc_val >= 2099) // 如果电池电压大于4.1V
+            // if (adc_val >= 2099) // 如果电池电压大于4.1V，实际测试是 4.04V
+            // if (adc_val >= 2130) // 如果电池电压大于4.16V，实际测试是 4.12V
+            if (adc_val >= 2151) // 如果电池电压大于4.20V，实际测试是 V
             {
                 flag_is_full_charged = 1;
                 P15D = 0; // 断开对主机电池的充电
@@ -667,8 +669,8 @@ void int_isr(void) __interrupt
             if (flag_is_dev_open)
             {
                 power_off_cnt++;
-                if (power_off_cnt >= 360000) // 6min--客户测试是 390s
-                // if (power_off_cnt >= 332307) // 6min（计算出来的会有误差，这里做了补偿）
+                // if (power_off_cnt >= 360000) // 6min--客户测试是 390s,实际测试是 388s
+                if (power_off_cnt >= 334020) // 6min（计算出来的会有误差，这里做了补偿）
                 {
                     power_off_cnt = 0;
                     flag_is_dev_open = 0;
