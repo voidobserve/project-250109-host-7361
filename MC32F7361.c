@@ -441,11 +441,14 @@ void main(void)
             // if (adc_val >= 2048) // 实际测试，充电到3.95V就断开了
             // if (adc_val >= 2099) // 如果电池电压大于4.1V，实际测试是 4.04V
             // if (adc_val >= 2130) // 如果电池电压大于4.16V，实际测试是 4.12V
-            if (adc_val >= 2151) // 如果电池电压大于 4.201171875 V，实际测试是 V
+            // if (adc_val >= 2150) // 如果电池电压大于 4.2V 
+            // if (adc_val >= 2151) // 如果电池电压大于 4.201171875 V，实际测试是 V
+            if (adc_val >= 2165) // 如果电池电压大于 4.23V
             {
                 flag_is_full_charged = 1;
                 P15D = 0; // 断开对主机电池的充电
-                delay_ms(500);
+                // delay_ms(5000);
+                delay_ms(10000);
             }
             // else if (adc_val < 2124 - AD_OFFSET) // 如果电池电压小于4.15V-死区值
             // else if (adc_val < 2048 - AD_OFFSET) // 如果电池电压小于
@@ -487,7 +490,8 @@ void main(void)
             }
 
             // if (adc_val < 1587) // 如果电池电压小于3.099V,实际测试是3.12-3.13V
-            if (adc_val < 1536) // 如果电池电压小于3.0V
+            // if (adc_val < 1536) // 如果电池电压小于3.0V
+            if (adc_val < 1484) // 如果电池电压小于2.8984V
             {
                 flag_is_dev_open = 0;              // 关机
                 flag_is_enable_into_low_power = 1; // 使能进入低功耗
