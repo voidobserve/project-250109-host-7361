@@ -138,7 +138,8 @@ void led_red_pwm_config(void)
     T0CR = 0x01 << 1; // 不使能PWM,CPU,4分频
 
     T0LOAD = 100 - 1; // 100us
-    T0DATA = 60;
+    // T0DATA = 60;
+    T0DATA = LED_RED_LUMINANCE;
     T0EN = 0;
 }
 
@@ -151,7 +152,8 @@ void led_blue_pwm_config(void)
     T1CR = 0x01 << 1; // 不使能PWM,CPU,4分频
 
     T1LOAD = 100 - 1; // 100us
-    T1DATA = 50;
+    // T1DATA = 50;
+    T1DATA = LED_BLUE_LUMINANCE;
     T1EN = 0;
 }
 
@@ -321,6 +323,7 @@ void key_event_handle(void)
             if (0 == led_mode)
             {
                 // 紫光 - > 红
+                T0DATA = LED_RED_LUMINANCE;
                 LED_BLUE_OFF();
                 LED_RED_ON();
                 led_mode = 1;
@@ -328,6 +331,7 @@ void key_event_handle(void)
             else if (1 == led_mode)
             {
                 // 红->蓝
+                T1DATA = LED_BLUE_LUMINANCE;
                 LED_RED_OFF();
                 LED_BLUE_ON();
                 led_mode = 2;
@@ -335,6 +339,8 @@ void key_event_handle(void)
             else if (2 == led_mode)
             {
                 // 其他情况 - > 紫光 （红 + 蓝）
+                T0DATA = LED_RED_BLUE_LUMINANCE;
+                T1DATA = LED_RED_BLUE_LUMINANCE;
                 LED_RED_ON();
                 LED_BLUE_ON();
                 led_mode = 0;
@@ -345,6 +351,8 @@ void key_event_handle(void)
         else
         {
             // 关机->开机
+            T0DATA = LED_RED_BLUE_LUMINANCE;
+            T1DATA = LED_RED_BLUE_LUMINANCE;
             LED_RED_ON();
             LED_BLUE_ON();
             led_mode = 0; // 表示当前是紫光
@@ -440,10 +448,11 @@ void main(void)
             // if (adc_val >= 2150) // 如果电池电压大于4.2V,实际测试是4.1V左右
             // if (adc_val >= 2048) // 实际测试，充电到3.95V就断开了
             // if (adc_val >= 2099) // 如果电池电压大于4.1V，实际测试是 4.04V
-            // if (adc_val >= 2130) // 如果电池电压大于4.16V，实际测试是 4.12V
-            // if (adc_val >= 2150) // 如果电池电压大于 4.2V 
+            // if (adc_val >= 2124)  // 4.15
+            // if (adc_val >= 2130) // 如果电池电压大于4.16V，实际测试是 4.12V ===============================
+            // if (adc_val >= 2150) // 如果电池电压大于 4.2V
             // if (adc_val >= 2151) // 如果电池电压大于 4.201171875 V，实际测试是 V
-            if (adc_val >= 2165) // 如果电池电压大于 4.23V
+            if (adc_val >= 2165) // 如果电池电压大于 4.23V ======================================
             {
                 flag_is_full_charged = 1;
                 P15D = 0; // 断开对主机电池的充电
