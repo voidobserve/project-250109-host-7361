@@ -52,10 +52,10 @@ void IO_Init(void)
     PUP2 = 0x00; // io口上拉电阻   1:enable  0:disable
     PDP2 = 0x00; // io口下拉电阻   1:enable  0:disablea
 
-    PMOD = 0x00; // P00、P01、P13 io端口值从寄存器读，推挽输出
-    // DRVCR = 0xB0; // P16、P17输出驱动电流100mA
+    PMOD = 0x00;  // P00、P01、P13 io端口值从寄存器读，推挽输出
+    DRVCR = 0xB0; // P16、P17输出驱动电流100mA
     // DRVCR = 0x90; // P16、P17输出驱动电流50mA
-    DRVCR = 0x80; // P16、P17输出驱动电流25mA，其他普通IO正常驱动电流输出
+    // DRVCR = 0x80; // P16、P17输出驱动电流25mA，其他普通IO正常驱动电流输出
 }
 
 /************************************************
@@ -339,7 +339,8 @@ void key_event_handle(void)
             else if (2 == led_mode)
             {
                 // 其他情况 - > 紫光 （红 + 蓝）
-                T0DATA = LED_RED_BLUE_LUMINANCE;
+                // T0DATA = LED_RED_BLUE_LUMINANCE;
+                T0DATA = LED_RED_LUMINANCE;
                 T1DATA = LED_RED_BLUE_LUMINANCE;
                 LED_RED_ON();
                 LED_BLUE_ON();
@@ -351,7 +352,8 @@ void key_event_handle(void)
         else
         {
             // 关机->开机
-            T0DATA = LED_RED_BLUE_LUMINANCE;
+            // T0DATA = LED_RED_BLUE_LUMINANCE;
+            T0DATA = LED_RED_LUMINANCE;
             T1DATA = LED_RED_BLUE_LUMINANCE;
             LED_RED_ON();
             LED_BLUE_ON();

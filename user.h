@@ -58,14 +58,21 @@
 #define CHARGE_SCAN_PIN P04D
 #endif
 
-// 灯光亮度，控制PWM占空比：
+// 灯光亮度，控制PWM占空比：(数值越小，PWM占空比越小，而驱动灯光的电流越大，灯光低电平点亮)
 // #define LED_RED_LUMINANCE (80)
 // #define LED_BLUE_LUMINANCE (80)
 // #define LED_RED_BLUE_LUMINANCE (70)
 
-#define LED_RED_LUMINANCE (10) // 红光对应的PWM占空比
-#define LED_BLUE_LUMINANCE (0) // 蓝光对应的PWM占空比
-#define LED_RED_BLUE_LUMINANCE (40) // 紫光对应的PWM占空比
+// #define LED_RED_LUMINANCE (10) // 红光对应的PWM占空比
+// #define LED_BLUE_LUMINANCE (0) // 蓝光对应的PWM占空比
+#define LED_RED_LUMINANCE (0) // 蓝光对应的PWM占空比（更改了硬件脚位之后，这里是蓝光）
+// #define LED_BLUE_LUMINANCE (95) // 红光对应的PWM占空比（更改了硬件脚位之后，这里是红光）
+// #define LED_BLUE_LUMINANCE (85) // 红光对应的PWM占空比（更改了硬件脚位之后，这里是红光）
+#define LED_BLUE_LUMINANCE (90) // 红光对应的PWM占空比（更改了硬件脚位之后，这里是红光）
+
+// #define LED_RED_BLUE_LUMINANCE (95) // 紫光时，红灯对应的PWM占空比
+// #define LED_RED_BLUE_LUMINANCE (85) // 紫光时，红灯对应的PWM占空比
+#define LED_RED_BLUE_LUMINANCE (90) // 紫光时，红灯对应的PWM占空比
 
 extern void led_red_on(void);
 extern void led_red_off(void);
