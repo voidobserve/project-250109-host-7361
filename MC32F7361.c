@@ -131,57 +131,49 @@ void timer3_config(void)
 
 void led_red_pwm_config(void)
 {
-    // FCPU == FHOSC / 4 时，FCPU == 8MHz：
-    // T0CR = DEF_SET_BIT0 | DEF_SET_BIT1; // 不使能PWM,CPU,8分频
-
-    // FCPU == FHOSC / 8 时，FCPU == 4MHz：
-    T0CR = 0x01 << 1; // 不使能PWM,CPU,4分频
-
-    T0LOAD = 100 - 1; // 100us
-    // T0DATA = 60;
-    T0DATA = LED_RED_LUMINANCE;
-    T0EN = 0;
-}
-
-void led_blue_pwm_config(void)
-{
-    // FCPU == FHOSC / 4 时，FCPU == 8MHz：
-    // T1CR = DEF_SET_BIT1 | DEF_SET_BIT0; // 不使能PWM,CPU,8分频
-
     // FCPU == FHOSC / 8 时，FCPU == 4MHz：
     T1CR = 0x01 << 1; // 不使能PWM,CPU,4分频
 
     T1LOAD = 100 - 1; // 100us
     // T1DATA = 50;
-    T1DATA = LED_BLUE_LUMINANCE;
+    // T1DATA = LED_BLUE_LUMINANCE;
     T1EN = 0;
 }
 
-void led_red_on(void)
+void led_blue_pwm_config(void)
 {
-    PWM0EC = 1;
-    T0EN = 1;
-}
+    // FCPU == FHOSC / 8 时，FCPU == 4MHz：
+    T0CR = 0x01 << 1; // 不使能PWM,CPU,4分频
 
-void led_red_off(void)
-{
-    PWM0EC = 0;
+    T0LOAD = 100 - 1; // 100us
+    // T0DATA = 60;
+    // T0DATA = LED_RED_LUMINANCE;
     T0EN = 0;
-    // P16OE = 1;
-    LED_RED_PIN = 1; // 高电平表示熄灭
 }
 
-void led_blue_on(void)
+void led_red_on(void)
 {
     PWM1EC = 1;
     T1EN = 1;
 }
 
-void led_blue_off(void)
+void led_red_off(void)
 {
     PWM1EC = 0;
     T1EN = 0;
-    // P17OE = 1;
+    LED_RED_PIN = 1; // 高电平表示熄灭
+}
+
+void led_blue_on(void)
+{
+    PWM0EC = 1;
+    T0EN = 1;
+}
+
+void led_blue_off(void)
+{
+    PWM0EC = 0;
+    T0EN = 0;
     LED_BLUE_PIN = 1; // 高电平表示熄灭
 }
 
@@ -320,44 +312,40 @@ void key_event_handle(void)
     {
         if (flag_is_dev_open)
         {
-            if (0 == led_mode)
+            if (LED_MODE_RED == led_mode)
             {
-                // 紫光 - > 红
-                T0DATA = LED_RED_LUMINANCE;
+                // 红光 -> 蓝
+                LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE;
+                LED_RED_OFF(); 
+                LED_BLUE_ON(); 
+                led_mode = LED_MODE_BLUE;
+            }
+            else if (LED_MODE_BLUE == led_mode)
+            {
+                // 蓝 -> 紫光 （红 + 蓝）
+                LED_RED_TIMER_DATA = LED_RED_BLUE_LUMINANCE;
+                LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE;
+                LED_RED_ON();
+                LED_BLUE_ON();
+                led_mode = LED_MODE_RED_AND_BLUE;                 
+            }
+            else if (LED_MODE_RED_AND_BLUE == led_mode)
+            {
+                // 紫光 （红 + 蓝） - > 红
+                LED_RED_TIMER_DATA = LED_RED_LUMINANCE;
                 LED_BLUE_OFF();
                 LED_RED_ON();
-                led_mode = 1;
-            }
-            else if (1 == led_mode)
-            {
-                // 红->蓝
-                T1DATA = LED_BLUE_LUMINANCE;
-                LED_RED_OFF();
-                LED_BLUE_ON();
-                led_mode = 2;
-            }
-            else if (2 == led_mode)
-            {
-                // 其他情况 - > 紫光 （红 + 蓝）
-                // T0DATA = LED_RED_BLUE_LUMINANCE;
-                T0DATA = LED_RED_LUMINANCE;
-                T1DATA = LED_RED_BLUE_LUMINANCE;
-                LED_RED_ON();
-                LED_BLUE_ON();
-                led_mode = 0;
+                led_mode = LED_MODE_RED;
             }
 
             power_off_cnt = 0; // 清空关机计数
         }
         else
         {
-            // 关机->开机
-            // T0DATA = LED_RED_BLUE_LUMINANCE;
-            T0DATA = LED_RED_LUMINANCE;
-            T1DATA = LED_RED_BLUE_LUMINANCE;
-            LED_RED_ON();
-            LED_BLUE_ON();
-            led_mode = 0; // 表示当前是紫光
+            // 关机->开机 
+            LED_RED_TIMER_DATA = LED_RED_LUMINANCE; 
+            LED_RED_ON(); 
+            led_mode = LED_MODE_RED; // 表示当前是红光
             flag_is_dev_open = 1;
         }
     }
@@ -375,7 +363,7 @@ void key_event_handle(void)
         //     LED_RED_ON();
         //     LED_BLUE_ON();
         //     led_mode = 0; // 表示当前是紫光
-        //     flag_is_dev_open = 1;
+            // flag_is_dev_open = 1;
         // }
 
         flag_is_enable_into_low_power = 1; // 只要识别到长按就使能进入低功耗
@@ -486,7 +474,8 @@ void main(void)
             LED_BLUE_OFF();
             flag_is_dev_open = 0;
             flag_is_enable_into_low_power = 1; // 使能进入低功耗
-            led_mode = 2;                      // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
+            // led_mode = 2;                      // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
+            led_mode = LED_MODE_RED_AND_BLUE; // 下次短按按键，从红+蓝变为红灯
         }
 
         if (flag_is_dev_open && 0 == flag_is_in_charging)

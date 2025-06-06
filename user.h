@@ -48,9 +48,9 @@
 #define USE_MY_DEBUG 0
 #define AD_OFFSET 41 // 检测到的ad值与实际的电压值有偏差，要减去这个值
 
-#define LED_BLUE_PIN P17D
-#define LED_GREEN_PIN P13D
-#define LED_RED_PIN P16D
+#define LED_BLUE_PIN P16D
+#define LED_GREEN_PIN P13D 
+#define LED_RED_PIN P17D
 #define KEY_SCAN_PIN P00D
 #if USE_MY_DEBUG
 #define CHARGE_SCAN_PIN P05D
@@ -59,20 +59,14 @@
 #endif
 
 // 灯光亮度，控制PWM占空比：(数值越小，PWM占空比越小，而驱动灯光的电流越大，灯光低电平点亮)
-// #define LED_RED_LUMINANCE (80)
-// #define LED_BLUE_LUMINANCE (80)
-// #define LED_RED_BLUE_LUMINANCE (70)
-
-// #define LED_RED_LUMINANCE (10) // 红光对应的PWM占空比
-// #define LED_BLUE_LUMINANCE (0) // 蓝光对应的PWM占空比
-#define LED_RED_LUMINANCE (0) // 蓝光对应的PWM占空比（更改了硬件脚位之后，这里是蓝光）
-// #define LED_BLUE_LUMINANCE (95) // 红光对应的PWM占空比（更改了硬件脚位之后，这里是红光）
-// #define LED_BLUE_LUMINANCE (85) // 红光对应的PWM占空比（更改了硬件脚位之后，这里是红光）
-#define LED_BLUE_LUMINANCE (90) // 红光对应的PWM占空比（更改了硬件脚位之后，这里是红光）
-
-// #define LED_RED_BLUE_LUMINANCE (95) // 紫光时，红灯对应的PWM占空比
-// #define LED_RED_BLUE_LUMINANCE (85) // 紫光时，红灯对应的PWM占空比
+#define LED_RED_LUMINANCE (90) // 红光对应的PWM占空比   
+#define LED_BLUE_LUMINANCE (0) // 蓝光对应的PWM占空比 
 #define LED_RED_BLUE_LUMINANCE (90) // 紫光时，红灯对应的PWM占空比
+
+#define LED_RED_TIMER_DATA (T1DATA) // 驱动红灯的pwm占空比寄存器 TxDATA
+#define LED_BLUE_TIMER_DATA (T0DATA) // 驱动蓝灯的pwm占空比寄存器 TxDATA
+
+
 
 extern void led_red_on(void);
 extern void led_red_off(void);
@@ -93,6 +87,7 @@ extern void led_blue_off(void);
 // 			LED_BLUE_PIN = 1; \
 // 		} while (0);          \
 // 	}
+
 #define LED_BLUE_ON()      \
 	{                      \
 		do                 \
@@ -121,6 +116,7 @@ extern void led_blue_off(void);
 			LED_GREEN_PIN = 0; \
 		} while (0);           \
 	}
+
 // #define LED_RED_ON()         \
 // 	{                        \
 // 		do                   \
@@ -135,6 +131,7 @@ extern void led_blue_off(void);
 // 			LED_RED_PIN = 1; \
 // 		} while (0);         \
 // 	}
+
 #define LED_RED_ON()      \
 	{                     \
 		do                \
@@ -142,6 +139,7 @@ extern void led_blue_off(void);
 			led_red_on(); \
 		} while (0);      \
 	}
+
 #define LED_RED_OFF()      \
 	{                      \
 		do                 \
@@ -183,6 +181,13 @@ volatile u16 adc_val;
 
 //===============Global Variable===============
 u8 i; // 循环计数值
+
+enum
+{
+	LED_MODE_RED = 0,	   // 默认开机是红光
+	LED_MODE_BLUE,		   // 蓝
+	LED_MODE_RED_AND_BLUE, // 红+蓝
+};
 
 volatile u8 led_mode;
 
