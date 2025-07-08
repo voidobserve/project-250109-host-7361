@@ -323,8 +323,8 @@ void key_event_handle(void)
             else if (LED_MODE_BLUE == led_mode)
             {
                 // À¶ -> ×Ï¹â £¨ºì + À¶£©
-                LED_RED_TIMER_DATA = LED_RED_BLUE_LUMINANCE;
-                LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE;
+                LED_RED_TIMER_DATA = LED_RED_LUMINANCE_IN_PURPLE;
+                LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE_IN_PURPLE;
                 LED_RED_ON();
                 LED_BLUE_ON();
                 led_mode = LED_MODE_RED_AND_BLUE;                 

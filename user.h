@@ -60,8 +60,27 @@
 
 // 灯光亮度，控制PWM占空比：(数值越小，PWM占空比越小，而驱动灯光的电流越大，灯光低电平点亮)
 #define LED_RED_LUMINANCE (90) // 红光对应的PWM占空比   
-#define LED_BLUE_LUMINANCE (0) // 蓝光对应的PWM占空比 
-#define LED_RED_BLUE_LUMINANCE (90) // 紫光时，红灯对应的PWM占空比
+// #define LED_BLUE_LUMINANCE (0) // 蓝光对应的PWM占空比 
+
+// #define LED_BLUE_LUMINANCE (5) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (10) // 蓝光对应的PWM占空比 
+#define LED_BLUE_LUMINANCE (15) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (20) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (30) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (32) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (35) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (37) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (45) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (60) // 蓝光对应的PWM占空比 
+
+#define LED_RED_LUMINANCE_IN_PURPLE (90) // 紫光时，红灯对应的PWM占空比
+#define LED_BLUE_LUMINANCE_IN_PURPLE (0) // 紫光时，蓝灯对应的PWM占空比
+// #define LED_BLUE_LUMINANCE_IN_PURPLE (30) // 紫光时，蓝灯对应的PWM占空比
+// #define LED_BLUE_LUMINANCE_IN_PURPLE (50) // 紫光时，蓝灯对应的PWM占空比
+// #define LED_BLUE_LUMINANCE_IN_PURPLE (60) // 紫光时，蓝灯对应的PWM占空比
+// #define LED_BLUE_LUMINANCE_IN_PURPLE (65) // 紫光时，蓝灯对应的PWM占空比
+// #define LED_BLUE_LUMINANCE_IN_PURPLE (70) // 紫光时，蓝灯对应的PWM占空比
+// #define LED_BLUE_LUMINANCE_IN_PURPLE (80) // 紫光时，蓝灯对应的PWM占空比
 
 #define LED_RED_TIMER_DATA (T1DATA) // 驱动红灯的pwm占空比寄存器 TxDATA
 #define LED_BLUE_TIMER_DATA (T0DATA) // 驱动蓝灯的pwm占空比寄存器 TxDATA
