@@ -674,7 +674,9 @@ void int_isr(void) __interrupt
             {
                 power_off_cnt++;
                 // if (power_off_cnt >= 360000) // 6min--客户测试是 390s,实际测试是 388s
-                if (power_off_cnt >= 334020) // 6min（计算出来的会有误差，这里做了补偿）
+
+                // if (power_off_cnt >= 334020) // 6min（计算出来的会有误差，这里做了补偿）
+                if (power_off_cnt >= ((u32)334020 / 2)) // 3min ,直接根据6min的数据除以2
                 {
                     power_off_cnt = 0;
                     flag_is_dev_open = 0;
