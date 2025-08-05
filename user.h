@@ -71,7 +71,8 @@
 // ====================================================
 // #define LED_RED_LUMINANCE (91) // 红光对应的PWM占空比   
 // #define LED_RED_LUMINANCE (92) // 红光对应的PWM占空比   
-#define LED_RED_LUMINANCE (93) // 红光对应的PWM占空比   
+// #define LED_RED_LUMINANCE (93) // 红光对应的PWM占空比   
+#define LED_RED_LUMINANCE (94) // 红光对应的PWM占空比   
 
 // #define LED_RED_LUMINANCE (95) // 红光对应的PWM占空比 ==================
 
@@ -96,7 +97,8 @@
 // ====================================================
 // #define LED_RED_LUMINANCE_IN_PURPLE (91) // 紫光时，红灯对应的PWM占空比 
 // #define LED_RED_LUMINANCE_IN_PURPLE (92) // 紫光时，红灯对应的PWM占空比 
-#define LED_RED_LUMINANCE_IN_PURPLE (93) // 紫光时，红灯对应的PWM占空比 
+// #define LED_RED_LUMINANCE_IN_PURPLE (93) // 紫光时，红灯对应的PWM占空比 
+#define LED_RED_LUMINANCE_IN_PURPLE (94) // 紫光时，红灯对应的PWM占空比 
 // #define LED_RED_LUMINANCE_IN_PURPLE (95) // 紫光时，红灯对应的PWM占空比 ===================
 
 
