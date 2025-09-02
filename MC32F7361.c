@@ -1,3 +1,4 @@
+// encoding GB2312
 /******************************************************************************
 ;  *       @型号                 : MC32F7361
 ;  *       @创建日期             : 2021.12.21
@@ -129,6 +130,7 @@ void timer3_config(void)
     T3IE = 1;
 }
 
+// 红灯和蓝灯引脚修改太多，可能不是红灯pwm初始化
 void led_red_pwm_config(void)
 {
     // FCPU == FHOSC / 8 时，FCPU == 4MHz：
@@ -140,6 +142,7 @@ void led_red_pwm_config(void)
     T1EN = 0;
 }
 
+// 红灯和蓝灯引脚修改太多，可能不是蓝灯pwm初始化
 void led_blue_pwm_config(void)
 {
     // FCPU == FHOSC / 8 时，FCPU == 4MHz：
@@ -153,27 +156,28 @@ void led_blue_pwm_config(void)
 
 void led_red_on(void)
 {
-    PWM1EC = 1;
-    T1EN = 1;
+    PWM0EC = 1;
+    T0EN = 1;
 }
 
 void led_red_off(void)
 {
-    PWM1EC = 0;
-    T1EN = 0;
+    PWM0EC = 0;
+    T0EN = 0;
     LED_RED_PIN = 1; // 高电平表示熄灭
 }
 
 void led_blue_on(void)
 {
-    PWM0EC = 1;
-    T0EN = 1;
+
+    PWM1EC = 1;
+    T1EN = 1;
 }
 
 void led_blue_off(void)
 {
-    PWM0EC = 0;
-    T0EN = 0;
+    PWM1EC = 0;
+    T1EN = 0;
     LED_BLUE_PIN = 1; // 高电平表示熄灭
 }
 
@@ -316,8 +320,8 @@ void key_event_handle(void)
             {
                 // 红光 -> 蓝
                 LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE;
-                LED_RED_OFF(); 
-                LED_BLUE_ON(); 
+                LED_RED_OFF();
+                LED_BLUE_ON();
                 led_mode = LED_MODE_BLUE;
             }
             else if (LED_MODE_BLUE == led_mode)
@@ -327,7 +331,7 @@ void key_event_handle(void)
                 LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE_IN_PURPLE;
                 LED_RED_ON();
                 LED_BLUE_ON();
-                led_mode = LED_MODE_RED_AND_BLUE;                 
+                led_mode = LED_MODE_RED_AND_BLUE;
             }
             else if (LED_MODE_RED_AND_BLUE == led_mode)
             {
@@ -342,10 +346,17 @@ void key_event_handle(void)
         }
         else
         {
-            // 关机->开机 
-            LED_RED_TIMER_DATA = LED_RED_LUMINANCE; 
-            LED_RED_ON(); 
-            led_mode = LED_MODE_RED; // 表示当前是红光
+            // 关机->开机
+            // LED_RED_TIMER_DATA = LED_RED_LUMINANCE;
+            // LED_RED_ON();
+            // led_mode = LED_MODE_RED; // 表示当前是红光
+            // flag_is_dev_open = 1;
+
+            LED_RED_TIMER_DATA = LED_RED_LUMINANCE_IN_PURPLE;
+            LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE_IN_PURPLE;
+            LED_RED_ON();
+            LED_BLUE_ON();
+            led_mode = LED_MODE_RED_AND_BLUE;
             flag_is_dev_open = 1;
         }
     }
@@ -363,7 +374,7 @@ void key_event_handle(void)
         //     LED_RED_ON();
         //     LED_BLUE_ON();
         //     led_mode = 0; // 表示当前是紫光
-            // flag_is_dev_open = 1;
+        // flag_is_dev_open = 1;
         // }
 
         flag_is_enable_into_low_power = 1; // 只要识别到长按就使能进入低功耗
@@ -504,7 +515,7 @@ void main(void)
 
         key_event_handle();
 
-#if 1
+#if 1 // 低功耗
         if (0 == flag_is_dev_open &&       // 设备工作时，不进入低功耗
             0 == flag_is_in_charging &&    // 充电时，不进入低功耗
             KEY_SCAN_PIN &&                /* 有按键按下(为低电平)，不进入低功耗 */

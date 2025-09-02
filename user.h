@@ -1,3 +1,4 @@
+// encoding GB2312
 /******************************************************************************
 ;  *       @型号                   : MC32F7361
 ;  *       @创建日期               : 2021.12.21
@@ -48,9 +49,11 @@
 #define USE_MY_DEBUG 0
 #define AD_OFFSET 41 // 检测到的ad值与实际的电压值有偏差，要减去这个值
 
-#define LED_BLUE_PIN P16D
-#define LED_GREEN_PIN P13D 
-#define LED_RED_PIN P17D
+#define LED_GREEN_PIN P13D
+
+#define LED_RED_PIN P16D
+#define LED_BLUE_PIN P17D
+
 #define KEY_SCAN_PIN P00D
 #if USE_MY_DEBUG
 #define CHARGE_SCAN_PIN P05D
@@ -63,45 +66,42 @@
 
 	数值越小，灯光越亮
 	数值越大，灯光越暗
-*/ 
+*/
 
-// #define LED_RED_LUMINANCE (90) // 红光对应的PWM占空比  
-// ==================================================== 
-// #define LED_RED_LUMINANCE (89) // 红光对应的PWM占空比   
+// #define LED_RED_LUMINANCE (90) // 红光对应的PWM占空比
 // ====================================================
-// #define LED_RED_LUMINANCE (91) // 红光对应的PWM占空比   
-// #define LED_RED_LUMINANCE (92) // 红光对应的PWM占空比   
-// #define LED_RED_LUMINANCE (93) // 红光对应的PWM占空比   
-#define LED_RED_LUMINANCE (94) // 红光对应的PWM占空比   
+// #define LED_RED_LUMINANCE (89) // 红光对应的PWM占空比
+// ====================================================
+// #define LED_RED_LUMINANCE (91) // 红光对应的PWM占空比
+// #define LED_RED_LUMINANCE (92) // 红光对应的PWM占空比
+#define LED_RED_LUMINANCE (93) // 红光对应的PWM占空比
+// #define LED_RED_LUMINANCE (94) // 红光对应的PWM占空比
 
 // #define LED_RED_LUMINANCE (95) // 红光对应的PWM占空比 ==================
 
-// #define LED_BLUE_LUMINANCE (0) // 蓝光对应的PWM占空比 
-// #define LED_BLUE_LUMINANCE (5) // 蓝光对应的PWM占空比 
-// #define LED_BLUE_LUMINANCE (10) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (0) // 蓝光对应的PWM占空比
+// #define LED_BLUE_LUMINANCE (5) // 蓝光对应的PWM占空比
+// #define LED_BLUE_LUMINANCE (10) // 蓝光对应的PWM占空比
 
-// #define LED_BLUE_LUMINANCE (15) // 蓝光对应的PWM占空比 
-// #define LED_BLUE_LUMINANCE (20) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (15) // 蓝光对应的PWM占空比
+// #define LED_BLUE_LUMINANCE (20) // 蓝光对应的PWM占空比
 // ====================================================
-// #define LED_BLUE_LUMINANCE (30) // 蓝光对应的PWM占空比 
+// #define LED_BLUE_LUMINANCE (30) // 蓝光对应的PWM占空比
 // ====================================================
-// #define LED_BLUE_LUMINANCE (32) // 蓝光对应的PWM占空比 
-#define LED_BLUE_LUMINANCE (40) // 蓝光对应的PWM占空比 
-// #define LED_BLUE_LUMINANCE (45) // 蓝光对应的PWM占空比 
-// #define LED_BLUE_LUMINANCE (60) // 蓝光对应的PWM占空比 
-
+// #define LED_BLUE_LUMINANCE (32) // 蓝光对应的PWM占空比
+#define LED_BLUE_LUMINANCE (40) // 蓝光对应的PWM占空比
+// #define LED_BLUE_LUMINANCE (45) // 蓝光对应的PWM占空比
+// #define LED_BLUE_LUMINANCE (60) // 蓝光对应的PWM占空比
 
 // #define LED_RED_LUMINANCE_IN_PURPLE (90) // 紫光时，红灯对应的PWM占空比
 // ====================================================
 // #define LED_RED_LUMINANCE_IN_PURPLE (89) // 紫光时，红灯对应的PWM占空比
 // ====================================================
-// #define LED_RED_LUMINANCE_IN_PURPLE (91) // 紫光时，红灯对应的PWM占空比 
-// #define LED_RED_LUMINANCE_IN_PURPLE (92) // 紫光时，红灯对应的PWM占空比 
-// #define LED_RED_LUMINANCE_IN_PURPLE (93) // 紫光时，红灯对应的PWM占空比 
-#define LED_RED_LUMINANCE_IN_PURPLE (94) // 紫光时，红灯对应的PWM占空比 
+// #define LED_RED_LUMINANCE_IN_PURPLE (91) // 紫光时，红灯对应的PWM占空比
+// #define LED_RED_LUMINANCE_IN_PURPLE (92) // 紫光时，红灯对应的PWM占空比
+#define LED_RED_LUMINANCE_IN_PURPLE (93) // 紫光时，红灯对应的PWM占空比
+// #define LED_RED_LUMINANCE_IN_PURPLE (94) // 紫光时，红灯对应的PWM占空比
 // #define LED_RED_LUMINANCE_IN_PURPLE (95) // 紫光时，红灯对应的PWM占空比 ===================
-
-
 
 // #define LED_BLUE_LUMINANCE_IN_PURPLE (0) // 紫光时，蓝灯对应的PWM占空比
 // ====================================================
@@ -114,10 +114,8 @@
 // #define LED_BLUE_LUMINANCE_IN_PURPLE (70) // 紫光时，蓝灯对应的PWM占空比
 // #define LED_BLUE_LUMINANCE_IN_PURPLE (80) // 紫光时，蓝灯对应的PWM占空比
 
-#define LED_RED_TIMER_DATA (T1DATA) // 驱动红灯的pwm占空比寄存器 TxDATA
-#define LED_BLUE_TIMER_DATA (T0DATA) // 驱动蓝灯的pwm占空比寄存器 TxDATA
-
-
+#define LED_RED_TIMER_DATA (T0DATA)	 // 驱动红灯的pwm占空比寄存器 TxDATA
+#define LED_BLUE_TIMER_DATA (T1DATA) // 驱动蓝灯的pwm占空比寄存器 TxDATA
 
 extern void led_red_on(void);
 extern void led_red_off(void);
