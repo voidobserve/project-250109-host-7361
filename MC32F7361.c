@@ -12,11 +12,6 @@
 
 #include "user.h"
 
-#ifdef DATE_250911_1904
-u32 red_pwm;
-u32 blue_pwm;
-#endif
-
 /************************************************
 ;  *    @函数名          : CLR_RAM
 ;  *    @说明            : 清RAM
@@ -58,10 +53,10 @@ void IO_Init(void)
     PUP2 = 0x00; // io口上拉电阻   1:enable  0:disable
     PDP2 = 0x00; // io口下拉电阻   1:enable  0:disablea
 
-    PMOD = 0x00;  // P00、P01、P13 io端口值从寄存器读，推挽输出
-    DRVCR = 0xB0; // P16、P17输出驱动电流100mA
+    PMOD = 0x00; // P00、P01、P13 io端口值从寄存器读，推挽输出
+    // DRVCR = 0xB0; // P16、P17输出驱动电流100mA
     // DRVCR = 0x90; // P16、P17输出驱动电流50mA
-    // DRVCR = 0x80; // P16、P17输出驱动电流25mA，其他普通IO正常驱动电流输出
+    DRVCR = 0x80; // P16、P17输出驱动电流25mA，其他普通IO正常驱动电流输出
 }
 
 /************************************************
@@ -135,62 +130,55 @@ void timer3_config(void)
     T3IE = 1;
 }
 
-// 红灯和蓝灯引脚修改太多，可能不是红灯pwm初始化
 void led_red_pwm_config(void)
 {
-    // FCPU == FHOSC / 8 时，FCPU == 4MHz：
-    T1CR = 0x01 << 1; // 不使能PWM,CPU,4分频
+    // FCPU == FHOSC / 4 时，FCPU == 8MHz：
+    // T0CR = DEF_SET_BIT0 | DEF_SET_BIT1; // 不使能PWM,CPU,8分频
 
-#ifdef DATE_250911_1904
-    T1LOAD = 255;
-#else
-    T1LOAD = 100 - 1; // 100us
-#endif
-    // T1DATA = 50;
-    // T1DATA = LED_BLUE_LUMINANCE;
-    T1EN = 0;
-}
-
-// 红灯和蓝灯引脚修改太多，可能不是蓝灯pwm初始化
-void led_blue_pwm_config(void)
-{
     // FCPU == FHOSC / 8 时，FCPU == 4MHz：
     T0CR = 0x01 << 1; // 不使能PWM,CPU,4分频
 
-#ifdef DATE_250911_1904
-    T0LOAD = 255;
-#else
     T0LOAD = 100 - 1; // 100us
-#endif
-    // T0DATA = 60;
-    // T0DATA = LED_RED_LUMINANCE;
+    T0DATA = 60;
     T0EN = 0;
 }
 
-void led_red_on(void)
+void led_blue_pwm_config(void)
 {
-    PWM0EC = 1;
-    T0EN = 1;
+    // FCPU == FHOSC / 4 时，FCPU == 8MHz：
+    // T1CR = DEF_SET_BIT1 | DEF_SET_BIT0; // 不使能PWM,CPU,8分频
+
+    // FCPU == FHOSC / 8 时，FCPU == 4MHz：
+    T1CR = 0x01 << 1; // 不使能PWM,CPU,4分频
+
+    T1LOAD = 100 - 1; // 100us
+    T1DATA = 50;
+    T1EN = 0;
+}
+
+void led_red_on(void)
+{ 
+    PWM1EC = 1;
+    T1EN = 1;
 }
 
 void led_red_off(void)
 {
-    PWM0EC = 0;
-    T0EN = 0;
+    PWM1EC = 0;
+    T1EN = 0; 
     LED_RED_PIN = 1; // 高电平表示熄灭
 }
 
 void led_blue_on(void)
 {
-
-    PWM1EC = 1;
-    T1EN = 1;
+    PWM0EC = 1;
+    T0EN = 1;
 }
 
 void led_blue_off(void)
 {
-    PWM1EC = 0;
-    T1EN = 0;
+    PWM0EC = 0;
+    T0EN = 0; 
     LED_BLUE_PIN = 1; // 高电平表示熄灭
 }
 
@@ -329,43 +317,26 @@ void key_event_handle(void)
     {
         if (flag_is_dev_open)
         {
-            if (LED_MODE_RED == led_mode)
+            if (0 == led_mode)
             {
-                // 红光 -> 蓝
-#ifdef DATE_250911_1904
-                LED_BLUE_TIMER_DATA = (u8)blue_pwm;
-#else
-                LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE;
-#endif
-                LED_RED_OFF();
-                LED_BLUE_ON();
-                led_mode = LED_MODE_BLUE;
-            }
-            else if (LED_MODE_BLUE == led_mode)
-            {
-                // 蓝 -> 紫光 （红 + 蓝）
-#ifdef DATE_250911_1904
-                LED_RED_TIMER_DATA = (u8)red_pwm;
-                LED_BLUE_TIMER_DATA = (u8)blue_pwm;
-#else
-                LED_RED_TIMER_DATA = LED_RED_LUMINANCE_IN_PURPLE;
-                LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE_IN_PURPLE;
-#endif
-                LED_RED_ON();
-                LED_BLUE_ON();
-                led_mode = LED_MODE_RED_AND_BLUE;
-            }
-            else if (LED_MODE_RED_AND_BLUE == led_mode)
-            {
-                // 紫光 （红 + 蓝） - > 红
-#ifdef DATE_250911_1904
-                LED_RED_TIMER_DATA = (u8)red_pwm;
-#else
-                LED_RED_TIMER_DATA = LED_RED_LUMINANCE;
-#endif
+                // 紫光 - > 红
                 LED_BLUE_OFF();
                 LED_RED_ON();
-                led_mode = LED_MODE_RED;
+                led_mode = 1;
+            }
+            else if (1 == led_mode)
+            {
+                // 红->蓝
+                LED_RED_OFF();
+                LED_BLUE_ON();
+                led_mode = 2;
+            }
+            else if (2 == led_mode)
+            {
+                // 其他情况 - > 紫光 （红 + 蓝）
+                LED_RED_ON();
+                LED_BLUE_ON();
+                led_mode = 0;
             }
 
             power_off_cnt = 0; // 清空关机计数
@@ -373,60 +344,9 @@ void key_event_handle(void)
         else
         {
             // 关机->开机
-            // LED_RED_TIMER_DATA = LED_RED_LUMINANCE;
-            // LED_RED_ON();
-            // led_mode = LED_MODE_RED; // 表示当前是红光
-            // flag_is_dev_open = 1;
-
-#ifdef DATE_250911_1904
-
-            u16 adc_val_for_pwm = adc_get_val();
-            if (adc_val_for_pwm < 1484)
-            {
-                adc_val_for_pwm = 1484;
-                // red_pwm = 196;
-                // blue_pwm = 23;
-            }
-            else if (adc_val_for_pwm >= 2165)
-            {
-                adc_val_for_pwm = 2165;
-                // red_pwm = 93;
-                // blue_pwm = 11;
-            }
-
-// #define PWM1_BASE (23)  // 等比调节这个数，数值越高最终正向占空比越高，亮度越低（最大255）
-#define PWM1_BASE (30)  // 等比调节这个数，数值越高最终正向占空比越高，亮度越低（最大255）
-// #define PWM2_BASE (196) // 等比调节这个数，数值越高最终正向占空比越高，亮度越低
-// #define PWM2_BASE (220) // 等比调节这个数，数值越高最终正向占空比越高，亮度越低（最大255）
-#define PWM2_BASE (255) // 等比调节这个数，数值越高最终正向占空比越高，亮度越低（最大255）
-// #define PWM2_A (120)    // PWM2的系数，不平衡时：如果电池电压越高电流越高，就加大系数，反之减小，可以先用20为步进粗调后再细调
-#define PWM2_A (300) // PWM2的系数，不平衡时：如果电池电压越高电流越高，就加大系数，反之减小，可以先用20为步进粗调后再细调(该值不能超过354)
-            red_pwm = PWM1_BASE - (u32)4 * ((u32)adc_val_for_pwm - 1484) / 227;
-            // blue_pwm = PWM2_BASE - (u32)4 * PWM2_BASE * ((u32)adc_val_for_pwm - 1484) / 227 / PWM1_BASE;
-            // blue_pwm = PWM2_BASE - (73 * (u32)adc_val_for_pwm * 3000 / 1536 - 211320) / 2400;
-
-            blue_pwm = PWM2_BASE - ((u32)PWM2_A) * (u32)adc_val_for_pwm * 5 / 1536 / 4 + ((u32)211320 * PWM2_A / 73) / 2400;
-
-            red_pwm = 255 - (u8)red_pwm;
-            blue_pwm = 255 - (u8)blue_pwm;
-            // blue_pwm = 255 - 153; // 固定一个pwm，测试不同电压下的电流
-
-            LED_RED_TIMER_DATA = (u8)red_pwm;
-            LED_BLUE_TIMER_DATA = (u8)blue_pwm;
-#else
-            LED_RED_TIMER_DATA = LED_RED_LUMINANCE_IN_PURPLE;
-            LED_BLUE_TIMER_DATA = LED_BLUE_LUMINANCE_IN_PURPLE;
-#endif
-
-
             LED_RED_ON();
             LED_BLUE_ON();
-            led_mode = LED_MODE_RED_AND_BLUE; // 紫
-
-            // LED_BLUE_OFF();
-            // LED_RED_ON();
-            // led_mode = LED_MODE_RED;
-
+            led_mode = 0; // 表示当前是紫光
             flag_is_dev_open = 1;
         }
     }
@@ -444,7 +364,7 @@ void key_event_handle(void)
         //     LED_RED_ON();
         //     LED_BLUE_ON();
         //     led_mode = 0; // 表示当前是紫光
-        // flag_is_dev_open = 1;
+        //     flag_is_dev_open = 1;
         // }
 
         flag_is_enable_into_low_power = 1; // 只要识别到长按就使能进入低功耗
@@ -519,11 +439,10 @@ void main(void)
             // if (adc_val >= 2150) // 如果电池电压大于4.2V,实际测试是4.1V左右
             // if (adc_val >= 2048) // 实际测试，充电到3.95V就断开了
             // if (adc_val >= 2099) // 如果电池电压大于4.1V，实际测试是 4.04V
-            // if (adc_val >= 2124)  // 4.15
-            // if (adc_val >= 2130) // 如果电池电压大于4.16V，实际测试是 4.12V ===============================
+            // if (adc_val >= 2130) // 如果电池电压大于4.16V，实际测试是 4.12V
             // if (adc_val >= 2150) // 如果电池电压大于 4.2V
             // if (adc_val >= 2151) // 如果电池电压大于 4.201171875 V，实际测试是 V
-            if (adc_val >= 2165) // 如果电池电压大于 4.23V ======================================
+            if (adc_val >= 2165) // 如果电池电压大于 4.23V
             {
                 flag_is_full_charged = 1;
                 P15D = 0; // 断开对主机电池的充电
@@ -555,8 +474,7 @@ void main(void)
             LED_BLUE_OFF();
             flag_is_dev_open = 0;
             flag_is_enable_into_low_power = 1; // 使能进入低功耗
-            // led_mode = 2;                      // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
-            led_mode = LED_MODE_RED_AND_BLUE; // 下次短按按键，从红+蓝变为红灯
+            led_mode = 2;                      // 如果按下开机再断开充电，就会点亮红灯和蓝灯，如果不是，则会进入低功耗，低功耗唤醒后所有变量都会清零
         }
 
         if (flag_is_dev_open && 0 == flag_is_in_charging)
@@ -585,7 +503,7 @@ void main(void)
 
         key_event_handle();
 
-#if 1                                      // 低功耗
+#if 1
         if (0 == flag_is_dev_open &&       // 设备工作时，不进入低功耗
             0 == flag_is_in_charging &&    // 充电时，不进入低功耗
             KEY_SCAN_PIN &&                /* 有按键按下(为低电平)，不进入低功耗 */
@@ -755,9 +673,7 @@ void int_isr(void) __interrupt
             {
                 power_off_cnt++;
                 // if (power_off_cnt >= 360000) // 6min--客户测试是 390s,实际测试是 388s
-
-                // if (power_off_cnt >= 334020) // 6min（计算出来的会有误差，这里做了补偿）
-                if (power_off_cnt >= ((u32)334020 / 2)) // 3min ,直接根据6min的数据除以2
+                if (power_off_cnt >= 334020) // 6min（计算出来的会有误差，这里做了补偿）
                 {
                     power_off_cnt = 0;
                     flag_is_dev_open = 0;
