@@ -49,9 +49,9 @@
 #define USE_MY_DEBUG 0
 #define AD_OFFSET 41 // 检测到的ad值与实际的电压值有偏差，要减去这个值
 
-#define LED_BLUE_PIN P16D
+#define LED_BLUE_PIN P17D
 #define LED_GREEN_PIN P13D
-#define LED_RED_PIN P17D
+#define LED_RED_PIN  P16D
 #define KEY_SCAN_PIN P00D
 #if USE_MY_DEBUG
 #define CHARGE_SCAN_PIN P05D

@@ -56,7 +56,9 @@ void IO_Init(void)
     PMOD = 0x00; // P00、P01、P13 io端口值从寄存器读，推挽输出
     // DRVCR = 0xB0; // P16、P17输出驱动电流100mA
     // DRVCR = 0x90; // P16、P17输出驱动电流50mA
-    DRVCR = 0x80; // P16、P17输出驱动电流25mA，其他普通IO正常驱动电流输出
+    // DRVCR = 0x80; // P16、P17输出驱动电流25mA，其他普通IO正常驱动电流输出
+    DRVCR = (0x01 << 7) | // 普通端口正常驱动电流输出
+            (0x01 << 4);  // P16、P17输出驱动电流50mA
 }
 
 /************************************************
@@ -138,8 +140,17 @@ void led_red_pwm_config(void)
     // FCPU == FHOSC / 8 时，FCPU == 4MHz：
     T0CR = 0x01 << 1; // 不使能PWM,CPU,4分频
 
-    T0LOAD = 100 - 1; // 100us
-    T0DATA = 60;
+    // T0LOAD = 100 - 1; // 100us
+    // T0DATA = 50;
+
+    T0LOAD = 255; //
+    // T0DATA = 191;
+    // T0DATA = 201;
+    // T0DATA = 150;
+    // T0DATA = 200;
+    // T0DATA = 220;
+    // T0DATA = 230;
+    T0DATA = 220;
     T0EN = 0;
 }
 
@@ -151,34 +162,42 @@ void led_blue_pwm_config(void)
     // FCPU == FHOSC / 8 时，FCPU == 4MHz：
     T1CR = 0x01 << 1; // 不使能PWM,CPU,4分频
 
-    T1LOAD = 100 - 1; // 100us
-    T1DATA = 50;
+    // T1LOAD = 100 - 1; // 100us
+    // T1DATA = 60;
+
+    T1LOAD = 255;
+    // T1DATA = 51;
+    // T1DATA = 41;
+    // T1DATA = 0;
+    T1DATA = 20;
+
     T1EN = 0;
 }
 
 void led_red_on(void)
-{ 
-    PWM1EC = 1;
-    T1EN = 1;
-}
-
-void led_red_off(void)
-{
-    PWM1EC = 0;
-    T1EN = 0; 
-    LED_RED_PIN = 1; // 高电平表示熄灭
-}
-
-void led_blue_on(void)
 {
     PWM0EC = 1;
     T0EN = 1;
 }
 
+void led_red_off(void)
+{
+
+    PWM0EC = 0;
+    T0EN = 0;
+    LED_RED_PIN = 1; // 高电平表示熄灭
+}
+
+void led_blue_on(void)
+{
+    PWM1EC = 1;
+    T1EN = 1;
+}
+
 void led_blue_off(void)
 {
-    PWM0EC = 0;
-    T0EN = 0; 
+    PWM1EC = 0;
+    T1EN = 0;
     LED_BLUE_PIN = 1; // 高电平表示熄灭
 }
 
