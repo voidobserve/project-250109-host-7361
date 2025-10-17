@@ -166,10 +166,11 @@ void led_blue_pwm_config(void)
     // T1DATA = 60;
 
     T1LOAD = 255;
-    // T1DATA = 51;
-    // T1DATA = 41;
-    // T1DATA = 0;
-    T1DATA = 20;
+    // T1DATA = 20;
+    // T1DATA = 30;
+    // T1DATA = 50;
+    T1DATA = 130;
+    // T1DATA = 150;
 
     T1EN = 0;
 }
@@ -692,7 +693,8 @@ void int_isr(void) __interrupt
             {
                 power_off_cnt++;
                 // if (power_off_cnt >= 360000) // 6min--客户测试是 390s,实际测试是 388s
-                if (power_off_cnt >= 334020) // 6min（计算出来的会有误差，这里做了补偿）
+                if (power_off_cnt >= (u32)334020 / 2) // 3min（计算出来的会有误差，这里做了补偿，这里直接在6min的数据上除以2）
+                // if (power_off_cnt >= 334020) // 6min（计算出来的会有误差，这里做了补偿）
                 {
                     power_off_cnt = 0;
                     flag_is_dev_open = 0;
