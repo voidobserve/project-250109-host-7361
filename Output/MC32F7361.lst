@@ -1,5 +1,5 @@
 gplink-2.2.37 (Jan 22 2024)
-Listing File Generated: 2025-10-17  17:33:51
+Listing File Generated: 2025-10-17  18:26:09
  
  
 Address  Value    Disassembly              Source
@@ -620,21 +620,21 @@ Address  Value    Disassembly              Source
 000043   662c     incr    0x2c             	INCR	(_power_off_cnt + 2)
 000044   f587     jbclr   0x187, 0x2       	JBCLR	PFLAG,2
 000045   662d     incr    0x2d             	INCR	(_power_off_cnt + 3)
-                                           ;;unsigned compare: left < lit(0x28C62=167010), size=4
-                                           ;	.line	696; "MC32F7361.c"	if (power_off_cnt >= (u32)334020 / 2) // 3min（计算出来的会有误差，这里做了补偿，这里直接在6min的数据上除以2）
+                                           ;;unsigned compare: left < lit(0x518C4=334020), size=4
+                                           ;	.line	697; "MC32F7361.c"	if (power_off_cnt >= 334020) // 6min（计算出来的会有误差，这里做了补偿）
 000046   3c00     movai   0                	MOVAI	0x00
 000047   482d     rsubar  0x2d             	RSUBAR	(_power_off_cnt + 3)
 000048   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
 000049   a054     goto    0x54             	GOTO	_00633_DS_
-00004a   3c02     movai   0x2              	MOVAI	0x02
+00004a   3c05     movai   0x5              	MOVAI	0x05
 00004b   482c     rsubar  0x2c             	RSUBAR	(_power_off_cnt + 2)
 00004c   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
 00004d   a054     goto    0x54             	GOTO	_00633_DS_
-00004e   3c8c     movai   0x8c             	MOVAI	0x8c
+00004e   3c18     movai   0x18             	MOVAI	0x18
 00004f   482b     rsubar  0x2b             	RSUBAR	(_power_off_cnt + 1)
 000050   e587     jbset   0x187, 0x2       	JBSET	PFLAG,2
 000051   a054     goto    0x54             	GOTO	_00633_DS_
-000052   3c62     movai   0x62             	MOVAI	0x62
+000052   3cc4     movai   0xc4             	MOVAI	0xc4
 000053   482a     rsubar  0x2a             	RSUBAR	_power_off_cnt
                                            _00633_DS_
 000054   e187     jbset   0x187, 0         	JBSET	PFLAG,0
@@ -2020,7 +2020,7 @@ Address  Value    Disassembly              Source
                                            ;--------------------------------------------------------
                                            ; File Created by SN-SDCC : SinoMCU ANSI-C Compiler
                                            ; Version 2.0.0 (Dec 11 2019) (MINGW32)
-                                           ; This file was generated Fri Oct 17 17:33:50 2025
+                                           ; This file was generated Fri Oct 17 18:26:09 2025
                                            ;--------------------------------------------------------
                                            ; MC32 port for the RISC core
                                            ;--------------------------------------------------------
@@ -2644,21 +2644,21 @@ Address  Value    Disassembly              Source
                                            	INCR	(_power_off_cnt + 2)
                                            	JBCLR	PFLAG,2
                                            	INCR	(_power_off_cnt + 3)
-                                           ;;unsigned compare: left < lit(0x28C62=167010), size=4
-                                           ;	.line	696; "MC32F7361.c"	if (power_off_cnt >= (u32)334020 / 2) // 3min（计算出来的会有误差，这里做了补偿，这里直接在6min的数据上除以2）
+                                           ;;unsigned compare: left < lit(0x518C4=334020), size=4
+                                           ;	.line	697; "MC32F7361.c"	if (power_off_cnt >= 334020) // 6min（计算出来的会有误差，这里做了补偿）
                                            	MOVAI	0x00
                                            	RSUBAR	(_power_off_cnt + 3)
                                            	JBSET	PFLAG,2
                                            	GOTO	_00633_DS_
-                                           	MOVAI	0x02
+                                           	MOVAI	0x05
                                            	RSUBAR	(_power_off_cnt + 2)
                                            	JBSET	PFLAG,2
                                            	GOTO	_00633_DS_
-                                           	MOVAI	0x8c
+                                           	MOVAI	0x18
                                            	RSUBAR	(_power_off_cnt + 1)
                                            	JBSET	PFLAG,2
                                            	GOTO	_00633_DS_
-                                           	MOVAI	0x62
+                                           	MOVAI	0xc4
                                            	RSUBAR	_power_off_cnt
                                            _00633_DS_
                                            	JBSET	PFLAG,0
