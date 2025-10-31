@@ -1,13 +1,12 @@
-// encoding UTF-8
 /******************************************************************************
-;  *       @å‹å·                   : MC32F7361
-;  *       @åˆ›å»ºæ—¥æœŸ               : 2021.12.21
-;  *       @å…¬å¸/ä½œè€…              : SINOMCU-FAE
-;  *       @æ™ŸçŸ½å¾®æŠ€æœ¯æ”¯æŒ         : 2048615934
-;  *       @æ™ŸçŸ½å¾®å®˜ç½‘             : http://www.sinomcu.com/
-;  *       @ç‰ˆæƒ                   : 2021 SINOMCUå…¬å¸ç‰ˆæƒæ‰€æœ‰.
-;  *---------------------- å»ºè®® ---------------------------------
-;  *                   å˜é‡å®šä¹‰æ—¶ä½¿ç”¨å…¨å±€å˜é‡
+;  *       @ĞÍºÅ                   : MC32F7361
+;  *       @´´½¨ÈÕÆÚ               : 2021.12.21
+;  *       @¹«Ë¾/×÷Õß              : SINOMCU-FAE
+;  *       @êÉÎùÎ¢¼¼ÊõÖ§³Ö         : 2048615934
+;  *       @êÉÎùÎ¢¹ÙÍø             : http://www.sinomcu.com/
+;  *       @°æÈ¨                   : 2021 SINOMCU¹«Ë¾°æÈ¨ËùÓĞ.
+;  *---------------------- ½¨Òé ---------------------------------
+;  *                   ±äÁ¿¶¨ÒåÊ±Ê¹ÓÃÈ«¾Ö±äÁ¿
 ******************************************************************************/
 #ifndef USER
 #define USER
@@ -47,17 +46,27 @@
 #define PASS 0
 
 #define USE_MY_DEBUG 0
-#define AD_OFFSET 41 // æ£€æµ‹åˆ°çš„adå€¼ä¸å®é™…çš„ç”µå‹å€¼æœ‰åå·®ï¼Œè¦å‡å»è¿™ä¸ªå€¼
+#define AD_OFFSET 41 // ¼ì²âµ½µÄadÖµÓëÊµ¼ÊµÄµçÑ¹ÖµÓĞÆ«²î£¬Òª¼õÈ¥Õâ¸öÖµ
 
 #define LED_BLUE_PIN P17D
 #define LED_GREEN_PIN P13D
-#define LED_RED_PIN  P16D
+#define LED_RED_PIN P16D
 #define KEY_SCAN_PIN P00D
 #if USE_MY_DEBUG
 #define CHARGE_SCAN_PIN P05D
 #else
 #define CHARGE_SCAN_PIN P04D
 #endif
+
+// µÆ¹âÁÁ¶È£¬¿ØÖÆPWMÕ¼¿Õ±È£º(ÊıÖµÔ½Ğ¡£¬PWMÕ¼¿Õ±ÈÔ½Ğ¡£¬¶øÇı¶¯µÆ¹âµÄµçÁ÷Ô½´ó£¬µÆ¹âµÍµçÆ½µãÁÁ)
+#define LED_RED_LUMINANCE (180)			  // ºì¹â¶ÔÓ¦µÄPWMÕ¼¿Õ±È
+#define LED_BLUE_LUMINANCE (170)		  // À¶¹â¶ÔÓ¦µÄPWMÕ¼¿Õ±È
+
+#define LED_RED_LUMINANCE_IN_PURPLE (180) // ×Ï¹âÊ±£¬ºìµÆ¶ÔÓ¦µÄPWMÕ¼¿Õ±È
+#define LED_BLUE_LUMINANCE_IN_PURPLE (170)
+
+#define LED_RED_TIMER_DATA (T0DATA)	 // Çı¶¯ºìµÆµÄpwmÕ¼¿Õ±È¼Ä´æÆ÷ TxDATA
+#define LED_BLUE_TIMER_DATA (T1DATA) // Çı¶¯À¶µÆµÄpwmÕ¼¿Õ±È¼Ä´æÆ÷ TxDATA
 
 extern void led_red_on(void);
 extern void led_red_off(void);
@@ -78,6 +87,7 @@ extern void led_blue_off(void);
 // 			LED_BLUE_PIN = 1; \
 // 		} while (0);          \
 // 	}
+
 #define LED_BLUE_ON()      \
 	{                      \
 		do                 \
@@ -106,6 +116,7 @@ extern void led_blue_off(void);
 			LED_GREEN_PIN = 0; \
 		} while (0);           \
 	}
+
 // #define LED_RED_ON()         \
 // 	{                        \
 // 		do                   \
@@ -120,6 +131,7 @@ extern void led_blue_off(void);
 // 			LED_RED_PIN = 1; \
 // 		} while (0);         \
 // 	}
+
 #define LED_RED_ON()      \
 	{                     \
 		do                \
@@ -127,6 +139,7 @@ extern void led_blue_off(void);
 			led_red_on(); \
 		} while (0);      \
 	}
+
 #define LED_RED_OFF()      \
 	{                      \
 		do                 \
@@ -137,11 +150,11 @@ extern void led_blue_off(void);
 
 enum
 {
-	CUR_STATUS_NONE = 0,	// æ— æ“ä½œ
-	CUR_STATUS_WORKING,		// æ­£åœ¨å·¥ä½œ
-	CUR_STATUS_BE_CHARGING, // æ­£åœ¨è¢«å……ç”µ
+	CUR_STATUS_NONE = 0,	// ÎŞ²Ù×÷
+	CUR_STATUS_WORKING,		// ÕıÔÚ¹¤×÷
+	CUR_STATUS_BE_CHARGING, // ÕıÔÚ±»³äµç
 };
-volatile u8 cur_dev_status; // çŠ¶æ€æœºï¼Œè¡¨ç¤ºå½“å‰è®¾å¤‡çš„çŠ¶æ€
+volatile u8 cur_dev_status; // ×´Ì¬»ú£¬±íÊ¾µ±Ç°Éè±¸µÄ×´Ì¬
 
 enum
 {
@@ -158,7 +171,7 @@ enum
 #define KEY_FILTER_TIMES 2
 volatile u8 key_event;
 
-volatile u32 power_off_cnt; // è´Ÿè´£è‡ªåŠ¨å…³æœºçš„æ—¶é—´è®¡æ•°
+volatile u32 power_off_cnt; // ¸ºÔğ×Ô¶¯¹Ø»úµÄÊ±¼ä¼ÆÊı
 
 //===============Field Protection Variables===============
 volatile u8 abuf;
@@ -167,17 +180,24 @@ volatile u8 statusbuf;
 volatile u16 adc_val;
 
 //===============Global Variable===============
-u8 i; // å¾ªç¯è®¡æ•°å€¼
+u8 i; // Ñ­»·¼ÆÊıÖµ
+
+enum
+{
+	LED_MODE_RED = 0,	   // Ä¬ÈÏ¿ª»úÊÇºì¹â
+	LED_MODE_BLUE,		   // À¶
+	LED_MODE_RED_AND_BLUE, // ºì+À¶
+};
 
 volatile u8 led_mode;
 
 // ===================================================
-// ä¸»æœºæŒ‰é”®æ‰«æçš„ç›¸å…³é…ç½®                            //
+// Ö÷»ú°´¼üÉ¨ÃèµÄÏà¹ØÅäÖÃ                            //
 // ===================================================
 // static volatile u8 last_key_id;
-// static volatile u8 press_cnt;	  // æŒ‰é”®æŒ‰ä¸‹çš„æ—¶é—´è®¡æ•°
-// static volatile u8 filter_cnt;	  // æŒ‰é”®æ¶ˆæŠ–ï¼Œä½¿ç”¨çš„å˜é‡
-// static volatile u8 filter_key_id; // æŒ‰é”®æ¶ˆæŠ–æ—¶ä½¿ç”¨çš„å˜é‡
+// static volatile u8 press_cnt;	  // °´¼ü°´ÏÂµÄÊ±¼ä¼ÆÊı
+// static volatile u8 filter_cnt;	  // °´¼üÏû¶¶£¬Ê¹ÓÃµÄ±äÁ¿
+// static volatile u8 filter_key_id; // °´¼üÏû¶¶Ê±Ê¹ÓÃµÄ±äÁ¿
 
 // static volatile u8 flag_is_key_mode_hold;
 
@@ -202,11 +222,11 @@ volatile bit_flag flag1;
 #define flag_is_in_charging flag1.bits.bit1
 #define flag_is_full_charged flag1.bits.bit2
 #define flag_is_power_low flag1.bits.bit3
-#define flag_is_enable_into_low_power flag1.bits.bit4 // æ ‡å¿—ä½ï¼Œæ˜¯å¦ä½¿èƒ½è¿›å…¥ä½åŠŸè€—
-#define flag_is_cut_down_charge flag1.bits.bit5		  // æ ‡å¿—ä½ï¼Œæ˜¯å¦åœ¨å……ç”µæ—¶åˆ‡æ–­ä¸€æ¬¡ç»™ä¸»æœºç”µæ± çš„å……ç”µï¼Œä»¥ç¡®è®¤æ˜¯å¦è¿˜æœ‰åœ¨æ— çº¿å……ç”µ
+#define flag_is_enable_into_low_power flag1.bits.bit4 // ±êÖ¾Î»£¬ÊÇ·ñÊ¹ÄÜ½øÈëµÍ¹¦ºÄ
+#define flag_is_cut_down_charge flag1.bits.bit5		  // ±êÖ¾Î»£¬ÊÇ·ñÔÚ³äµçÊ±ÇĞ¶ÏÒ»´Î¸øÖ÷»úµç³ØµÄ³äµç£¬ÒÔÈ·ÈÏÊÇ·ñ»¹ÓĞÔÚÎŞÏß³äµç
 
-// // æ¯«ç§’çº§å»¶æ—¶ (è¯¯å·®ï¼šåœ¨1%ä»¥å†…ï¼Œ1msã€10msã€100mså»¶æ—¶çš„è¯¯å·®å‡å°äº1%)
-// // å‰ææ¡ä»¶ï¼šFCPU = FHOSC / 4
+// // ºÁÃë¼¶ÑÓÊ± (Îó²î£ºÔÚ1%ÒÔÄÚ£¬1ms¡¢10ms¡¢100msÑÓÊ±µÄÎó²î¾ùĞ¡ÓÚ1%)
+// // Ç°ÌáÌõ¼ş£ºFCPU = FHOSC / 4
 // void delay_ms(u16 xms)
 // {
 // 	while (xms)
@@ -216,16 +236,16 @@ volatile bit_flag flag1;
 // 		{
 // 			Nop();
 // 		}
-// 		xms--; // æŠŠ --æ“ä½œæ”¾åœ¨while()åˆ¤æ–­æ¡ä»¶å¤–é¢ï¼Œæ›´èŠ‚çœç©ºé—´
+// 		xms--; // °Ñ --²Ù×÷·ÅÔÚwhile()ÅĞ¶ÏÌõ¼şÍâÃæ£¬¸ü½ÚÊ¡¿Õ¼ä
 
 // 		__asm;
-// 		clrwdt; // å–‚ç‹—
+// 		clrwdt; // Î¹¹·
 // 		__endasm;
 // 	}
 // }
 
-// æ¯«ç§’çº§å»¶æ—¶,è¯¯å·®åœ¨ 1% ~ 2%
-// å‰ææ¡ä»¶ï¼šFCPU = FHOSC / 8
+// ºÁÃë¼¶ÑÓÊ±,Îó²îÔÚ 1% ~ 2%
+// Ç°ÌáÌõ¼ş£ºFCPU = FHOSC / 8
 void delay_ms(u16 xms)
 {
 	while (xms)
@@ -235,26 +255,26 @@ void delay_ms(u16 xms)
 		{
 			Nop();
 		}
-		xms--; // æŠŠ --æ“ä½œæ”¾åœ¨while()åˆ¤æ–­æ¡ä»¶å¤–é¢ï¼Œæ›´èŠ‚çœç©ºé—´
+		xms--; // °Ñ --²Ù×÷·ÅÔÚwhile()ÅĞ¶ÏÌõ¼şÍâÃæ£¬¸ü½ÚÊ¡¿Õ¼ä
 
 		__asm;
-		clrwdt; // å–‚ç‹—
+		clrwdt; // Î¹¹·
 		__endasm;
 	}
 }
 
 // #if USE_MY_DEBUG
 #define DEBUG_PIN P22D
-#if 0  // ä»¥ä¸‹ç¨‹åºçº¦å ç”¨81å­—èŠ‚ç©ºé—´
-// é€šè¿‡ä¸€ä¸ªå¼•è„šè¾“å‡ºæ•°æ®(å‘é€ä¸€æ¬¡çº¦400ms)
+#if 0  // ÒÔÏÂ³ÌĞòÔ¼Õ¼ÓÃ81×Ö½Ú¿Õ¼ä
+// Í¨¹ıÒ»¸öÒı½ÅÊä³öÊı¾İ(·¢ËÍÒ»´ÎÔ¼400ms)
 // #define DEBUG_PIN P22D
 void send_data_msb(u32 send_data)
 {
-	// å…ˆå‘é€æ ¼å¼å¤´
-	// __set_input_pull_up(); // é«˜ç”µå¹³
+	// ÏÈ·¢ËÍ¸ñÊ½Í·
+	// __set_input_pull_up(); // ¸ßµçÆ½
 	DEBUG_PIN = 1;
 	delay_ms(15);
-	// __set_output_open_drain(); // ä½ç”µå¹³
+	// __set_output_open_drain(); // µÍµçÆ½
 	DEBUG_PIN = 0;
 	delay_ms(7); //
 
@@ -262,28 +282,28 @@ void send_data_msb(u32 send_data)
 	{
 		if ((send_data >> (32 - 1 - i)) & 0x01)
 		{
-			// å¦‚æœè¦å‘é€é€»è¾‘1
-			// __set_input_pull_up();  	   // é«˜ç”µå¹³
+			// Èç¹ûÒª·¢ËÍÂß¼­1
+			// __set_input_pull_up();  	   // ¸ßµçÆ½
 			DEBUG_PIN = 1;
 			delay_ms(5); //
-			// __set_output_open_drain(); // ä½ç”µå¹³
+			// __set_output_open_drain(); // µÍµçÆ½
 			DEBUG_PIN = 0;
 			delay_ms(10); //
 		}
 		else
 		{
-			// å¦‚æœè¦å‘é€é€»è¾‘0
-			// __set_input_pull_up();  	   // é«˜ç”µå¹³
+			// Èç¹ûÒª·¢ËÍÂß¼­0
+			// __set_input_pull_up();  	   // ¸ßµçÆ½
 			DEBUG_PIN = 1;
 			delay_ms(5); //
-			// __set_output_open_drain(); // ä½ç”µå¹³
+			// __set_output_open_drain(); // µÍµçÆ½
 			DEBUG_PIN = 0;
 			delay_ms(5); //
 		}
 	}
 
-	// æœ€åï¼Œè®¾ç½®ä¸ºä½ç”µå¹³
-	// __set_output_open_drain(); // ä½ç”µå¹³
+	// ×îºó£¬ÉèÖÃÎªµÍµçÆ½
+	// __set_output_open_drain(); // µÍµçÆ½
 	DEBUG_PIN = 0;
 	delay_ms(1);
 	DEBUG_PIN = 1;
