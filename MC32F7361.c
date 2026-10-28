@@ -364,10 +364,14 @@ void key_event_handle(void)
         else
         {
             // 关机->开机
-            LED_RED_ON();
-            LED_BLUE_ON();
-            led_mode = 0; // 表示当前是紫光
-            flag_is_dev_open = 1;
+            adc_val = adc_get_val();
+            if (adc_val >= 1484)
+            {
+                LED_RED_ON();
+                LED_BLUE_ON();
+                led_mode = 0; // 表示当前是紫光
+                flag_is_dev_open = 1;
+            }
         }
     }
     else if (KEY_EVENT_HOLD == key_event)
